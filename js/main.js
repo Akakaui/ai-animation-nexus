@@ -314,22 +314,45 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================================================
   const applicationForm = document.getElementById('applicationForm');
   
-  submitFormBtn.addEventListener('click', (e) => {
+  submitFormBtn.addEventListener('click', async (e) => {
     e.preventDefault();
     
     if (!validateStepInputs(5)) return;
     
-    // Animation response feedback
     submitFormBtn.disabled = true;
     const originalText = submitFormBtn.innerHTML;
-    submitFormBtn.innerHTML = 'Redirecting to checkout...';
+    submitFormBtn.innerHTML = 'Saving...';
     
-    // Simulate API redirect to Paystack payment gateway
-    setTimeout(() => {
-      // Direct redirection to Payment page
-      // In a real staging environment, this moves to the payment page.
-      // For presentation/demo, we simulate redirecting.
-      window.location.href = 'payment.html';
-    }, 1000);
+    const formData = {
+      fullName: document.getElementById('fullName')?.value || document.querySelector('[data-step="2"] input[type="text"]')?.value,
+      email: document.getElementById('emailAddress')?.value || document.querySelector('[data-step="2"] input[type="email"]')?.value,
+      whatsapp: document.getElementById('whatsappNumber')?.value || document.querySelector('[data-step="3"] input[type="tel"]')?.value,
+      goals: document.getElementById('goals')?.value || document.querySelector('[data-step="4"] textarea')?.value,
+      portfolio: document.getElementById('portfolio')?.value || document.querySelector('[data-step="5"] input[type="url"]')?.value,
+      referral: document.getElementById('referral')?.value || document.querySelector('[data-step="5"] select')?.value
+    };
+    
+    try {
+      const res = await fetch('/api/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      
+      const data = await res.json();
+      
+      if (data.success) {
+        localStorage.setItem('nexus_email', formData.email);
+        window.location.href = 'payment.html';
+      } else {
+        alert(data.error || 'Something went wrong. Please try again.');
+        submitFormBtn.disabled = false;
+        submitFormBtn.innerHTML = originalText;
+      }
+    } catch (err) {
+      console.error('Form submission error:', err);
+      submitFormBtn.disabled = false;
+      submitFormBtn.innerHTML = originalText;
+    }
   });
 });

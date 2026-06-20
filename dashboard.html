@@ -337,30 +337,74 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Access storage cache code
       const cachedCode = localStorage.getItem('nexus_access_code');
+      const cachedEmail = localStorage.getItem('nexus_email');
+      
       if (cachedCode) {
         document.getElementById('userBadge').textContent = 'Code: ' + cachedCode;
         document.getElementById('verifyCode').value = cachedCode;
+      }
+      if (cachedEmail) {
+        document.getElementById('verifyEmail').value = cachedEmail;
       }
 
       // Handle Switcher State Actions
       const sections = document.querySelectorAll('.state-section');
       const selector = document.getElementById('stateSelector');
+      const devPanel = document.querySelector('.dev-state-panel');
 
       selector.addEventListener('change', function() {
         sections.forEach(s => s.style.display = 'none');
         document.getElementById('state-' + this.value).style.display = 'block';
       });
 
-      // Handle Simulated Verification Form Actions
-      document.getElementById('verifyForm').addEventListener('submit', function(e) {
+      // Handle Real Verification Form
+      document.getElementById('verifyForm').addEventListener('submit', async function(e) {
         e.preventDefault();
-        // Shift Simulator to Verified Screen state
-        selector.value = 'verified';
-        sections.forEach(s => s.style.display = 'none');
-        document.getElementById('state-verified').style.display = 'block';
+        const email = document.getElementById('verifyEmail').value;
+        const code = document.getElementById('verifyCode').value;
+        
+        const btn = this.querySelector('.btn-verify');
+        const originalText = btn.textContent;
+        btn.textContent = 'Verifying...';
+        btn.disabled = true;
+        
+        try {
+          const res = await fetch('/api/verify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, code })
+          });
+          
+          const data = await res.json();
+          
+          if (data.valid) {
+            if (data.session && data.session.zoomUrl) {
+              document.getElementById('zoomBtn').href = data.session.zoomUrl;
+              document.querySelector('#state-verified .dash-body').innerHTML = `
+                <strong>Session ${data.session.number}: ${data.session.title}</strong><br>
+                Host: ${data.session.host} • Time: 9:00 PM WAT
+              `;
+            }
+            selector.value = 'verified';
+            sections.forEach(s => s.style.display = 'none');
+            document.getElementById('state-verified').style.display = 'block';
+          } else {
+            alert('Invalid email or code. Please check and try again.');
+          }
+        } catch (err) {
+          console.error('Verification error:', err);
+          alert('Verification failed. Please try again.');
+        }
+        
+        btn.textContent = originalText;
+        btn.disabled = false;
       });
+      
+      // Hide dev panel in production
+      if (devPanel) {
+        devPanel.style.display = 'none';
+      }
     });
   </script>
 </body>

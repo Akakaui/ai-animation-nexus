@@ -223,68 +223,42 @@
         window.location.href = 'dashboard.html';
       });
 
-      // 4. Generate & Download .ICS Calendar File
+      // 4. Generate & Download .ICS Calendar File with local timezone conversion
       document.getElementById('calendarBtn').addEventListener('click', function() {
-        const events = [
-          {
-            start: '20260724T200000Z',
-            end: '20260724T210000Z',
-            title: 'S1: Photo-to-Video Transformation',
-            host: 'Bethel'
-          },
-          {
-            start: '20260725T200000Z',
-            end: '20260725T210000Z',
-            title: 'S2: Motion-Syncing & Compositing',
-            host: 'Bethel'
-          },
-          {
-            start: '20260731T200000Z',
-            end: '20260731T210000Z',
-            title: 'S3: Maintaining Consistent AI Characters',
-            host: 'Della'
-          },
-          {
-            start: '20260801T200000Z',
-            end: '20260801T210000Z',
-            title: 'S4: Advanced Content Creation Strategy',
-            host: 'Chijioke'
-          },
-          {
-            start: '20260807T200000Z',
-            end: '20260807T210000Z',
-            title: 'S5: AI Automation & Workflow Efficiency',
-            host: 'Chijioke'
-          },
-          {
-            start: '20260808T200000Z',
-            end: '20260808T210000Z',
-            title: 'S6: Think Like a Creative Director',
-            host: 'Chibuike Ifeoma'
-          },
-          {
-            start: '20260814T200000Z',
-            end: '20260814T210000Z',
-            title: 'S7: Building Online Presence with AI',
-            host: 'Chibuike Ifeoma'
-          },
-          {
-            start: '20260815T200000Z',
-            end: '20260815T210000Z',
-            title: 'S8: Grand Finale & Studio Standards',
-            host: 'Tochukwu'
-          }
+        const sessions = [
+          { number: 1, date: '2026-07-24', title: 'Photo-to-Video Transformation', host: 'Bethel' },
+          { number: 2, date: '2026-07-25', title: 'Motion-Syncing & Compositing', host: 'Bethel' },
+          { number: 3, date: '2026-07-31', title: 'Maintaining Consistent AI Characters', host: 'Della' },
+          { number: 4, date: '2026-08-01', title: 'Advanced Content Creation Strategy', host: 'Chijioke' },
+          { number: 5, date: '2026-08-07', title: 'AI Automation & Workflow Efficiency', host: 'Chijioke' },
+          { number: 6, date: '2026-08-08', title: 'Think Like a Creative Director', host: 'Chibuike Ifeoma' },
+          { number: 7, date: '2026-08-14', title: 'Building Online Presence with AI', host: 'Chibuike Ifeoma' },
+          { number: 8, date: '2026-08-15', title: 'Grand Finale & Studio Standards', host: 'Tochukwu' }
         ];
 
-        let icsContent = 'BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Animation Nexus//Calendar//EN\n';
+        // WAT is UTC+1, sessions are at 9PM WAT
+        const watOffset = 1; // UTC+1
         
-        events.forEach(ev => {
+        let icsContent = 'BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Animation Nexus//Calendar//EN\nCALSCALE:GREGORIAN\n';
+        
+        sessions.forEach(session => {
+          // Create date in WAT, then convert to UTC for ICS
+          const [year, month, day] = session.date.split('-').map(Number);
+          
+          // 9 PM WAT = 20:00 UTC+1 = 19:00 UTC (subtract 1 hour)
+          const startUTC = new Date(Date.UTC(year, month - 1, day, 19, 0, 0));
+          const endUTC = new Date(Date.UTC(year, month - 1, day, 20, 0, 0));
+          
+          const formatICSDate = (d) => d.toISOString().replace(/[-:]/g, '').replace('.000', '');
+          
           icsContent += 'BEGIN:VEVENT\n';
-          icsContent += `DTSTART:${ev.start}\n`;
-          icsContent += `DTEND:${ev.end}\n`;
-          icsContent += `SUMMARY:${ev.title} (Host: ${ev.host})\n`;
-          icsContent += `DESCRIPTION:Live Animation Nexus Session with ${ev.host}. Access dashboard at https://favourakaka.duckdns.org/nexus/dashboard.html to verify and get Zoom link.\n`;
+          icsContent += `DTSTART:${formatICSDate(startUTC)}\n`;
+          icsContent += `DTEND:${formatICSDate(endUTC)}\n`;
+          icsContent += `SUMMARY:Session ${session.number}: ${session.title}\n`;
+          icsContent += `DESCRIPTION:Host: ${session.host}\\nAccess dashboard to verify and get Zoom link.\n`;
           icsContent += 'LOCATION:Zoom Online Video\n';
+          icsContent += `UID:session${session.number}@animationnexus.com\n`;
+          icsContent += 'STATUS:CONFIRMED\n';
           icsContent += 'END:VEVENT\n';
         });
         
