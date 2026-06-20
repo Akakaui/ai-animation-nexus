@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Animation Nexus</title>
+  <title>AI Animation Nexus</title>
   <meta name="description" content="A 4-week intensive where five mentors teach you to turn a still image into motion — and turn raw ideas into a real body of work.">
   
   <!-- Google Fonts -->
@@ -24,9 +24,21 @@
   <!-- Paper Grain Overlay for Texture -->
   <div class="paper-texture"></div>
 
+  <!-- 2026 Dangling Tag -->
+  <div class="year-tag" id="yearTag">
+    <div class="tag-string">
+      <svg viewBox="0 0 30 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 0 C15 0 12 20 15 35 C18 50 15 60 15 60" stroke="#1A1712" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 3"/>
+      </svg>
+    </div>
+    <div class="tag-body">
+      <span class="tag-text">2026</span>
+    </div>
+  </div>
+
   <!-- Navigation -->
   <nav class="navbar">
-    <div class="nav-logo">Animation Nexus</div>
+    <div class="nav-logo">AI Animation Nexus</div>
     <ul class="nav-links">
       <li><a href="#schedule">Schedule</a></li>
       <li><a href="#mentors">Mentors</a></li>
@@ -60,7 +72,7 @@
           </svg>
 
           <h1 class="hero-title animate-weight">
-            Animation<br>Nexus
+            AI<br>Animation<br>Nexus
           </h1>
         </div>
 
@@ -316,9 +328,17 @@
         <!-- Mentor 1 -->
         <div class="mentor-card">
           <div class="mentor-graphic">
-            <!-- Wobbly shape mark overlay that reveals info -->
-            <div class="mentor-shape-mark shape-1">
-              <span>B</span>
+            <svg class="blob-clip" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <defs>
+                <clipPath id="blob1" clipPathUnits="userSpaceOnUse">
+                  <path class="blob-path" d="M50,10 C70,10 90,25 95,50 C100,75 80,95 50,90 C20,85 5,60 10,35 C15,15 35,10 50,10 Z"/>
+                </clipPath>
+              </defs>
+            </svg>
+            <div class="mentor-liquid" style="--blob-delay: 0s;">
+              <div class="mentor-photo" style="clip-path: url(#blob1);">
+                <div class="mentor-initial">B</div>
+              </div>
             </div>
           </div>
           <div class="mentor-details">
@@ -330,8 +350,17 @@
         <!-- Mentor 2 -->
         <div class="mentor-card">
           <div class="mentor-graphic">
-            <div class="mentor-shape-mark shape-2">
-              <span>D</span>
+            <svg class="blob-clip" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <defs>
+                <clipPath id="blob2" clipPathUnits="userSpaceOnUse">
+                  <path class="blob-path" d="M50,15 C75,5 95,30 90,55 C85,80 60,95 35,85 C10,75 -5,50 15,25 C25,10 40,20 50,15 Z"/>
+                </clipPath>
+              </defs>
+            </svg>
+            <div class="mentor-liquid" style="--blob-delay: 0.5s;">
+              <div class="mentor-photo" style="clip-path: url(#blob2);">
+                <div class="mentor-initial">D</div>
+              </div>
             </div>
           </div>
           <div class="mentor-details">
@@ -343,8 +372,17 @@
         <!-- Mentor 3 -->
         <div class="mentor-card">
           <div class="mentor-graphic">
-            <div class="mentor-shape-mark shape-3">
-              <span>C</span>
+            <svg class="blob-clip" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <defs>
+                <clipPath id="blob3" clipPathUnits="userSpaceOnUse">
+                  <path class="blob-path" d="M45,5 C70,0 100,20 95,50 C90,80 65,100 40,90 C15,80 0,55 10,30 C15,10 30,8 45,5 Z"/>
+                </clipPath>
+              </defs>
+            </svg>
+            <div class="mentor-liquid" style="--blob-delay: 1s;">
+              <div class="mentor-photo" style="clip-path: url(#blob3);">
+                <div class="mentor-initial">C</div>
+              </div>
             </div>
           </div>
           <div class="mentor-details">
@@ -356,8 +394,17 @@
         <!-- Mentor 4 -->
         <div class="mentor-card">
           <div class="mentor-graphic">
-            <div class="mentor-shape-mark shape-4">
-              <span>CI</span>
+            <svg class="blob-clip" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <defs>
+                <clipPath id="blob4" clipPathUnits="userSpaceOnUse">
+                  <path class="blob-path" d="M55,10 C85,15 95,45 85,70 C75,95 45,95 25,75 C5,55 10,20 35,10 C45,5 50,8 55,10 Z"/>
+                </clipPath>
+              </defs>
+            </svg>
+            <div class="mentor-liquid" style="--blob-delay: 1.5s;">
+              <div class="mentor-photo" style="clip-path: url(#blob4);">
+                <div class="mentor-initial">CI</div>
+              </div>
             </div>
           </div>
           <div class="mentor-details">
@@ -369,8 +416,17 @@
         <!-- Mentor 5 -->
         <div class="mentor-card">
           <div class="mentor-graphic">
-            <div class="mentor-shape-mark shape-5">
-              <span>T</span>
+            <svg class="blob-clip" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <defs>
+                <clipPath id="blob5" clipPathUnits="userSpaceOnUse">
+                  <path class="blob-path" d="M50,8 C80,5 98,35 88,60 C78,85 50,98 25,85 C0,72 -5,40 15,20 C30,5 40,10 50,8 Z"/>
+                </clipPath>
+              </defs>
+            </svg>
+            <div class="mentor-liquid" style="--blob-delay: 2s;">
+              <div class="mentor-photo" style="clip-path: url(#blob5);">
+                <div class="mentor-initial">T</div>
+              </div>
             </div>
           </div>
           <div class="mentor-details">
@@ -506,13 +562,13 @@
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-left">
-        <span class="footer-logo">Animation Nexus</span>
-        <p>© 2026 Animation Nexus. All rights reserved.</p>
+        <span class="footer-logo">AI Animation Nexus</span>
+        <p>© 2026 AI Animation Nexus. All rights reserved.</p>
       </div>
       <div class="footer-right">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Contact Support</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="contact.html">Contact Support</a>
       </div>
     </div>
   </footer>
@@ -629,7 +685,7 @@
           </div>
 
           <div class="form-group">
-            <label for="referral" class="form-label">How did you hear about Animation Nexus?</label>
+            <label for="referral" class="form-label">How did you hear about AI Animation Nexus?</label>
             <div class="select-wrapper">
               <select id="referral" class="form-input form-select" required>
                 <option value="" disabled selected>Select an option</option>

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getDB, updateSessionZoom } = require('../db');
+const { getDB, updateSessionZoom, updateSessionUnlockTime } = require('../db');
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 
@@ -19,9 +19,20 @@ router.get('/sessions', (req, res) => {
 
 router.put('/sessions/:id', (req, res) => {
   const { id } = req.params;
-  const { zoomUrl } = req.body;
-  const session = updateSessionZoom(parseInt(id), zoomUrl);
-  res.json({ success: true, session });
+  const { zoomUrl, unlocksAt } = req.body;
+  const db = getDB();
+  const session = db.sessions.find(s => s.id === parseInt(id));
+  if (!session) return res.status(404).json({ error: 'Session not found' });
+
+  if (zoomUrl !== undefined) {
+    updateSessionZoom(parseInt(id), zoomUrl);
+  }
+  if (unlocksAt !== undefined) {
+    updateSessionUnlockTime(parseInt(id), unlocksAt);
+  }
+
+  const updated = db.sessions.find(s => s.id === parseInt(id));
+  res.json({ success: true, session: updated });
 });
 
 router.get('/students', (req, res) => {
@@ -40,9 +51,9 @@ router.get('/students', (req, res) => {
 
 router.get('/attendance', (req, res) => {
   const db = getDB();
-  
+
   const students = db.students.filter(s => s.paid);
-  
+
   const matrix = students.map(s => {
     const row = { student: { id: s.id, name: s.full_name, email: s.email } };
     db.sessions.forEach(sess => {

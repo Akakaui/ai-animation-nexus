@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Dashboard — Animation Nexus</title>
+  <title>Student Dashboard — AI Animation Nexus</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -207,7 +207,7 @@
 
   <div class="dash-layout">
     <header class="dash-header">
-      <div class="dash-logo">Animation Nexus</div>
+      <div class="dash-logo">AI Animation Nexus</div>
       <div class="dash-user-badge" id="userBadge">Guest Access</div>
     </header>
 
@@ -219,35 +219,13 @@
       </p>
       
       <h2 class="dash-schedule-title">Orientation Schedule</h2>
-      <div class="dash-schedule-list">
-        <div class="dash-schedule-item">
-          <div class="dash-item-info">
-            <h4>S1: Photo-to-Video Transformation</h4>
-            <span>Fri, Jul 24 • Host: Bethel</span>
-          </div>
-          <span class="dash-item-status">Scheduled</span>
-        </div>
-        <div class="dash-schedule-item">
-          <div class="dash-item-info">
-            <h4>S2: Motion-Syncing & Compositing</h4>
-            <span>Sat, Jul 25 • Host: Bethel</span>
-          </div>
-          <span class="dash-item-status">Scheduled</span>
-        </div>
-        <div class="dash-schedule-item">
-          <div class="dash-item-info">
-            <h4>S3: Maintaining Consistent AI Characters</h4>
-            <span>Fri, Jul 31 • Host: Della</span>
-          </div>
-          <span class="dash-item-status">Scheduled</span>
-        </div>
-        <div class="dash-schedule-item">
-          <div class="dash-item-info">
-            <h4>S4: Advanced Content Strategy</h4>
-            <span>Sat, Aug 1 • Host: Chijioke</span>
-          </div>
-          <span class="dash-item-status">Scheduled</span>
-        </div>
+      <div class="dash-schedule-list" id="scheduleList">
+        <div style="padding: 20px; text-align: center; opacity: 0.6;">Loading schedule...</div>
+      </div>
+
+      <div class="locked-info-box" id="nextSessionInfo" style="display:none; margin-top: 24px; padding: 16px; background: var(--green-muted); border: 2px solid var(--color-ink); border-radius: var(--radius-sharp);">
+        <p style="font-size: 0.85rem; font-weight: 700; margin: 0 0 6px; text-transform: uppercase;">Next Session</p>
+        <p id="nextSessionText" style="font-size: 0.9rem; margin: 0;"></p>
       </div>
     </div>
 
@@ -271,21 +249,31 @@
       </form>
     </div>
 
-    <!-- State 3: Verified -->
+    <!-- State 3: Verified + Link Available -->
     <div class="dash-card state-section" id="state-verified" style="display:none;">
-      <div class="class-active-box">
+      <div class="class-active-box" id="zoomBox">
         <h1 class="dash-title">You're in — see you in class.</h1>
-        <p class="dash-body">
+        <p class="dash-body" id="verifiedSessionInfo">
           <strong>Session 1: Photo-to-Video Transformation</strong><br>
           Host: Bethel • Time: 9:00 PM WAT
         </p>
-        <a href="https://zoom.us" target="_blank" class="btn-zoom" id="zoomBtn">
+        <a href="#" target="_blank" class="btn-zoom" id="zoomBtn">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M23 7l-7 5 7 5V7z"/>
             <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
           </svg>
           Join on Zoom
         </a>
+      </div>
+      <div class="class-locked-box" id="lockedBox" style="display:none; border: 2.5px solid var(--color-ink); padding: 40px; border-radius: var(--radius-sharp); background: var(--bg-cream); box-shadow: var(--shadow-flat-4); text-align: center;">
+        <div style="font-size: 3rem; margin-bottom: 16px;">🔒</div>
+        <h1 class="dash-title" style="font-size: 1.8rem;">Session Locked</h1>
+        <p class="dash-body" id="lockedSessionInfo">
+          <strong>Session 1: Photo-to-Video Transformation</strong><br>
+          Host: Bethel
+        </p>
+        <p id="unlockCountdown" style="font-size: 1rem; font-weight: 700; margin-top: 16px; color: #c00;"></p>
+        <p style="font-size: 0.85rem; opacity: 0.7; margin-top: 12px;">The Zoom link will appear here automatically when the session unlocks at 9 PM WAT.</p>
       </div>
     </div>
 
@@ -336,10 +324,13 @@
   </div>
 
   <script>
+    const VERIFY_API = '/api/verify';
+    let countdownTimer = null;
+
     document.addEventListener('DOMContentLoaded', function() {
       const cachedCode = localStorage.getItem('nexus_access_code');
       const cachedEmail = localStorage.getItem('nexus_email');
-      
+
       if (cachedCode) {
         document.getElementById('userBadge').textContent = 'Code: ' + cachedCode;
         document.getElementById('verifyCode').value = cachedCode;
@@ -348,47 +339,53 @@
         document.getElementById('verifyEmail').value = cachedEmail;
       }
 
-      // Handle Switcher State Actions
-      const sections = document.querySelectorAll('.state-section');
-      const selector = document.getElementById('stateSelector');
-      const devPanel = document.querySelector('.dev-state-panel');
+      loadSessionsAndDetermineState();
 
-      selector.addEventListener('change', function() {
-        sections.forEach(s => s.style.display = 'none');
-        document.getElementById('state-' + this.value).style.display = 'block';
-      });
-
-      // Handle Real Verification Form
       document.getElementById('verifyForm').addEventListener('submit', async function(e) {
         e.preventDefault();
         const email = document.getElementById('verifyEmail').value;
         const code = document.getElementById('verifyCode').value;
-        
+
         const btn = this.querySelector('.btn-verify');
         const originalText = btn.textContent;
         btn.textContent = 'Verifying...';
         btn.disabled = true;
-        
+
         try {
-          const res = await fetch('/api/verify', {
+          const res = await fetch(VERIFY_API, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, code })
           });
-          
+
           const data = await res.json();
-          
+
           if (data.valid) {
-            if (data.session && data.session.zoomUrl) {
-              document.getElementById('zoomBtn').href = data.session.zoomUrl;
-              document.querySelector('#state-verified .dash-body').innerHTML = `
-                <strong>Session ${data.session.number}: ${data.session.title}</strong><br>
-                Host: ${data.session.host} • Time: 9:00 PM WAT
-              `;
+            localStorage.setItem('nexus_email', email);
+            localStorage.setItem('nexus_access_code', code);
+
+            if (data.session) {
+              if (data.session.is_unlocked && data.session.zoomUrl) {
+                document.getElementById('zoomBtn').href = data.session.zoomUrl;
+                document.getElementById('verifiedSessionInfo').innerHTML = `
+                  <strong>Session ${data.session.number}: ${data.session.title}</strong><br>
+                  Host: ${data.session.host} • Time: 9:00 PM WAT
+                `;
+                document.getElementById('zoomBox').style.display = 'block';
+                document.getElementById('lockedBox').style.display = 'none';
+              } else {
+                const unlocksAt = data.session.unlocks_at || getDefaultUnlock(data.session.date);
+                document.getElementById('lockedSessionInfo').innerHTML = `
+                  <strong>Session ${data.session.number}: ${data.session.title}</strong><br>
+                  Host: ${data.session.host}
+                `;
+                startCountdown(unlocksAt);
+                document.getElementById('zoomBox').style.display = 'none';
+                document.getElementById('lockedBox').style.display = 'block';
+              }
             }
-            selector.value = 'verified';
-            sections.forEach(s => s.style.display = 'none');
-            document.getElementById('state-verified').style.display = 'block';
+
+            showState('verified');
           } else {
             alert('Invalid email or code. Please check and try again.');
           }
@@ -396,16 +393,144 @@
           console.error('Verification error:', err);
           alert('Verification failed. Please try again.');
         }
-        
+
         btn.textContent = originalText;
         btn.disabled = false;
       });
-      
-      // Hide dev panel in production
-      if (devPanel) {
-        devPanel.style.display = 'none';
-      }
     });
+
+    async function loadSessionsAndDetermineState() {
+      try {
+        const res = await fetch(VERIFY_API + '/sessions');
+        if (!res.ok) throw new Error('No sessions');
+        const { sessions, currentSession, nextSession } = await res.json();
+        renderSchedule(sessions);
+
+        const infoBox = document.getElementById('nextSessionInfo');
+        const infoText = document.getElementById('nextSessionText');
+        if (nextSession && !nextSession.is_unlocked) {
+          const unlocksAt = nextSession.unlocks_at || getDefaultUnlock(nextSession.date);
+          infoBox.style.display = 'block';
+          infoText.textContent = `${nextSession.title} — unlocks ${formatUnlockTime(unlocksAt)}`;
+        } else if (nextSession && nextSession.is_unlocked) {
+          infoBox.style.display = 'block';
+          infoText.textContent = `${nextSession.title} — Zoom link available when session starts`;
+        }
+      } catch (err) {
+        renderScheduleFallback();
+      }
+    }
+
+    function renderSchedule(sessions) {
+      const list = document.getElementById('scheduleList');
+      const now = new Date();
+      let html = '';
+      sessions.forEach(s => {
+        const sessionDate = new Date(s.date + 'T20:00:00Z');
+        const isPast = sessionDate < now;
+        const isUnlocked = s.is_unlocked;
+        const isActive = isUnlocked && !isPast;
+
+        let status = 'Scheduled';
+        let statusStyle = '';
+        if (isPast) { status = 'Completed'; statusStyle = 'color: #2ecc71;'; }
+        else if (isActive) { status = 'Live Now'; statusStyle = 'color: #c00; font-weight: 700;'; }
+        else if (isUnlocked) { status = 'Available'; statusStyle = 'color: #070;'; }
+        else { status = 'Locked'; statusStyle = 'color: #c00;'; }
+
+        html += `<div class="dash-schedule-item${isPast ? ' past' : ''}${isActive ? ' active' : ''}">
+          <div class="dash-item-info">
+            <h4>S${s.session_number}: ${s.title}</h4>
+            <span>${formatDate(s.date)} • Host: ${s.host}</span>
+          </div>
+          <span class="dash-item-status" style="${statusStyle}">${status}</span>
+        </div>`;
+      });
+      list.innerHTML = html || renderScheduleFallback();
+    }
+
+    function renderScheduleFallback() {
+      const sessions = [
+        { number: 1, title: 'Photo-to-Video Transformation', host: 'Bethel', date: '2026-07-24' },
+        { number: 2, title: 'Motion-Syncing & Compositing', host: 'Bethel', date: '2026-07-25' },
+        { number: 3, title: 'Maintaining Consistent AI Characters', host: 'Della', date: '2026-07-31' },
+        { number: 4, title: 'Advanced Content Creation Strategy', host: 'Chijioke', date: '2026-08-01' },
+        { number: 5, title: 'AI Automation & Workflow Efficiency', host: 'Chijioke', date: '2026-08-07' },
+        { number: 6, title: 'Think Like a Creative Director', host: 'Chibuike Ifeoma', date: '2026-08-08' },
+        { number: 7, title: 'Building Online Presence with AI', host: 'Chibuike Ifeoma', date: '2026-08-14' },
+        { number: 8, title: 'Grand Finale & Studio Standards', host: 'Tochukwu', date: '2026-08-15' }
+      ];
+      const now = new Date();
+      let html = '';
+      sessions.forEach(s => {
+        const d = new Date(s.date + 'T20:00:00Z');
+        const isPast = d < now;
+        html += `<div class="dash-schedule-item${isPast ? ' past' : ''}">
+          <div class="dash-item-info">
+            <h4>S${s.number}: ${s.title}</h4>
+            <span>${formatDate(s.date)} • Host: ${s.host}</span>
+          </div>
+          <span class="dash-item-status" style="${isPast ? 'color:#2ecc71;' : 'color:#c00;'}">${isPast ? 'Completed' : 'Locked'}</span>
+        </div>`;
+      });
+      document.getElementById('scheduleList').innerHTML = html;
+    }
+
+    function showState(stateName) {
+      document.querySelectorAll('.state-section').forEach(s => s.style.display = 'none');
+      const el = document.getElementById('state-' + stateName);
+      if (el) el.style.display = 'block';
+    }
+
+    function getDefaultUnlock(dateStr) {
+      return dateStr + 'T20:00:00.000WAT';
+    }
+
+    function parseUnlock(unlocksAtStr) {
+      if (!unlocksAtStr) return null;
+      try {
+        const clean = unlocksAtStr.replace('.000WAT', '');
+        const [datePart, timePart] = clean.split('T');
+        const [y, mo, d] = datePart.split('-').map(Number);
+        const [h = 20, mi = 0] = (timePart || '20:00').split(':').map(Number);
+        return new Date(Date.UTC(y, mo - 1, d, h, mi, 0));
+      } catch { return null; }
+    }
+
+    function startCountdown(unlocksAtStr) {
+      if (countdownTimer) clearInterval(countdownTimer);
+      const unlockTime = parseUnlock(unlocksAtStr);
+      if (!unlockTime) return;
+
+      function tick() {
+        const now = new Date();
+        const diff = unlockTime - now;
+        if (diff <= 0) {
+          document.getElementById('unlockCountdown').textContent = 'Link is live! Refreshing...';
+          clearInterval(countdownTimer);
+          setTimeout(() => location.reload(), 2000);
+          return;
+        }
+        const h = Math.floor(diff / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        document.getElementById('unlockCountdown').textContent =
+          `Unlocks in ${h}h ${m}m ${s}s (WAT)`;
+      }
+      tick();
+      countdownTimer = setInterval(tick, 1000);
+    }
+
+    function formatDate(dateStr) {
+      const d = new Date(dateStr + 'T20:00:00Z');
+      return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    }
+
+    function formatUnlockTime(unlocksAtStr) {
+      const d = parseUnlock(unlocksAtStr);
+      if (!d) return unlocksAtStr;
+      return d.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' });
+    }
   </script>
 </body>
 </html>

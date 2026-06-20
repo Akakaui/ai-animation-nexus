@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>One Last Step — Animation Nexus</title>
+  <title>One Last Step — AI Animation Nexus</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=General+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <style>
     .payment-layout {
@@ -96,6 +96,30 @@
       transform: translate(1px, 1px);
       box-shadow: 1px 1px 0px var(--color-ink);
     }
+    .btn-paystack:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .payment-error {
+      color: #e74c3c;
+      font-size: 0.9rem;
+      margin-top: 16px;
+      display: none;
+    }
+    .payment-error.show {
+      display: block;
+    }
+    .test-mode-badge {
+      background: #f39c12;
+      color: #fff;
+      padding: 4px 12px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      border-radius: 4px;
+      margin-bottom: 16px;
+      display: inline-block;
+    }
   </style>
 </head>
 <body>
@@ -103,6 +127,7 @@
 
   <div class="payment-layout">
     <div class="payment-card">
+      <span class="test-mode-badge">TEST MODE</span>
       <h1 class="payment-title">One Last Step.</h1>
       
       <p class="payment-body">
@@ -121,8 +146,14 @@
       </div>
 
       <button class="btn-paystack" id="payBtn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+          <line x1="1" y1="10" x2="23" y2="10"/>
+        </svg>
         Confirm My Seat — $2.99
       </button>
+
+      <p class="payment-error" id="paymentError">Payment failed. Please try again.</p>
 
       <p class="payment-refund-note">
         If you complete the course and genuinely feel you didn't learn anything new, reach out — we'll refund you, no questions asked.
@@ -130,34 +161,65 @@
     </div>
   </div>
 
+  <!-- Paystack Library -->
+  <script src="https://js.paystack.co/v2/inline.js"></script>
+  
   <script>
     const userEmail = localStorage.getItem('nexus_email') || '';
+    const paystackPublicKey = 'pk_test_c05986126c31e4eecefcf9f8fd410f210c744336';
     
-    document.getElementById('payBtn').addEventListener('click', async function() {
-      this.disabled = true;
-      this.textContent = 'Processing Payment...';
-      
-      try {
-        const res = await fetch(`/api/paystack/initialize?email=${encodeURIComponent(userEmail)}`);
-        const data = await res.json();
-        
-        if (data.reference) {
-          // In production, you would use Paystack's inline or redirect payment here
-          // For now, simulate success after 1.5s
-          setTimeout(() => {
-            window.location.href = 'confirmation.html';
-          }, 1500);
-        } else {
-          alert('Payment initialization failed. Please try again.');
-          this.disabled = false;
-          this.textContent = 'Confirm My Seat — $2.99';
-        }
-      } catch (err) {
-        // Simulate success for demo purposes
-        setTimeout(() => {
-          window.location.href = 'confirmation.html';
-        }, 1500);
+    const paystack = PaystackPop.setup({
+      key: paystackPublicKey,
+      email: userEmail,
+      amount: 29900, // $2.99 in kobo
+      currency: 'USD',
+      ref: 'ANX_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+      metadata: {
+        custom_fields: [
+          {
+            display_name: "Course",
+            variable_name: "course",
+            value: "AI Animation Nexus 2026"
+          }
+        ]
+      },
+      callback: function(response) {
+        // Payment successful - redirect to confirmation
+        localStorage.setItem('payment_ref', response.reference);
+        window.location.href = 'confirmation.html';
+      },
+      onClose: function() {
+        // User closed payment modal
+        const btn = document.getElementById('payBtn');
+        btn.disabled = false;
+        btn.innerHTML = `
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+            <line x1="1" y1="10" x2="23" y2="10"/>
+          </svg>
+          Confirm My Seat — $2.99
+        `;
+      },
+      onBankTransferConfirmationRequired: function() {
+        // For bank transfer, show pending state
+        const btn = document.getElementById('payBtn');
+        btn.textContent = 'Processing transfer...';
       }
+    });
+    
+    document.getElementById('payBtn').addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      if (!userEmail) {
+        document.getElementById('paymentError').textContent = 'Email not found. Please go back and fill the form again.';
+        document.getElementById('paymentError').classList.add('show');
+        return;
+      }
+      
+      this.disabled = true;
+      this.innerHTML = 'Opening payment...';
+      
+      paystack.popInSupportedBrowsers();
     });
   </script>
 </body>

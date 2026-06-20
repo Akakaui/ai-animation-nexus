@@ -3,3 +3,7 @@ data/
 .env
 *.log
 .DS_Store
+.vscode/
+.next/
+.vercel/
+out/

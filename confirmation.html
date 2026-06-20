@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>You're Confirmed! — Animation Nexus</title>
+  <title>You're Confirmed! — AI Animation Nexus</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -94,6 +94,11 @@
       flex-direction: column;
       gap: 16px;
     }
+    .calendar-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
     .btn-calendar {
       width: 100%;
       background-color: var(--bg-white);
@@ -173,15 +178,31 @@
       </div>
 
       <div class="action-group">
-        <button class="btn-calendar" id="calendarBtn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-            <line x1="16" y1="2" x2="16" y2="6"/>
-            <line x1="8" y1="2" x2="8" y2="6"/>
-            <line x1="3" y1="10" x2="21" y2="10"/>
-          </svg>
-          Add all 8 sessions to your calendar
-        </button>
+        <div class="calendar-buttons">
+          <button class="btn-calendar" id="googleCalendarBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            Add All to Google Calendar
+          </button>
+          <button class="btn-calendar" id="appleCalendarBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/>
+              <path d="M12 6v6l4 2"/>
+            </svg>
+            Add All to Apple Calendar
+          </button>
+          <button class="btn-calendar" id="outlookBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="M22 7l-10 6L2 7"/>
+            </svg>
+            Add All to Outlook
+          </button>
+        </div>
 
         <button class="btn-dashboard" id="dashboardBtn">
           Go to Your Dashboard
@@ -194,18 +215,37 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // 1. Generate/Retrieve Access Code
-      let uniqueCode = localStorage.getItem('nexus_access_code');
-      if (!uniqueCode) {
-        const randNum = Math.floor(1000 + Math.random() * 9000);
-        const randChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        const c1 = randChars.charAt(Math.floor(Math.random() * 26));
-        const c2 = randChars.charAt(Math.floor(Math.random() * 26));
-        uniqueCode = `AN-${randNum}-${c1}${c2}`;
-        localStorage.setItem('nexus_access_code', uniqueCode);
+    document.addEventListener('DOMContentLoaded', async function() {
+      // 1. Fetch Access Code from Server
+      const userEmail = localStorage.getItem('nexus_email');
+      
+      try {
+        const res = await fetch(`/api/verify/student/${encodeURIComponent(userEmail)}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.student && data.student.accessCode) {
+            localStorage.setItem('nexus_access_code', data.student.accessCode);
+            document.getElementById('accessCode').textContent = data.student.accessCode;
+          } else {
+            throw new Error('No code found');
+          }
+        } else {
+          throw new Error('Server error');
+        }
+      } catch (err) {
+        // Fallback to client-side code if server fails
+        console.log('Using client-side code (server unavailable):', err);
+        let uniqueCode = localStorage.getItem('nexus_access_code');
+        if (!uniqueCode) {
+          const randNum = Math.floor(1000 + Math.random() * 9000);
+          const randChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+          const c1 = randChars[Math.floor(Math.random() * 26)];
+          const c2 = randChars[Math.floor(Math.random() * 26)];
+          uniqueCode = `AN-${randNum}-${c1}${c2}`;
+          localStorage.setItem('nexus_access_code', uniqueCode);
+        }
+        document.getElementById('accessCode').textContent = uniqueCode;
       }
-      document.getElementById('accessCode').textContent = uniqueCode;
 
       // 2. Copy Code to Clipboard
       document.getElementById('copyCodeBtn').addEventListener('click', function() {
@@ -223,44 +263,77 @@
         window.location.href = 'dashboard.html';
       });
 
-      // 4. Generate & Download .ICS Calendar File with local timezone conversion
-      document.getElementById('calendarBtn').addEventListener('click', function() {
-        const sessions = [
-          { number: 1, date: '2026-07-24', title: 'Photo-to-Video Transformation', host: 'Bethel' },
-          { number: 2, date: '2026-07-25', title: 'Motion-Syncing & Compositing', host: 'Bethel' },
-          { number: 3, date: '2026-07-31', title: 'Maintaining Consistent AI Characters', host: 'Della' },
-          { number: 4, date: '2026-08-01', title: 'Advanced Content Creation Strategy', host: 'Chijioke' },
-          { number: 5, date: '2026-08-07', title: 'AI Automation & Workflow Efficiency', host: 'Chijioke' },
-          { number: 6, date: '2026-08-08', title: 'Think Like a Creative Director', host: 'Chibuike Ifeoma' },
-          { number: 7, date: '2026-08-14', title: 'Building Online Presence with AI', host: 'Chibuike Ifeoma' },
-          { number: 8, date: '2026-08-15', title: 'Grand Finale & Studio Standards', host: 'Tochukwu' }
-        ];
+// 4. Calendar Integration - One tap adds ALL 8 sessions
+    const sessions = [
+      { number: 1, date: '2026-07-24', title: 'Photo-to-Video Transformation', host: 'Bethel' },
+      { number: 2, date: '2026-07-25', title: 'Motion-Syncing & Compositing', host: 'Bethel' },
+      { number: 3, date: '2026-07-31', title: 'Maintaining Consistent AI Characters', host: 'Della' },
+      { number: 4, date: '2026-08-01', title: 'Advanced Content Creation Strategy', host: 'Chijioke' },
+      { number: 5, date: '2026-08-07', title: 'AI Automation & Workflow Efficiency', host: 'Chijioke' },
+      { number: 6, date: '2026-08-08', title: 'Think Like a Creative Director', host: 'Chibuike Ifeoma' },
+      { number: 7, date: '2026-08-14', title: 'Building Online Presence with AI', host: 'Chibuike Ifeoma' },
+      { number: 8, date: '2026-08-15', title: 'Grand Finale & Studio Standards', host: 'Tochukwu' }
+    ];
 
-        // WAT is UTC+1, sessions are at 9PM WAT
-        const watOffset = 1; // UTC+1
-        
-        let icsContent = 'BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Animation Nexus//Calendar//EN\nCALSCALE:GREGORIAN\n';
-        
-        sessions.forEach(session => {
-          // Create date in WAT, then convert to UTC for ICS
-          const [year, month, day] = session.date.split('-').map(Number);
-          
-          // 9 PM WAT = 20:00 UTC+1 = 19:00 UTC (subtract 1 hour)
-          const startUTC = new Date(Date.UTC(year, month - 1, day, 19, 0, 0));
-          const endUTC = new Date(Date.UTC(year, month - 1, day, 20, 0, 0));
-          
-          const formatICSDate = (d) => d.toISOString().replace(/[-:]/g, '').replace('.000', '');
-          
-          icsContent += 'BEGIN:VEVENT\n';
-          icsContent += `DTSTART:${formatICSDate(startUTC)}\n`;
-          icsContent += `DTEND:${formatICSDate(endUTC)}\n`;
-          icsContent += `SUMMARY:Session ${session.number}: ${session.title}\n`;
-          icsContent += `DESCRIPTION:Host: ${session.host}\\nAccess dashboard to verify and get Zoom link.\n`;
-          icsContent += 'LOCATION:Zoom Online Video\n';
-          icsContent += `UID:session${session.number}@animationnexus.com\n`;
-          icsContent += 'STATUS:CONFIRMED\n';
-          icsContent += 'END:VEVENT\n';
-        });
+    function formatICSDate(dateStr, hour = 20, minute = 0) {
+      const [year, month, day] = dateStr.split('-').map(Number);
+      const d = new Date(Date.UTC(year, month - 1, day, hour, minute, 0));
+      return d.toISOString().replace(/[-:]/g, '').replace('.000', '');
+    }
+
+    function generateICS() {
+      let ics = 'BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//AI Animation Nexus//Calendar//EN\nCALSCALE:GREGORIAN\nMETHOD:PUBLISH\n';
+      
+      sessions.forEach(s => {
+        ics += 'BEGIN:VEVENT\n';
+        ics += `DTSTART:${formatICSDate(s.date)}\n`;
+        ics += `DTEND:${formatICSDate(s.date, 21)}\n`;
+        ics += `SUMMARY:AI Animation Nexus S${s.number}: ${s.title}\n`;
+        ics += `DESCRIPTION:Host: ${s.host}\\nAccess your dashboard to verify and get the Zoom link: https://favourakaka.duckdns.org/nexus/dashboard.html\n`;
+        ics += 'LOCATION:Zoom Online Video\n';
+        ics += `UID:ai-anim-nexus-s${s.number}@favourakaka.duckdns.org\n`;
+        ics += 'STATUS:CONFIRMED\n';
+        ics += 'SEQUENCE:0\n';
+        ics += 'END:VEVENT\n';
+      });
+      
+      ics += 'END:VCALENDAR';
+      return ics;
+    }
+
+    function downloadICS() {
+      const blob = new Blob([generateICS()], { type: 'text/calendar;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.setAttribute('download', 'AI_Animation_Nexus_All_Sessions.ics');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Apple Calendar / Outlook - Download ICS
+    document.getElementById('appleCalendarBtn').addEventListener('click', downloadICS);
+    document.getElementById('outlookBtn').addEventListener('click', downloadICS);
+
+    // Google Calendar - Open URL with all events
+    document.getElementById('googleCalendarBtn').addEventListener('click', function() {
+      // For Google Calendar, we open the first session and include a note about adding remaining sessions
+      const first = sessions[0];
+      const last = sessions[sessions.length - 1];
+      
+      const startDate = formatICSDate(first.date);
+      const endDate = formatICSDate(last.date, 22, 0);
+      
+      const params = new URLSearchParams({
+        action: 'TEMPLATE',
+        text: 'AI Animation Nexus - All 8 Sessions',
+        dates: `${startDate}/${endDate}`,
+        details: `Your AI Animation Nexus course runs July 24 - August 15, 2026.\n\nAccess your personalized dashboard for session links and details:\nhttps://favourakaka.duckdns.org/nexus/dashboard.html\n\nSessions:\n1. ${sessions[0].title} - ${sessions[0].host}\n2. ${sessions[1].title} - ${sessions[1].host}\n3. ${sessions[2].title} - ${sessions[2].host}\n4. ${sessions[3].title} - ${sessions[3].host}\n5. ${sessions[4].title} - ${sessions[4].host}\n6. ${sessions[5].title} - ${sessions[5].host}\n7. ${sessions[6].title} - ${sessions[6].host}\n8. ${sessions[7].title} - ${sessions[7].host}`,
+        location: 'Zoom Online Video'
+      });
+      
+      window.open(`https://calendar.google.com/calendar/render?${params.toString()}`, '_blank');
+    });
         
         icsContent += 'END:VCALENDAR';
 

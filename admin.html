@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel — Animation Nexus</title>
+  <title>Admin Panel — AI Animation Nexus</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=General+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <style>
     .admin-layout {
@@ -22,18 +22,30 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
     }
     .admin-title {
       font-size: 2.25rem;
       text-transform: none;
+    }
+    .admin-badge {
+      background-color: var(--accent-acid);
+      color: var(--color-ink);
+      padding: 6px 14px;
+      border-radius: var(--radius-sharp);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
     }
     .admin-card {
       background-color: var(--bg-white);
       border: 2px solid var(--color-ink);
       border-radius: var(--radius-sharp);
       box-shadow: var(--shadow-flat-4);
-      padding: 36px;
+      padding: 28px;
       margin-bottom: 40px;
+      overflow-x: auto;
     }
     .admin-section-title {
       font-size: 1.35rem;
@@ -43,86 +55,170 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
     }
-    
-    /* Session Table Input styles */
+    .admin-section-title .count-badge {
+      font-size: 0.8rem;
+      background: var(--accent-acid);
+      border: 1.5px solid var(--color-ink);
+      padding: 4px 12px;
+      border-radius: var(--radius-sharp);
+      font-weight: 700;
+    }
+
+    /* Session Table — Mobile Responsive */
     .session-table {
       width: 100%;
+      min-width: 640px;
       border-collapse: collapse;
-      margin-bottom: 20px;
     }
     .session-table th, .session-table td {
       border: 1px solid var(--color-divider);
-      padding: 14px;
+      padding: 12px;
       text-align: left;
+      font-size: 0.875rem;
     }
     .session-table th {
       background-color: var(--bg-cream);
       font-weight: 700;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       text-transform: uppercase;
+      white-space: nowrap;
     }
-    .zoom-input-box {
+    .session-card {
+      display: none;
+    }
+    .zoom-input-group {
       display: flex;
-      gap: 10px;
-      width: 100%;
+      gap: 8px;
+      flex-wrap: wrap;
     }
-    .zoom-input-box input {
-      flex-grow: 1;
-      padding: 8px 12px;
+    .zoom-input-group input {
+      flex: 1;
+      min-width: 140px;
+      padding: 8px 10px;
       border: 1.5px solid var(--color-ink);
       border-radius: var(--radius-sharp);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
+      font-family: 'General Sans', sans-serif;
     }
+    .unlock-input {
+      width: 100%;
+      padding: 6px 8px;
+      border: 1.5px solid var(--color-divider);
+      border-radius: var(--radius-sharp);
+      font-size: 0.75rem;
+      font-family: 'General Sans', sans-serif;
+      margin-top: 6px;
+      color: var(--color-ink);
+    }
+    .unlock-input:focus {
+      outline: none;
+      border-color: var(--accent-acid);
+    }
+    .lock-status {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+    .lock-status.locked { background: #fee; color: #c00; border: 1px solid #c00; }
+    .lock-status.unlocked { background: #efe; color: #070; border: 1px solid #070; }
     .btn-table-action {
       background-color: var(--accent-acid);
       color: var(--color-ink);
       border: 1.5px solid var(--color-ink);
-      padding: 8px 16px;
+      padding: 7px 14px;
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       border-radius: var(--radius-sharp);
       cursor: pointer;
       box-shadow: var(--shadow-flat-2);
+      white-space: nowrap;
+      transition: transform 0.1s, box-shadow 0.1s;
     }
     .btn-table-action:hover {
       transform: translate(-1px, -1px);
       box-shadow: 2px 2px 0px var(--color-ink);
     }
+    .btn-table-action.saved {
+      background-color: #2ecc71;
+      color: #fff;
+      border-color: #2ecc71;
+    }
 
-    /* Attendance Grid */
+    /* Attendance Matrix — Mobile Responsive */
     .attendance-matrix {
       width: 100%;
+      min-width: 500px;
       border-collapse: collapse;
     }
     .attendance-matrix th, .attendance-matrix td {
       border: 1px solid var(--color-divider);
-      padding: 10px;
+      padding: 8px 6px;
       text-align: center;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
+    }
+    .attendance-matrix th {
+      background-color: var(--bg-cream);
+      font-weight: 700;
+      font-size: 0.7rem;
+      text-transform: uppercase;
     }
     .attendance-dot {
       display: inline-block;
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
       border: 1.5px solid var(--color-ink);
     }
     .dot-present { background-color: var(--accent-acid); }
-    .dot-absent { background-color: #f5f5f5; }
+    .dot-absent { background-color: #f0f0f0; }
 
-    /* Login Box Overlay */
+    /* Stats row */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .stat-card {
+      background: var(--bg-white);
+      border: 2px solid var(--color-ink);
+      border-radius: var(--radius-sharp);
+      padding: 20px;
+      text-align: center;
+      box-shadow: var(--shadow-flat-2);
+    }
+    .stat-value {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      opacity: 0.6;
+    }
+
+    /* Login Box */
     .login-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       background-color: var(--bg-cream);
       z-index: 10000;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 20px;
     }
     .login-box {
       background-color: var(--bg-white);
@@ -134,137 +230,132 @@
       box-shadow: var(--shadow-flat-4);
       text-align: center;
     }
+
+    @media (max-width: 768px) {
+      .admin-layout { padding: 40px 16px; }
+      .admin-title { font-size: 1.75rem; }
+      .admin-card { padding: 16px; }
+      .session-table { font-size: 0.8rem; }
+      .session-table th, .session-table td { padding: 10px 8px; }
+      .zoom-input-group input { min-width: 100px; font-size: 0.75rem; }
+      .btn-table-action { padding: 6px 10px; font-size: 0.7rem; }
+    }
+
+    @media (max-width: 540px) {
+      .session-table thead { display: none; }
+      .session-card {
+        display: block;
+        background: var(--bg-cream);
+        border: 1.5px solid var(--color-divider);
+        border-radius: var(--radius-sharp);
+        padding: 14px;
+        margin-bottom: 16px;
+      }
+      .session-card-row { display: none; }
+      .session-table tbody tr { display: block; }
+      .session-table tbody tr td { display: none; }
+      .session-table tbody tr td:first-child { display: block; }
+    }
   </style>
 </head>
 <body>
   <div class="paper-texture"></div>
 
-  <!-- Simulated Login Verification (For presentation) -->
   <div class="login-overlay" id="loginOverlay">
     <div class="login-box">
       <h2 style="font-family: 'Bricolage Grotesque', serif; font-size: 1.75rem; margin-bottom: 24px;">Admin Lock</h2>
-      <div class="form-group" style="text-align: left;">
+      <div class="form-group" style="text-align: left; margin-bottom: 20px;">
         <label for="adminPassword" class="form-label">Admin Password</label>
-        <input type="password" id="adminPassword" class="form-input" placeholder="Type 'admin123' to unlock" required>
+        <input type="password" id="adminPassword" class="form-input" placeholder="Enter admin password" required>
       </div>
       <button class="btn-primary" style="width: 100%;" id="loginBtn">Unlock Admin Panel</button>
+      <p id="loginError" style="color: #c00; font-size: 0.85rem; margin-top: 12px; display: none;"></p>
     </div>
   </div>
 
-  <div class="admin-layout">
+  <div class="admin-layout" id="adminContent" style="display: none;">
     <header class="admin-header">
-      <h1 class="admin-title">Operations Console</h1>
-      <span class="week-num-badge" style="background-color: var(--accent-acid); color: var(--color-ink);">Internal Admin Only</span>
+      <div>
+        <h1 class="admin-title">Operations Console</h1>
+        <span style="font-size: 0.85rem; opacity: 0.6; font-weight: 600;">AI Animation Nexus</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span class="admin-badge">Internal Admin</span>
+        <button class="btn-table-action" onclick="location.reload()" style="font-size: 0.75rem;">Refresh</button>
+      </div>
     </header>
 
-    <!-- Section 1: Zoom Links Mapping -->
+    <!-- Stats Row -->
+    <div class="stats-row" id="statsRow">
+      <div class="stat-card">
+        <div class="stat-value" id="statStudents">—</div>
+        <div class="stat-label">Paid Students</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statAttendance">—</div>
+        <div class="stat-label">Total Check-ins</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statSessions">8</div>
+        <div class="stat-label">Sessions</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statFillRate">—</div>
+        <div class="stat-label">% Fill Rate</div>
+      </div>
+    </div>
+
+    <!-- Section 1: Class Zoom Session Map -->
     <div class="admin-card">
-      <h2 class="admin-section-title">Class Zoom Session Map</h2>
+      <h2 class="admin-section-title">
+        Class Zoom Session Map
+        <span class="count-badge" id="zoomSetCount">0 / 8 links set</span>
+      </h2>
       <table class="session-table">
         <thead>
           <tr>
-            <th>Session</th>
+            <th>#</th>
+            <th>Topic</th>
             <th>Host</th>
             <th>Date</th>
-            <th>Zoom Link Mapping</th>
+            <th>Unlock Time (WAT)</th>
+            <th>Status</th>
+            <th>Zoom URL + Unlock</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td><strong>S1: Photo-to-Video</strong></td>
-            <td>Bethel</td>
-            <td>July 24</td>
-            <td>
-              <div class="zoom-input-box">
-                <input type="text" id="s1-zoom" value="https://zoom.us/j/9382910291" placeholder="Paste Zoom URL">
-                <button class="btn-table-action" onclick="updateLink(1)">Update</button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td><strong>S2: Motion-Syncing</strong></td>
-            <td>Bethel</td>
-            <td>July 25</td>
-            <td>
-              <div class="zoom-input-box">
-                <input type="text" id="s2-zoom" value="" placeholder="Paste Zoom URL">
-                <button class="btn-table-action" onclick="updateLink(2)">Update</button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td><strong>S3: Consistency</strong></td>
-            <td>Della</td>
-            <td>July 31</td>
-            <td>
-              <div class="zoom-input-box">
-                <input type="text" id="s3-zoom" value="" placeholder="Paste Zoom URL">
-                <button class="btn-table-action" onclick="updateLink(3)">Update</button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td><strong>S4: Content Strategy</strong></td>
-            <td>Chijioke</td>
-            <td>August 1</td>
-            <td>
-              <div class="zoom-input-box">
-                <input type="text" id="s4-zoom" value="" placeholder="Paste Zoom URL">
-                <button class="btn-table-action" onclick="updateLink(4)">Update</button>
-              </div>
-            </td>
-          </tr>
+        <tbody id="sessionsBody">
         </tbody>
       </table>
+      <p style="font-size: 0.75rem; opacity: 0.6; margin-top: 12px;">
+        Students see the Zoom link only when the session is unlocked. Paste a Zoom URL and optionally set a custom unlock time.
+      </p>
     </div>
 
-    <!-- Section 2: Attendance Registry Matrix -->
+    <!-- Section 2: Attendance Matrix -->
     <div class="admin-card">
-      <h2 class="admin-section-title">Attendance Matrix (Heatmap)</h2>
+      <h2 class="admin-section-title">
+        Attendance Matrix
+        <span class="count-badge" id="attCount">Loading...</span>
+      </h2>
       <table class="attendance-matrix">
         <thead>
           <tr>
-            <th style="text-align: left;">Student Details</th>
-            <th>S1</th>
-            <th>S2</th>
-            <th>S3</th>
-            <th>S4</th>
-            <th>S5</th>
-            <th>S6</th>
-            <th>S7</th>
-            <th>S8</th>
+            <th style="text-align: left; min-width: 140px;">Student</th>
+            <th>S1</th><th>S2</th><th>S3</th><th>S4</th><th>S5</th><th>S6</th><th>S7</th><th>S8</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td style="text-align: left;"><strong>Favour Akaka</strong><br><span style="font-size: 0.75rem; opacity:0.6;">favourakaka@gmail.com</span></td>
-            <td><span class="attendance-dot dot-present"></span></td>
-            <td><span class="attendance-dot dot-present"></span></td>
-            <td><span class="attendance-dot dot-present"></span></td>
-            <td><span class="attendance-dot dot-absent"></span></td>
-            <td><span class="attendance-dot dot-absent"></span></td>
-            <td><span class="attendance-dot dot-absent"></span></td>
-            <td><span class="attendance-dot dot-absent"></span></td>
-            <td><span class="attendance-dot dot-absent"></span></td>
-          </tr>
-          <tr>
-            <td style="text-align: left;"><strong>Sarah Johnson</strong><br><span style="font-size: 0.75rem; opacity:0.6;">sarahj@outlook.com</span></td>
-            <td><span class="attendance-dot dot-present"></span></td>
-            <td><span class="attendance-dot dot-present"></span></td>
-            <td><span class="attendance-dot dot-absent"></span></td>
-            <td><span class="attendance-dot dot-absent"></span></td>
-            <td><span class="attendance-dot dot-absent"></span></td>
-            <td><span class="attendance-dot dot-absent"></span></td>
-            <td><span class="attendance-dot dot-absent"></span></td>
-            <td><span class="attendance-dot dot-absent"></span></td>
-          </tr>
+        <tbody id="attendanceBody">
+          <tr><td colspan="9" style="text-align: center; opacity: 0.5; padding: 20px;">Loading...</td></tr>
         </tbody>
       </table>
     </div>
 
-    <!-- Section 3: Paid Student List -->
+    <!-- Section 3: Student Registry -->
     <div class="admin-card">
-      <h2 class="admin-section-title">Student Registry (Paid Confirmed)</h2>
+      <h2 class="admin-section-title">
+        Student Registry
+        <span class="count-badge" id="studentCount">— paid</span>
+      </h2>
       <table class="session-table">
         <thead>
           <tr>
@@ -272,46 +363,246 @@
             <th>Email</th>
             <th>WhatsApp</th>
             <th>Code</th>
-            <th>Status</th>
+            <th>Joined</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>Favour Akaka</td>
-            <td>favourakaka@gmail.com</td>
-            <td>+234 812 345 6789</td>
-            <td><code>AN-8392-NX</code></td>
-            <td><span style="font-weight:700; color:#2ecc71;">✓ Paid</span></td>
-          </tr>
-          <tr>
-            <td>Sarah Johnson</td>
-            <td>sarahj@outlook.com</td>
-            <td>+1 202 555 0192</td>
-            <td><code>AN-9481-KJ</code></td>
-            <td><span style="font-weight:700; color:#2ecc71;">✓ Paid</span></td>
-          </tr>
+        <tbody id="studentsBody">
+          <tr><td colspan="5" style="text-align: center; opacity: 0.5; padding: 20px;">Loading...</td></tr>
         </tbody>
       </table>
     </div>
-
   </div>
 
   <script>
-    // Unlock panel logic
-    document.getElementById('loginBtn').addEventListener('click', function() {
+    const ADMIN_API = '/api/admin';
+    let adminPassword = '';
+
+    document.getElementById('loginBtn').addEventListener('click', async function() {
       const pass = document.getElementById('adminPassword').value;
-      if (pass === 'admin123') {
-        document.getElementById('loginOverlay').style.display = 'none';
-      } else {
-        alert('Invalid password! Hint: admin123');
+      if (!pass) {
+        document.getElementById('loginError').textContent = 'Please enter a password';
+        document.getElementById('loginError').style.display = 'block';
+        return;
+      }
+      adminPassword = pass;
+      document.getElementById('loginError').style.display = 'none';
+      this.textContent = 'Verifying...';
+      this.disabled = true;
+
+      try {
+        const res = await fetch(`${ADMIN_API}/sessions`, {
+          headers: { 'x-admin-password': adminPassword }
+        });
+        if (res.ok) {
+          document.getElementById('loginOverlay').style.display = 'none';
+          document.getElementById('adminContent').style.display = 'block';
+          await loadAdminData();
+        } else {
+          throw new Error('Invalid password');
+        }
+      } catch (err) {
+        document.getElementById('loginError').textContent = 'Invalid password. Try again.';
+        document.getElementById('loginError').style.display = 'block';
+        this.textContent = 'Unlock Admin Panel';
+        this.disabled = false;
       }
     });
 
-    // Update session Zoom link helper
-    function updateLink(sNum) {
-      const val = document.getElementById('s' + sNum + '-zoom').value;
-      alert('Zoom URL for Session ' + sNum + ' updated to: ' + val);
+    document.getElementById('adminPassword').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') document.getElementById('loginBtn').click();
+    });
+
+    async function loadAdminData() {
+      await Promise.all([
+        loadStats(),
+        loadSessions(),
+        loadAttendance(),
+        loadStudents()
+      ]);
     }
+
+    async function loadStats() {
+      try {
+        const res = await fetch(`${ADMIN_API}/stats`, {
+          headers: { 'x-admin-password': adminPassword }
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        document.getElementById('statStudents').textContent = data.totalStudents;
+        document.getElementById('statAttendance').textContent = data.totalAttendance;
+        document.getElementById('statFillRate').textContent = (data.fillRate || 0) + '%';
+      } catch (e) { console.error(e); }
+    }
+
+    async function loadSessions() {
+      const res = await fetch(`${ADMIN_API}/sessions`, {
+        headers: { 'x-admin-password': adminPassword }
+      });
+      if (!res.ok) return;
+      const { sessions } = await res.json();
+      const tbody = document.getElementById('sessionsBody');
+      const hostMap = { 1:'Bethel', 2:'Bethel', 3:'Della', 4:'Chijioke', 5:'Chijioke', 6:'Chibuike Ifeoma', 7:'Chibuike Ifeoma', 8:'Tochukwu' };
+      const dateMap = { 1:'Jul 24', 2:'Jul 25', 3:'Jul 31', 4:'Aug 1', 5:'Aug 7', 6:'Aug 8', 7:'Aug 14', 8:'Aug 15' };
+
+      let html = '';
+      let zoomSet = 0;
+      sessions.forEach(s => {
+        if (s.zoom_url) zoomSet++;
+        const isUnlocked = isSessionUnlocked(s);
+        const statusClass = isUnlocked ? 'unlocked' : 'locked';
+        const statusText = isUnlocked ? 'Unlocked' : 'Locked';
+        const displayUnlock = s.unlocks_at ? formatUnlockDisplay(s.unlocks_at) : '9 PM WAT on session day';
+
+        html += `<tr>
+          <td><strong>S${s.session_number}</strong></td>
+          <td style="max-width: 180px;">${s.title}</td>
+          <td style="white-space: nowrap;">${hostMap[s.session_number] || s.host || '—'}</td>
+          <td style="white-space: nowrap;">${dateMap[s.session_number] || s.date || '—'}</td>
+          <td style="font-size: 0.75rem; color: #555; white-space: nowrap;">${displayUnlock}</td>
+          <td><span class="lock-status ${statusClass}">${statusText}</span></td>
+          <td>
+            <div class="zoom-input-group">
+              <input type="text" id="zoom-${s.id}" value="${s.zoom_url || ''}" placeholder="Zoom URL">
+              <button class="btn-table-action" id="btn-zoom-${s.id}" onclick="saveSession(${s.id})">Save</button>
+            </div>
+            <input type="datetime-local" class="unlock-input" id="unlock-${s.id}"
+              value="${s.unlocks_at ? toDatetimeLocal(s.unlocks_at) : ''}"
+              placeholder="Unlock time (WAT)">
+          </td>
+        </tr>`;
+      });
+      tbody.innerHTML = html || '<tr><td colspan="7" style="text-align:center;padding:20px;opacity:0.5;">No sessions found</td></tr>';
+      document.getElementById('zoomSetCount').textContent = `${zoomSet} / 8 links set`;
+    }
+
+    async function saveSession(id) {
+      const zoomVal = document.getElementById('zoom-' + id).value;
+      const unlockVal = document.getElementById('unlock-' + id).value;
+      const btn = document.getElementById('btn-zoom-' + id);
+
+      const body = { zoomUrl: zoomVal };
+      if (unlockVal) body.unlocksAt = fromDatetimeLocal(unlockVal);
+
+      try {
+        const res = await fetch(`${ADMIN_API}/sessions/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', 'x-admin-password': adminPassword },
+          body: JSON.stringify(body)
+        });
+        if (res.ok) {
+          btn.textContent = 'Saved!';
+          btn.classList.add('saved');
+          setTimeout(() => { btn.textContent = 'Save'; btn.classList.remove('saved'); }, 1500);
+        } else {
+          btn.textContent = 'Error';
+          setTimeout(() => { btn.textContent = 'Save'; }, 1500);
+        }
+      } catch (e) {
+        btn.textContent = 'Error';
+        setTimeout(() => { btn.textContent = 'Save'; }, 1500);
+      }
+    }
+
+    async function loadAttendance() {
+      const res = await fetch(`${ADMIN_API}/attendance`, {
+        headers: { 'x-admin-password': adminPassword }
+      });
+      if (!res.ok) return;
+      const { sessions, matrix } = await res.json();
+      const attCount = matrix.filter(r => {
+        let attended = 0;
+        for (let i = 1; i <= 8; i++) if (r['s' + i]) attended++;
+        return attended > 0;
+      }).length;
+      document.getElementById('attCount').textContent = `${attCount} students attended`;
+
+      const tbody = document.getElementById('attendanceBody');
+      if (!matrix.length) {
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:20px;opacity:0.5;">No attendance data yet</td></tr>';
+        return;
+      }
+      let html = '';
+      matrix.forEach(row => {
+        html += `<tr>
+          <td style="text-align: left; font-size: 0.8rem; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${row.student.email}">
+            <strong>${row.student.name}</strong>
+          </td>`;
+        for (let i = 1; i <= 8; i++) {
+          const attended = row['s' + i];
+          html += `<td><span class="attendance-dot ${attended ? 'dot-present' : 'dot-absent'}"></span></td>`;
+        }
+        html += '</tr>';
+      });
+      tbody.innerHTML = html;
+    }
+
+    async function loadStudents() {
+      const res = await fetch(`${ADMIN_API}/students`, {
+        headers: { 'x-admin-password': adminPassword }
+      });
+      if (!res.ok) return;
+      const { students } = await res.json();
+      document.getElementById('studentCount').textContent = students.length + ' paid';
+      const tbody = document.getElementById('studentsBody');
+      if (!students.length) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;opacity:0.5;">No paid students yet</td></tr>';
+        return;
+      }
+      let html = '';
+      students.forEach(s => {
+        const date = s.created_at ? new Date(s.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+        html += `<tr>
+          <td style="font-weight: 600;">${s.full_name}</td>
+          <td style="font-size: 0.8rem;">${s.email}</td>
+          <td style="font-size: 0.8rem;">${s.whatsapp || '—'}</td>
+          <td><code style="font-size: 0.75rem;">${s.access_code || '—'}</code></td>
+          <td style="font-size: 0.75rem; opacity: 0.7;">${date}</td>
+        </tr>`;
+      });
+      tbody.innerHTML = html;
+    }
+
+    function isSessionUnlocked(s) {
+      if (!s.unlocks_at) return true;
+      try {
+        const clean = s.unlocks_at.replace('.000WAT', '');
+        const [datePart, timePart] = clean.split('T');
+        const [y, mo, d] = datePart.split('-').map(Number);
+        const [h = 20, mi = 0] = (timePart || '20:00').split(':').map(Number);
+        const unlockTime = new Date(Date.UTC(y, mo - 1, d, h, mi, 0));
+        return new Date() >= unlockTime;
+      } catch { return true; }
+    }
+
+    function formatUnlockDisplay(unlocksAt) {
+      try {
+        const clean = unlocksAt.replace('.000WAT', '');
+        const [datePart, timePart] = clean.split('T');
+        const [y, mo, d] = datePart.split('-').map(Number);
+        const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        return `${months[mo-1]} ${d} @ ${timePart || '20:00'} WAT`;
+      } catch { return unlocksAt; }
+    }
+
+    function toDatetimeLocal(unlocksAt) {
+      try {
+        const clean = unlocksAt.replace('.000WAT', '');
+        const [datePart, timePart] = clean.split('T');
+        const [y, mo, d] = datePart.split('-').map(Number);
+        const [h, mi] = (timePart || '20:00').split(':');
+        return `${y}-${String(mo).padStart(2,'0')}-${String(d).padStart(2,'0')}T${h}:${mi}`;
+      } catch { return ''; }
+    }
+
+    function fromDatetimeLocal(val) {
+      if (!val) return null;
+      const [date, time] = val.split('T');
+      const [y, mo, d] = date.split('-');
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      return `${y}-${months[parseInt(mo)-1].padStart ? months[parseInt(mo)-1] : mo}-${d}T${time}:00.000WAT`;
+    }
+
+    window.saveSession = saveSession;
   </script>
 </body>
 </html>

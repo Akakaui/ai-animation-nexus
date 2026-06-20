@@ -355,4 +355,42 @@ document.addEventListener('DOMContentLoaded', () => {
       submitFormBtn.innerHTML = originalText;
     }
   });
+  
+  // ==========================================================================
+  // 8. 2026 Dangling Tag Physics Effect (Shoe Tag)
+  // ==========================================================================
+  const yearTag = document.getElementById('yearTag');
+  
+  if (yearTag && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let currentRotation = 0;
+    let targetRotation = 0;
+    let velocity = 0;
+    let lastScrollY = 0;
+    
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const scrollDelta = scrollY - lastScrollY;
+      lastScrollY = scrollY;
+      
+      if (Math.abs(scrollDelta) > 5) {
+        targetRotation = scrollDelta > 0 ? 15 : -8;
+        
+        gsap.killTweensOf(yearTag.querySelector('.tag-body'));
+        
+        gsap.to(yearTag.querySelector('.tag-body'), {
+          rotation: targetRotation,
+          duration: 0.8,
+          ease: 'elastic.out(1, 0.3)'
+        });
+      }
+    }, { passive: true });
+    
+    gsap.to(yearTag.querySelector('.tag-body'), {
+      rotation: -3,
+      duration: 2.5,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut'
+    });
+  }
 });
