@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animation Nexus</title>
+  <meta name="description" content="A 4-week intensive where five mentors teach you to turn a still image into motion — and turn raw ideas into a real body of work.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+  
+  <!-- GSAP Core -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <!-- GSAP ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+<body>
+
+  <!-- Paper Grain Overlay for Texture -->
+  <div class="paper-texture"></div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-logo">Animation Nexus</div>
+    <ul class="nav-links">
+      <li><a href="#schedule">Schedule</a></li>
+      <li><a href="#mentors">Mentors</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <button class="btn-primary trigger-form-btn">Apply for a Seat</button>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-container">
+      
+      <!-- Left Column: Copy & Doodles -->
+      <div class="hero-content">
+        <div class="badge-wrapper">
+          <span class="status-badge">Applications Open</span>
+        </div>
+        
+        <div class="heading-wrapper">
+          <!-- Hand-drawn leaf doodle -->
+          <svg class="doodle doodle-leaf" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 85 C52 70 58 40 75 25 C60 35 48 45 42 60 C38 45 28 35 15 30 C32 40 45 60 50 85 Z" stroke="#1A1712" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="#D4FF3D" fill-opacity="0.25"/>
+            <path d="M50 85 C49 60 42 45 35 38" stroke="#1A1712" stroke-width="2" stroke-linecap="round"/>
+            <path d="M50 65 C58 55 68 48 72 45" stroke="#1A1712" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+
+          <!-- Hand-drawn arrow loop doodle pointing to heading -->
+          <svg class="doodle doodle-arrow" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 20 C10 40 12 70 30 75 C45 80 60 55 45 40 C35 30 20 45 32 60 C35 64 45 68 52 68" stroke="#1A1712" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M44 60 L54 69 L48 78" stroke="#1A1712" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+
+          <h1 class="hero-title animate-weight">
+            Animation<br>Nexus
+          </h1>
+        </div>
+
+        <!-- Timer / Countdown -->
+        <div class="countdown-container">
+          <p class="countdown-label">Applications close in</p>
+          <div class="countdown-timer" id="countdownTimer">
+            <div class="time-block"><span id="days">00</span><span class="time-unit">d</span></div>
+            <div class="time-block"><span id="hours">00</span><span class="time-unit">h</span></div>
+            <div class="time-block"><span id="minutes">00</span><span class="time-unit">m</span></div>
+            <div class="time-block"><span id="seconds">00</span><span class="time-unit">s</span></div>
+          </div>
+        </div>
+
+        <div class="cta-wrapper">
+          <button class="btn-cta trigger-form-btn">
+            Apply for a Seat
+            <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          
+          <!-- Hand-drawn underline under CTA -->
+          <svg class="doodle doodle-underline" viewBox="0 0 200 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12 C40 5 95 15 195 8 C140 12 70 8 10 15" stroke="#1A1712" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <p class="commitment-tag">A small commitment fee applies to confirm your seat</p>
+      </div>
+
+      <!-- Right Column: Interactive Shape Grid -->
+      <div class="hero-visual">
+        <div class="shape-grid">
+          
+          <!-- Row 1 -->
+          <div class="grid-cell cell-sketch">
+            <svg class="sketch-svg morph-target-src-1" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="morph-path" d="M15 18 C30 11 50 18 68 14 C64 35 69 55 65 70 C45 66 25 72 10 68 C15 50 11 30 15 18" stroke="#1A1712" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="grid-cell cell-arrow">
+            <svg class="arrow-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 20 H34 M26 12 L34 20 L26 28" stroke="#1A1712" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="grid-cell cell-neon">
+            <div class="neon-shape neon-square"></div>
+          </div>
+
+          <!-- Row 2 -->
+          <div class="grid-cell cell-sketch">
+            <svg class="sketch-svg morph-target-src-2" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="morph-path" d="M40 12 L72 66 L8 66 Z" stroke="#1A1712" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="grid-cell cell-arrow">
+            <svg class="arrow-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 20 H34 M26 12 L34 20 L26 28" stroke="#1A1712" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="grid-cell cell-neon">
+            <div class="neon-shape neon-triangle"></div>
+          </div>
+
+          <!-- Row 3 -->
+          <div class="grid-cell cell-sketch">
+            <svg class="sketch-svg morph-target-src-3" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="morph-path" d="M40 12 C58 11 68 22 68 40 C68 58 58 68 40 68 C22 68 12 58 12 40 C12 22 22 12 40 12 Z" stroke="#1A1712" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="grid-cell cell-arrow">
+            <svg class="arrow-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 20 H34 M26 12 L34 20 L26 28" stroke="#1A1712" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="grid-cell cell-neon">
+            <div class="neon-shape neon-circle"></div>
+          </div>
+
+          <!-- Row 4 -->
+          <div class="grid-cell cell-sketch">
+            <svg class="sketch-svg morph-target-src-4" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="morph-path" d="M40 10 L48 30 L68 30 L52 42 L58 65 L40 50 L22 65 L28 42 L12 30 L32 30 Z" stroke="#1A1712" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="grid-cell cell-arrow">
+            <svg class="arrow-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 20 H34 M26 12 L34 20 L26 28" stroke="#1A1712" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="grid-cell cell-neon">
+            <div class="neon-shape neon-lime-circle"></div>
+          </div>
+
+          <!-- Row 5 -->
+          <div class="grid-cell cell-sketch">
+            <svg class="sketch-svg morph-target-src-5" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="morph-path" d="M40 10 V70 M10 40 H70 M19 19 L61 61 M61 19 L19 61" stroke="#1A1712" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="grid-cell cell-arrow">
+            <svg class="arrow-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 20 H34 M26 12 L34 20 L26 28" stroke="#1A1712" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="grid-cell cell-neon">
+            <div class="neon-shape neon-asterisk">
+              <div class="line"></div>
+              <div class="line"></div>
+              <div class="line"></div>
+              <div class="line"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Timezone Selector Component -->
+  <section class="timezone-section">
+    <div class="timezone-container">
+      <h2 class="tz-title">Global Live Schedule</h2>
+      <p class="tz-subtitle">9:00–10:00 PM WAT every Friday &amp; Saturday. Pick your region.</p>
+      
+      <div class="tz-selector-component">
+        <div class="tz-buttons">
+          <button class="tz-btn active" data-time="9:00 PM" data-tz="WAT">Nigeria (WAT)</button>
+          <button class="tz-btn" data-time="9:00 PM" data-tz="BST">United Kingdom (BST)</button>
+          <button class="tz-btn" data-time="10:00 PM" data-tz="CEST">West Europe (CEST)</button>
+          <button class="tz-btn" data-time="4:00 PM" data-tz="EDT">US East (EDT)</button>
+          <button class="tz-btn" data-time="1:00 PM" data-tz="PDT">US West (PDT)</button>
+          <button class="tz-btn" data-time="5:00 PM" data-tz="BRT">Brazil (BRT)</button>
+        </div>
+        
+        <div class="tz-display-panel">
+          <span class="tz-clock">🕒</span>
+          <div class="tz-time-group">
+            <span class="tz-time-val" id="localTimeVal">9:00 PM</span>
+            <span class="tz-label-val" id="localTzVal">WAT</span>
+          </div>
+          <p class="tz-status-text">Every Fri &amp; Sat · 1 hour live</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Detailed Course Schedule / Curriculum -->
+  <section class="schedule-section" id="schedule">
+    <div class="schedule-container">
+      <h2 class="section-title">The Four-Week Schedule</h2>
+      
+      <div class="curriculum-grid">
+        <!-- Week 1 -->
+        <div class="curriculum-week">
+          <div class="week-header">
+            <span class="week-num-badge">Week 1</span>
+            <h3>Foundations & Motion</h3>
+          </div>
+          <div class="session-card">
+            <div class="session-meta">
+              <span class="session-date">Friday, July 24 • 9-10 PM WAT</span>
+              <span class="session-host">Host: Bethel</span>
+            </div>
+            <h4>Session 1: Photo-to-Video Transformation</h4>
+          </div>
+          <div class="session-card">
+            <div class="session-meta">
+              <span class="session-date">Saturday, July 25 • 9-10 PM WAT</span>
+              <span class="session-host">Host: Bethel</span>
+            </div>
+            <h4>Session 2: Motion-Syncing & Compositing</h4>
+          </div>
+        </div>
+
+        <!-- Week 2 -->
+        <div class="curriculum-week">
+          <div class="week-header">
+            <span class="week-num-badge">Week 2</span>
+            <h3>Consistency & Story</h3>
+          </div>
+          <div class="session-card">
+            <div class="session-meta">
+              <span class="session-date">Friday, July 31 • 9-10 PM WAT</span>
+              <span class="session-host">Host: Della</span>
+            </div>
+            <h4>Session 3: Maintaining Consistent AI Characters</h4>
+          </div>
+          <div class="session-card">
+            <div class="session-meta">
+              <span class="session-date">Saturday, August 1 • 9-10 PM WAT</span>
+              <span class="session-host">Host: Chijioke</span>
+            </div>
+            <h4>Session 4: Advanced Content Creation Strategy</h4>
+          </div>
+        </div>
+
+        <!-- Week 3 -->
+        <div class="curriculum-week">
+          <div class="week-header">
+            <span class="week-num-badge">Week 3</span>
+            <h3>Automation & Web Build</h3>
+          </div>
+          <div class="session-card">
+            <div class="session-meta">
+              <span class="session-date">Friday, August 7 • 9-10 PM WAT</span>
+              <span class="session-host">Host: Chijioke</span>
+            </div>
+            <h4>Session 5: AI Automation & Workflow Efficiency</h4>
+          </div>
+          <div class="session-card">
+            <div class="session-meta">
+              <span class="session-date">Saturday, August 8 • 9-10 PM WAT</span>
+              <span class="session-host">Host: Chibuike Ifeoma</span>
+            </div>
+            <h4>Session 6: Think Like a Creative Director</h4>
+          </div>
+        </div>
+
+        <!-- Week 4 -->
+        <div class="curriculum-week">
+          <div class="week-header">
+            <span class="week-num-badge">Week 4</span>
+            <h3>Mastery & Finale</h3>
+          </div>
+          <div class="session-card">
+            <div class="session-meta">
+              <span class="session-date">Friday, August 14 • 9-10 PM WAT</span>
+              <span class="session-host">Host: Chibuike Ifeoma</span>
+            </div>
+            <h4>Session 7: Building Online Presence with AI</h4>
+          </div>
+          <div class="session-card">
+            <div class="session-meta">
+              <span class="session-date">Saturday, August 15 • 9-10 PM WAT</span>
+              <span class="session-host">Host: Tochukwu</span>
+            </div>
+            <h4>Session 8: Grand Finale & Studio Standards</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mentors Section -->
+  <section class="mentors-section" id="mentors">
+    <div class="mentors-container">
+      <h2 class="section-title">The Five Mentors</h2>
+      
+      <div class="mentors-grid">
+        <!-- Mentor 1 -->
+        <div class="mentor-card">
+          <div class="mentor-graphic">
+            <!-- Wobbly shape mark overlay that reveals info -->
+            <div class="mentor-shape-mark shape-1">
+              <span>B</span>
+            </div>
+          </div>
+          <div class="mentor-details">
+            <h3>Bethel</h3>
+            <p class="mentor-role">Photo-to-Video & Motion Sync</p>
+          </div>
+        </div>
+
+        <!-- Mentor 2 -->
+        <div class="mentor-card">
+          <div class="mentor-graphic">
+            <div class="mentor-shape-mark shape-2">
+              <span>D</span>
+            </div>
+          </div>
+          <div class="mentor-details">
+            <h3>Della</h3>
+            <p class="mentor-role">Character & Voice Continuity</p>
+          </div>
+        </div>
+
+        <!-- Mentor 3 -->
+        <div class="mentor-card">
+          <div class="mentor-graphic">
+            <div class="mentor-shape-mark shape-3">
+              <span>C</span>
+            </div>
+          </div>
+          <div class="mentor-details">
+            <h3>Chijioke</h3>
+            <p class="mentor-role">Content Strategy & Automation</p>
+          </div>
+        </div>
+
+        <!-- Mentor 4 -->
+        <div class="mentor-card">
+          <div class="mentor-graphic">
+            <div class="mentor-shape-mark shape-4">
+              <span>CI</span>
+            </div>
+          </div>
+          <div class="mentor-details">
+            <h3>Chibuike Ifeoma</h3>
+            <p class="mentor-role">Design & AI No-Code Systems</p>
+          </div>
+        </div>
+
+        <!-- Mentor 5 -->
+        <div class="mentor-card">
+          <div class="mentor-graphic">
+            <div class="mentor-shape-mark shape-5">
+              <span>T</span>
+            </div>
+          </div>
+          <div class="mentor-details">
+            <h3>Tochukwu</h3>
+            <p class="mentor-role">Masterclass Synthesis & Brand</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section (Animated Accordions with Plus Toggle) -->
+  <section class="faq-section" id="faq">
+    <div class="faq-container">
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      
+      <div class="faq-accordion-list">
+        
+        <div class="faq-accordion-item">
+          <button class="faq-header" aria-expanded="false">
+            <span>Do I need prior animation experience?</span>
+            <span class="faq-icon-wrapper">
+              <span class="faq-icon-line line-h"></span>
+              <span class="faq-icon-line line-v"></span>
+            </span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-content">
+              <p>No prior experience needed. We start from scratch and walk every step live.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-accordion-item">
+          <button class="faq-header" aria-expanded="false">
+            <span>What if I miss a live session?</span>
+            <span class="faq-icon-wrapper">
+              <span class="faq-icon-line line-h"></span>
+              <span class="faq-icon-line line-v"></span>
+            </span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-content">
+              <p>Every session is recorded. You get lifetime access to all videos and resources.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-accordion-item">
+          <button class="faq-header" aria-expanded="false">
+            <span>Is the fee refundable?</span>
+            <span class="faq-icon-wrapper">
+              <span class="faq-icon-line line-h"></span>
+              <span class="faq-icon-line line-v"></span>
+            </span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-content">
+              <p>Yes. Complete the course, feel it wasn't worth it — reach out and we'll refund. No questions.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-accordion-item">
+          <button class="faq-header" aria-expanded="false">
+            <span>What happens after I apply?</span>
+            <span class="faq-icon-wrapper">
+              <span class="faq-icon-line line-h"></span>
+              <span class="faq-icon-line line-v"></span>
+            </span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-content">
+              <p>You go straight to payment. No screening, no waitlist — just the deadline.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-accordion-item">
+          <button class="faq-header" aria-expanded="false">
+            <span>What timezone are sessions in?</span>
+            <span class="faq-icon-wrapper">
+              <span class="faq-icon-line line-h"></span>
+              <span class="faq-icon-line line-v"></span>
+            </span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-content">
+              <p>9 PM – 10 PM WAT (UTC+1). Use the timezone switcher above to see your local time.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Final Closing CTA -->
+  <section class="closing-cta-section">
+    <div class="closing-container">
+      <h2 class="closing-title animate-weight">Ready to Build?</h2>
+      <p class="closing-subtitle">Secure your place before the clock runs out. All sessions are recorded.</p>
+      <button class="btn-cta trigger-form-btn">
+        Apply for a Seat
+        <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- Dark Olive Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <span class="footer-logo">Animation Nexus</span>
+        <p>© 2026 Animation Nexus. All rights reserved.</p>
+      </div>
+      <div class="footer-right">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Contact Support</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- BACKDROP AND INTERACTIVE FLASH-CARD FORM -->
+  <div class="form-backdrop" id="formBackdrop"></div>
+  <aside class="form-panel" id="formPanel">
+    
+    <!-- Top Bar Navigation inside Form -->
+    <div class="form-top-bar">
+      <button class="form-back-home" id="formBackHomeBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M5 12L12 19M5 12L12 5"/>
+        </svg>
+        Back to main page
+      </button>
+      
+      <div class="form-progress-indicator">
+        <span id="currentStepNum">1</span> / <span id="totalStepsNum">5</span>
+      </div>
+    </div>
+
+    <!-- ProgressBar Indicator -->
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill" id="progressBarFill" style="width: 20%;"></div>
+    </div>
+
+    <!-- Flash-Card Deck Container -->
+    <div class="flash-card-deck" id="flashCardDeck">
+      
+      <!-- Card 1: Introduction -->
+      <div class="flash-card active" data-step="1">
+        <div class="card-inner">
+          <svg class="doodle doodle-form-star" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 15 V85 M15 50 H85 M25 25 L75 75 M75 25 L25 75" stroke="#1A1712" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+          <h2 class="form-heading">Tell Us About You</h2>
+          <p class="form-subheading">A few quick questions, then straight to confirming your seat.</p>
+          <div class="card-action-block">
+            <button class="btn-submit next-card-btn" type="button">
+              Get Started
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12H19M19 12L13 6M19 12L13 18"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Full Name & Email -->
+      <div class="flash-card" data-step="2">
+        <div class="card-inner">
+          <h3 class="card-step-label">Step 1 — Basic Details</h3>
+          
+          <div class="form-group">
+            <label for="fullName" class="form-label">Full name</label>
+            <input type="text" id="fullName" class="form-input" placeholder="Your full name" required autocomplete="name">
+          </div>
+
+          <div class="form-group">
+            <label for="emailAddress" class="form-label">Email address</label>
+            <input type="email" id="emailAddress" class="form-input" placeholder="you@example.com" required autocomplete="email">
+          </div>
+
+          <div class="card-nav-buttons">
+            <button class="btn-card-nav prev-card-btn" type="button">Back</button>
+            <button class="btn-card-nav next-card-btn next-action-btn" type="button" disabled>Next</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: WhatsApp Number -->
+      <div class="flash-card" data-step="3">
+        <div class="card-inner">
+          <h3 class="card-step-label">Step 2 — Contact</h3>
+          
+          <div class="form-group">
+            <label for="whatsappNumber" class="form-label">WhatsApp number</label>
+            <input type="tel" id="whatsappNumber" class="form-input" placeholder="+234 801 234 5678" required>
+          </div>
+
+          <div class="card-nav-buttons">
+            <button class="btn-card-nav prev-card-btn" type="button">Back</button>
+            <button class="btn-card-nav next-card-btn next-action-btn" type="button" disabled>Next</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Goals / Objectives -->
+      <div class="flash-card" data-step="4">
+        <div class="card-inner">
+          <h3 class="card-step-label">Step 3 — Your Goals</h3>
+          
+          <div class="form-group">
+            <label for="goals" class="form-label">What do you want to be able to make by the end of this?</label>
+            <textarea id="goals" class="form-input form-textarea" rows="4" placeholder="Tell us your goals..." required></textarea>
+          </div>
+
+          <div class="card-nav-buttons">
+            <button class="btn-card-nav prev-card-btn" type="button">Back</button>
+            <button class="btn-card-nav next-card-btn next-action-btn" type="button" disabled>Next</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5: Portfolio & Referral -->
+      <div class="flash-card" data-step="5">
+        <div class="card-inner">
+          <h3 class="card-step-label">Step 4 — Final Details</h3>
+          
+          <div class="form-group">
+            <label for="portfolio" class="form-label">Portfolio or social link <span class="label-optional">(optional)</span></label>
+            <input type="url" id="portfolio" class="form-input" placeholder="https://example.com or @username">
+          </div>
+
+          <div class="form-group">
+            <label for="referral" class="form-label">How did you hear about Animation Nexus?</label>
+            <div class="select-wrapper">
+              <select id="referral" class="form-input form-select" required>
+                <option value="" disabled selected>Select an option</option>
+                <option value="twitter">Twitter / X</option>
+                <option value="linkedin">LinkedIn</option>
+                <option value="youtube">YouTube</option>
+                <option value="friend">From a friend</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="card-nav-buttons">
+            <button class="btn-card-nav prev-card-btn" type="button">Back</button>
+            <button class="btn-submit" id="submitFormBtn" type="submit">
+              Continue to Confirm My Seat
+              <svg class="submit-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12H19M19 12L13 6M19 12L13 18"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- Script Logic -->
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>You're Confirmed! — Animation Nexus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .confirm-layout {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+    }
+    .confirm-card {
+      background-color: var(--bg-white);
+      border: 2px solid var(--color-ink);
+      padding: 56px;
+      max-width: 580px;
+      width: 100%;
+      border-radius: var(--radius-sharp);
+      box-shadow: var(--shadow-flat-4);
+      text-align: center;
+      position: relative;
+    }
+    .confirm-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: var(--accent-acid);
+      border: 1.5px solid var(--color-ink);
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      border-radius: var(--radius-sharp);
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-flat-2);
+    }
+    .confirm-title {
+      font-size: 3rem;
+      margin-bottom: 16px;
+    }
+    .confirm-subtext {
+      font-size: 0.95rem;
+      line-height: 1.55;
+      margin-bottom: 32px;
+      opacity: 0.85;
+    }
+    .code-display-box {
+      background-color: var(--bg-cream);
+      border: 2px solid var(--color-ink);
+      padding: 20px;
+      border-radius: var(--radius-sharp);
+      margin-bottom: 36px;
+      position: relative;
+      box-shadow: var(--shadow-flat-2);
+    }
+    .code-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      opacity: 0.6;
+      display: block;
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+    }
+    .code-value {
+      font-family: 'Bricolage Grotesque', serif;
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      display: block;
+      margin-bottom: 12px;
+    }
+    .btn-copy-code {
+      background-color: var(--bg-white);
+      border: 1.5px solid var(--color-ink);
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: var(--radius-sharp);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+    .btn-copy-code:hover {
+      background-color: var(--accent-acid);
+    }
+    .action-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .btn-calendar {
+      width: 100%;
+      background-color: var(--bg-white);
+      color: var(--color-ink);
+      border: 2px solid var(--color-ink);
+      padding: 16px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: var(--radius-sharp);
+      cursor: pointer;
+      box-shadow: var(--shadow-flat-2);
+      transition: var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .btn-calendar:hover {
+      background-color: var(--green-muted);
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px var(--color-ink);
+    }
+    .btn-dashboard {
+      width: 100%;
+      background-color: var(--accent-acid);
+      color: var(--color-ink);
+      border: 2px solid var(--color-ink);
+      padding: 16px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: var(--radius-sharp);
+      cursor: pointer;
+      box-shadow: var(--shadow-flat-2);
+      transition: var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .btn-dashboard:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 4px 4px 0px var(--color-ink);
+    }
+    
+    @media (max-width: 768px) {
+      .confirm-card {
+        padding: 36px 24px;
+      }
+      .confirm-title {
+        font-size: 2.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="paper-texture"></div>
+
+  <div class="confirm-layout">
+    <div class="confirm-card">
+      <div class="confirm-badge">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        Registration Complete
+      </div>
+      
+      <h1 class="confirm-title">You're Confirmed.</h1>
+      
+      <p class="confirm-subtext">
+        Your access code is on its way to your inbox — check it now and save it somewhere safe. You'll use it every class day to unlock your session link.
+      </p>
+
+      <div class="code-display-box">
+        <span class="code-label">Your Unique Access Code</span>
+        <span class="code-value" id="accessCode">AN-XXXX-XX</span>
+        <button class="btn-copy-code" id="copyCodeBtn">Copy Code</button>
+      </div>
+
+      <div class="action-group">
+        <button class="btn-calendar" id="calendarBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          Add all 8 sessions to your calendar
+        </button>
+
+        <button class="btn-dashboard" id="dashboardBtn">
+          Go to Your Dashboard
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12H19M19 12L13 6M19 12L13 18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // 1. Generate/Retrieve Access Code
+      let uniqueCode = localStorage.getItem('nexus_access_code');
+      if (!uniqueCode) {
+        const randNum = Math.floor(1000 + Math.random() * 9000);
+        const randChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const c1 = randChars.charAt(Math.floor(Math.random() * 26));
+        const c2 = randChars.charAt(Math.floor(Math.random() * 26));
+        uniqueCode = `AN-${randNum}-${c1}${c2}`;
+        localStorage.setItem('nexus_access_code', uniqueCode);
+      }
+      document.getElementById('accessCode').textContent = uniqueCode;
+
+      // 2. Copy Code to Clipboard
+      document.getElementById('copyCodeBtn').addEventListener('click', function() {
+        const codeText = document.getElementById('accessCode').textContent;
+        navigator.clipboard.writeText(codeText).then(() => {
+          this.textContent = '✓ Copied!';
+          setTimeout(() => {
+            this.textContent = 'Copy Code';
+          }, 1500);
+        });
+      });
+
+      // 3. Navigation
+      document.getElementById('dashboardBtn').addEventListener('click', function() {
+        window.location.href = 'dashboard.html';
+      });
+
+      // 4. Generate & Download .ICS Calendar File
+      document.getElementById('calendarBtn').addEventListener('click', function() {
+        const events = [
+          {
+            start: '20260724T200000Z',
+            end: '20260724T210000Z',
+            title: 'S1: Photo-to-Video Transformation',
+            host: 'Bethel'
+          },
+          {
+            start: '20260725T200000Z',
+            end: '20260725T210000Z',
+            title: 'S2: Motion-Syncing & Compositing',
+            host: 'Bethel'
+          },
+          {
+            start: '20260731T200000Z',
+            end: '20260731T210000Z',
+            title: 'S3: Maintaining Consistent AI Characters',
+            host: 'Della'
+          },
+          {
+            start: '20260801T200000Z',
+            end: '20260801T210000Z',
+            title: 'S4: Advanced Content Creation Strategy',
+            host: 'Chijioke'
+          },
+          {
+            start: '20260807T200000Z',
+            end: '20260807T210000Z',
+            title: 'S5: AI Automation & Workflow Efficiency',
+            host: 'Chijioke'
+          },
+          {
+            start: '20260808T200000Z',
+            end: '20260808T210000Z',
+            title: 'S6: Think Like a Creative Director',
+            host: 'Chibuike Ifeoma'
+          },
+          {
+            start: '20260814T200000Z',
+            end: '20260814T210000Z',
+            title: 'S7: Building Online Presence with AI',
+            host: 'Chibuike Ifeoma'
+          },
+          {
+            start: '20260815T200000Z',
+            end: '20260815T210000Z',
+            title: 'S8: Grand Finale & Studio Standards',
+            host: 'Tochukwu'
+          }
+        ];
+
+        let icsContent = 'BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Animation Nexus//Calendar//EN\n';
+        
+        events.forEach(ev => {
+          icsContent += 'BEGIN:VEVENT\n';
+          icsContent += `DTSTART:${ev.start}\n`;
+          icsContent += `DTEND:${ev.end}\n`;
+          icsContent += `SUMMARY:${ev.title} (Host: ${ev.host})\n`;
+          icsContent += `DESCRIPTION:Live Animation Nexus Session with ${ev.host}. Access dashboard at https://favourakaka.duckdns.org/nexus/dashboard.html to verify and get Zoom link.\n`;
+          icsContent += 'LOCATION:Zoom Online Video\n';
+          icsContent += 'END:VEVENT\n';
+        });
+        
+        icsContent += 'END:VCALENDAR';
+
+        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.setAttribute('download', 'Animation_Nexus_Schedule.ics');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+    });
+  </script>
+</body>
+</html>

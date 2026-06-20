@@ -1,0 +1,1369 @@
+/* ==========================================================================
+   AI ANIMATION NEXUS - SPEC-COMPLIANT SYSTEM STYLES
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Brand Tokens (Colors & Typography)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Spec Palette (Strict flat colors, no gradients, no glassmorphism) */
+  --bg-cream: #F6F1E7;       /* Page background */
+  --bg-white: #ffffff;
+  --color-ink: #1A1712;      /* All text, borders, outlines */
+  --accent-acid: #D4FF3D;    /* Primary pop - CTAs, active highlights */
+  --green-muted: #E9FFB8;    /* Subtle fills, card hovers */
+  --color-divider: #DAD3C2;  /* Section dividers, borders */
+  
+  /* Shadow offset token (hard 2-4px offset in Ink for paper/sketch feel) */
+  --shadow-flat-2: 2px 2px 0px var(--color-ink);
+  --shadow-flat-4: 4px 4px 0px var(--color-ink);
+  --shadow-flat-8: 8px 8px 0px var(--color-ink);
+  
+  --radius-sharp: 4px;       /* Structured UI (forms, inputs, buttons) */
+  --radius-sketchy: 16px;    /* Decorative / artistic elements only */
+  
+  --transition-normal: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-bounce: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-fast: all 0.15s ease;
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset & Core Structure
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 17px;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg-cream);
+  color: var(--color-ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Paper Grain Texture (Overlay at 4-6% opacity) */
+.paper-texture {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* --------------------------------------------------------------------------
+   3. Typography Systems (Spec Scale)
+   -------------------------------------------------------------------------- */
+h1, h2, h3, h4 {
+  font-family: 'Bricolage Grotesque', serif;
+  font-weight: 700;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.hero-title {
+  font-size: 5rem; /* 80px equivalent */
+  line-height: 0.95;
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-size: 2.5rem; /* 40px equivalent */
+  margin-bottom: 48px;
+  text-align: center;
+}
+
+.section-subtitle {
+  font-size: 1rem;
+  color: var(--color-ink);
+  opacity: 0.8;
+  max-width: 600px;
+  margin: -32px auto 60px;
+  text-align: center;
+}
+
+p, label, input, textarea, select {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Variable font weight animation rules */
+.animate-weight {
+  font-variation-settings: 'wght' 700;
+  transition: font-variation-settings 0.3s ease;
+}
+
+.animate-weight:hover {
+  font-variation-settings: 'wght' 200;
+}
+
+/* --------------------------------------------------------------------------
+   4. Structured UI Components (Sharp 4px Border Radius)
+   -------------------------------------------------------------------------- */
+.btn-primary {
+  background-color: var(--accent-acid);
+  color: var(--color-ink);
+  border: 1.5px solid var(--color-ink);
+  padding: 12px 24px;
+  font-weight: 600;
+  border-radius: var(--radius-sharp);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  box-shadow: var(--shadow-flat-2);
+}
+
+.btn-primary:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px var(--color-ink);
+}
+
+.btn-primary:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px var(--color-ink);
+}
+
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--accent-acid);
+  color: var(--color-ink);
+  border: 2px solid var(--color-ink);
+  padding: 16px 36px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: var(--radius-sharp);
+  cursor: pointer;
+  box-shadow: var(--shadow-flat-4);
+  transition: var(--transition-fast);
+  z-index: 5;
+}
+
+.btn-cta:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--color-ink);
+}
+
+.btn-cta:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--color-ink);
+}
+
+.arrow-icon {
+  transition: transform 0.2s ease;
+}
+
+.btn-cta:hover .arrow-icon {
+  transform: translateX(4px);
+}
+
+.status-badge {
+  display: inline-block;
+  background-color: var(--accent-acid);
+  color: var(--color-ink);
+  padding: 6px 14px;
+  border-radius: var(--radius-sharp);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: 1.5px solid var(--color-ink);
+  box-shadow: var(--shadow-flat-2);
+  margin-bottom: 24px;
+}
+
+/* --------------------------------------------------------------------------
+   5. Navigation Bar
+   -------------------------------------------------------------------------- */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 80px;
+  border-bottom: 2px solid var(--color-ink);
+  position: sticky;
+  top: 0;
+  background-color: var(--bg-cream);
+  z-index: 100;
+}
+
+.nav-logo {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 36px;
+}
+
+.nav-links a {
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.nav-links a:hover {
+  color: var(--color-ink);
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   6. Hero Section Layout
+   -------------------------------------------------------------------------- */
+.hero-section {
+  padding: 96px 80px;
+  border-bottom: 2px solid var(--color-ink);
+}
+
+.hero-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+}
+
+.heading-wrapper {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.hero-description {
+  font-size: 1.25rem;
+  line-height: 1.5;
+  margin-bottom: 36px;
+  max-width: 520px;
+}
+
+/* Countdown Component */
+.countdown-container {
+  margin-bottom: 36px;
+}
+
+.countdown-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+
+.countdown-timer {
+  display: flex;
+  gap: 16px;
+}
+
+.time-block {
+  background-color: var(--bg-white);
+  border: 1.5px solid var(--color-ink);
+  padding: 8px 16px;
+  border-radius: var(--radius-sharp);
+  font-family: 'Bricolage Grotesque', serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  box-shadow: var(--shadow-flat-2);
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.time-unit {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  opacity: 0.6;
+}
+
+.cta-wrapper {
+  display: inline-block;
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.commitment-tag {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* Hero Hand-Drawn SVG Doodles */
+.doodle {
+  position: absolute;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.doodle-leaf {
+  top: -65px;
+  left: -90px;
+  width: 140px;
+  height: 140px;
+  transform: rotate(-5deg);
+}
+
+.doodle-arrow {
+  bottom: 80px;
+  left: -100px;
+  width: 110px;
+  height: 110px;
+}
+
+.doodle-underline {
+  bottom: -22px;
+  left: 0;
+  width: 100%;
+  height: 25px;
+  opacity: 0.85;
+}
+
+/* --------------------------------------------------------------------------
+   7. Shape Transformation Grid (Spec Morph Base)
+   -------------------------------------------------------------------------- */
+.hero-visual {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.shape-grid {
+  display: grid;
+  grid-template-columns: 85px 50px 85px;
+  grid-template-rows: repeat(5, 85px);
+  gap: 20px 24px;
+  align-items: center;
+}
+
+.sketch-svg {
+  width: 75px;
+  height: 75px;
+  transition: transform 0.2s ease;
+}
+
+.sketch-svg:hover {
+  transform: scale(1.05) rotate(5deg);
+}
+
+.arrow-svg {
+  width: 32px;
+  height: 32px;
+  opacity: 0.5;
+}
+
+/* Neon Target Shapes (Flat offsets, no gradients/glassmorphic fills) */
+.neon-shape {
+  background-color: var(--accent-acid);
+  border: 2px solid var(--color-ink);
+  box-shadow: var(--shadow-flat-4);
+  transition: var(--transition-bounce);
+}
+
+.shape-grid:hover .neon-shape {
+  transform: translate(-3px, -3px);
+  box-shadow: 7px 7px 0px var(--color-ink);
+}
+
+.neon-square {
+  width: 65px;
+  height: 65px;
+  border-radius: var(--radius-sharp);
+}
+
+.neon-triangle {
+  width: 65px;
+  height: 65px;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  position: relative;
+}
+
+.neon-triangle::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 32.5px solid transparent;
+  border-right: 32.5px solid transparent;
+  border-bottom: 60px solid var(--accent-acid);
+  filter: drop-shadow(4px 4px 0px var(--color-ink));
+  transition: var(--transition-bounce);
+}
+
+.shape-grid:hover .neon-triangle::after {
+  transform: translate(-1.5px, -1.5px);
+  filter: drop-shadow(6px 6px 0px var(--color-ink));
+}
+
+.neon-circle {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+}
+
+.neon-lime-circle {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background-color: #E9FFB8; /* Spec: Green Muted secondary shape fill */
+}
+
+/* 8-point Neon Asterisk */
+.neon-asterisk {
+  width: 65px;
+  height: 65px;
+  position: relative;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.neon-asterisk .line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 65px;
+  height: 6px;
+  background-color: var(--accent-acid);
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-sharp);
+  transform-origin: center;
+}
+
+.neon-asterisk .line:nth-child(1) { transform: translateY(-50%) rotate(0deg); }
+.neon-asterisk .line:nth-child(2) { transform: translateY(-50%) rotate(45deg); }
+.neon-asterisk .line:nth-child(3) { transform: translateY(-50%) rotate(90deg); }
+.neon-asterisk .line:nth-child(4) { transform: translateY(-50%) rotate(135deg); }
+
+/* --------------------------------------------------------------------------
+   8. Timezone Selector Block
+   -------------------------------------------------------------------------- */
+.timezone-section {
+  padding: 64px 80px;
+  background-color: var(--green-muted);
+  border-bottom: 2px solid var(--color-ink);
+}
+
+.timezone-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.tz-title {
+  text-align: center;
+  font-size: 2.25rem;
+  margin-bottom: 12px;
+}
+
+.tz-subtitle {
+  text-align: center;
+  font-size: 1rem;
+  max-width: 700px;
+  margin: 0 auto 36px;
+}
+
+.tz-selector-component {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 32px;
+  align-items: center;
+}
+
+.tz-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.tz-btn {
+  background-color: var(--bg-white);
+  border: 2px solid var(--color-ink);
+  padding: 14px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: var(--radius-sharp);
+  transition: var(--transition-fast);
+  box-shadow: var(--shadow-flat-2);
+}
+
+.tz-btn:hover {
+  background-color: var(--bg-cream);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px var(--color-ink);
+}
+
+.tz-btn.active {
+  background-color: var(--accent-acid);
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0px var(--color-ink);
+}
+
+.tz-display-panel {
+  background-color: var(--bg-white);
+  border: 2px solid var(--color-ink);
+  padding: 36px;
+  border-radius: var(--radius-sharp);
+  box-shadow: var(--shadow-flat-4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.tz-clock {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+}
+
+.tz-time-group {
+  margin-bottom: 16px;
+}
+
+.tz-time-val {
+  font-family: 'Bricolage Grotesque', serif;
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1;
+  display: block;
+}
+
+.tz-label-val {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.tz-status-text {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* --------------------------------------------------------------------------
+   9. Curriculum Schedule Section
+   -------------------------------------------------------------------------- */
+.schedule-section {
+  padding: 96px 80px;
+  border-bottom: 2px solid var(--color-ink);
+}
+
+.schedule-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.curriculum-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+}
+
+.curriculum-week {
+  background-color: var(--bg-white);
+  border: 2px solid var(--color-ink);
+  padding: 36px;
+  border-radius: var(--radius-sharp);
+  box-shadow: var(--shadow-flat-4);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.week-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1.5px solid var(--color-divider);
+  padding-bottom: 16px;
+}
+
+.week-num-badge {
+  background-color: var(--color-ink);
+  color: var(--bg-cream);
+  padding: 4px 10px;
+  border-radius: var(--radius-sharp);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.week-header h3 {
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+}
+
+.session-card {
+  border-left: 3px solid var(--accent-acid);
+  padding-left: 20px;
+  margin-bottom: 10px;
+}
+
+.session-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  font-weight: 700;
+  opacity: 0.6;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.session-card h4 {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: none;
+  margin-bottom: 8px;
+}
+
+.session-card p {
+  font-size: 0.9rem;
+  color: var(--color-ink);
+  opacity: 0.85;
+}
+
+/* --------------------------------------------------------------------------
+   10. Mentors Section (Squiggle -> Photo clip-path morph placeholder)
+   -------------------------------------------------------------------------- */
+.mentors-section {
+  padding: 96px 80px;
+  border-bottom: 2px solid var(--color-ink);
+}
+
+.mentors-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.mentors-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+}
+
+.mentor-card {
+  background-color: var(--bg-white);
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-sharp);
+  box-shadow: var(--shadow-flat-2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition-bounce);
+}
+
+.mentor-card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: var(--shadow-flat-4);
+}
+
+.mentor-graphic {
+  height: 160px;
+  background-color: var(--green-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 2px solid var(--color-ink);
+  position: relative;
+  overflow: hidden;
+}
+
+.mentor-shape-mark {
+  width: 90px;
+  height: 90px;
+  background-color: var(--accent-acid);
+  border: 2px solid var(--color-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  box-shadow: var(--shadow-flat-2);
+  transition: var(--transition-bounce);
+}
+
+.shape-1 { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+.shape-2 { border-radius: 60% 40% 30% 70% / 50% 60% 40% 50%; }
+.shape-3 { border-radius: 50% 50% 60% 40% / 40% 60% 50% 50%; }
+.shape-4 { border-radius: 30% 70% 40% 60% / 50% 40% 60% 50%; }
+.shape-5 { border-radius: 60% 40% 70% 30% / 40% 60% 50% 60%; }
+
+.mentor-card:hover .mentor-shape-mark {
+  border-radius: 50%;
+  transform: scale(1.05) rotate(15deg);
+}
+
+.mentor-details {
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.mentor-details h3 {
+  font-size: 1.25rem;
+  margin-bottom: 4px;
+}
+
+.mentor-role {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  opacity: 0.6;
+  margin-bottom: 12px;
+}
+
+.mentor-bio {
+  font-size: 0.85rem;
+  line-height: 1.45;
+  opacity: 0.85;
+}
+
+/* --------------------------------------------------------------------------
+   11. FAQ Section (Accordion with Plus to Minus Rotation)
+   -------------------------------------------------------------------------- */
+.faq-section {
+  padding: 96px 80px;
+  border-bottom: 2px solid var(--color-ink);
+}
+
+.faq-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faq-accordion-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.faq-accordion-item {
+  background-color: var(--bg-white);
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-sharp);
+  box-shadow: var(--shadow-flat-2);
+  transition: var(--transition-fast);
+}
+
+.faq-header {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-ink);
+  cursor: pointer;
+}
+
+.faq-header span:first-child {
+  padding-right: 20px;
+}
+
+/* Animated Plus Toggle */
+.faq-icon-wrapper {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.faq-icon-line {
+  position: absolute;
+  background-color: var(--color-ink);
+  transition: transform 0.3s ease;
+}
+
+.line-h {
+  top: 9px;
+  left: 0;
+  width: 20px;
+  height: 2.5px;
+}
+
+.line-v {
+  top: 0;
+  left: 9px;
+  width: 2.5px;
+  height: 20px;
+}
+
+/* Active Open Accordion States */
+.faq-accordion-item.active {
+  box-shadow: var(--shadow-flat-4);
+  background-color: var(--bg-white);
+}
+
+.faq-accordion-item.active .line-v {
+  transform: rotate(90deg);
+  opacity: 0;
+}
+
+.faq-accordion-item.active .line-h {
+  transform: rotate(180deg);
+}
+
+.faq-body {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.faq-content {
+  padding: 0 32px 28px;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  opacity: 0.85;
+}
+
+/* --------------------------------------------------------------------------
+   12. Closing CTA Section
+   -------------------------------------------------------------------------- */
+.closing-cta-section {
+  padding: 120px 80px;
+  text-align: center;
+  border-bottom: 2px solid var(--color-ink);
+  background-color: var(--bg-cream);
+  position: relative;
+}
+
+.closing-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.closing-title {
+  font-size: 3.5rem;
+  margin-bottom: 16px;
+}
+
+.closing-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  opacity: 0.8;
+}
+
+/* --------------------------------------------------------------------------
+   13. Footer Section (Dark Ink Theme)
+   -------------------------------------------------------------------------- */
+.footer {
+  background-color: var(--color-ink);
+  color: var(--bg-cream);
+  padding: 60px 80px;
+}
+
+.footer-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-left .footer-logo {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+
+.footer-left p {
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+
+.footer-right {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-right a {
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+.footer-right a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   14. Slide-in Backdrop
+   -------------------------------------------------------------------------- */
+.form-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(26, 23, 18, 0.4);
+  z-index: 190;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.form-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* --------------------------------------------------------------------------
+   15. Interactive Flash-Card Form Panel
+   -------------------------------------------------------------------------- */
+.form-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 540px;
+  height: 100vh;
+  background-color: var(--bg-cream); /* Spec: Cream base background */
+  border-left: 2px solid var(--color-ink);
+  z-index: 200;
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.form-panel.active {
+  transform: translateX(0);
+}
+
+/* Top bar style */
+.form-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 36px;
+  border-bottom: 1.5px solid var(--color-ink);
+  background-color: var(--bg-cream);
+}
+
+.form-back-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  cursor: pointer;
+}
+
+.form-back-home:hover {
+  text-decoration: underline;
+}
+
+.form-progress-indicator {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+/* Progress bar filling slider */
+.progress-bar-container {
+  width: 100%;
+  height: 6px;
+  background-color: var(--color-divider);
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: var(--accent-acid);
+  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Flashcard Deck Box */
+.flash-card-deck {
+  flex-grow: 1;
+  position: relative;
+  overflow: hidden;
+  padding: 40px 36px;
+}
+
+.flash-card {
+  position: absolute;
+  top: 40px;
+  left: 36px;
+  right: 36px;
+  bottom: 40px;
+  background-color: var(--bg-white);
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-sharp);
+  box-shadow: var(--shadow-flat-4);
+  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+  /* Slide transition base state */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(80px) rotate(1.5deg);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease, visibility 0.3s;
+}
+
+.flash-card.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0) rotate(0deg);
+}
+
+.flash-card.passed {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-80px) rotate(-1.5deg);
+}
+
+/* Flash Card Details styling */
+.card-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.doodle-form-star {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 20px;
+}
+
+.form-heading {
+  font-size: 2.25rem;
+  line-height: 1.05;
+  margin-bottom: 12px;
+  text-transform: none;
+}
+
+.form-subheading {
+  font-size: 0.95rem;
+  opacity: 0.8;
+  margin-bottom: 24px;
+}
+
+.card-step-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  opacity: 0.5;
+  margin-bottom: 24px;
+  letter-spacing: 0.05em;
+}
+
+.card-action-block {
+  margin-top: auto;
+}
+
+/* Card Nav Buttons */
+.card-nav-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: auto;
+}
+
+.btn-card-nav {
+  flex-grow: 1;
+  background-color: var(--bg-white);
+  color: var(--color-ink);
+  border: 1.5px solid var(--color-ink);
+  padding: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: var(--radius-sharp);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  box-shadow: var(--shadow-flat-2);
+}
+
+.btn-card-nav:hover {
+  background-color: var(--bg-cream);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px var(--color-ink);
+}
+
+.btn-card-nav[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: var(--shadow-flat-2);
+}
+
+.btn-submit {
+  flex-grow: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: var(--accent-acid);
+  color: var(--color-ink);
+  border: 2px solid var(--color-ink);
+  padding: 12px 24px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border-radius: var(--radius-sharp);
+  cursor: pointer;
+  box-shadow: var(--shadow-flat-2);
+  transition: var(--transition-fast);
+}
+
+.btn-submit:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0px var(--color-ink);
+}
+
+.btn-submit:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px var(--color-ink);
+}
+
+.btn-submit[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: var(--shadow-flat-2);
+}
+
+.submit-arrow {
+  transition: transform 0.2s ease;
+}
+
+.btn-submit:hover .submit-arrow {
+  transform: translateX(3px);
+}
+
+/* Card Form Inputs */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.form-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.label-optional {
+  font-size: 0.75rem;
+  opacity: 0.5;
+  font-weight: 500;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--color-ink);
+  border-radius: var(--radius-sharp);
+  font-size: 0.95rem;
+  background-color: var(--bg-cream);
+  color: var(--color-ink);
+  transition: var(--transition-fast);
+}
+
+.form-input::placeholder {
+  color: rgba(26, 23, 18, 0.45);
+}
+
+.form-input:focus {
+  outline: none;
+  background-color: var(--bg-white);
+  box-shadow: 3px 3px 0px var(--color-ink);
+}
+
+.form-textarea {
+  resize: none;
+}
+
+.input-hint {
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+.select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.select-wrapper::after {
+  content: '▼';
+  font-size: 0.65rem;
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.form-select {
+  appearance: none;
+  cursor: pointer;
+  padding-right: 40px;
+}
+
+/* --------------------------------------------------------------------------
+   16. Keyframe & Micro-Animations
+   -------------------------------------------------------------------------- */
+/* SVG draw-in animation */
+.doodle path {
+  stroke-dasharray: 500;
+  stroke-dashoffset: 500;
+  animation: drawIn 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.doodle-leaf path { animation-delay: 0.1s; }
+.doodle-arrow path { animation-delay: 0.3s; }
+.doodle-underline path { animation-delay: 0.6s; }
+
+@keyframes drawIn {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Respect user prefers-reduced-motion setting globally */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-delay: 0s !important;
+    animation-duration: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0s !important;
+    scroll-behavior: auto !important;
+  }
+  .doodle path {
+    stroke-dashoffset: 0 !important;
+  }
+  .flash-card {
+    transform: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   17. Responsive Layouts
+   -------------------------------------------------------------------------- */
+@media (max-width: 1200px) {
+  .hero-container {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    text-align: center;
+  }
+  .hero-visual {
+    justify-content: center;
+  }
+  .countdown-timer {
+    justify-content: center;
+  }
+  .curriculum-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .mentors-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .tz-selector-component {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 16px 32px;
+  }
+  .nav-links {
+    display: none; /* Mobile layout hides nav-links */
+  }
+  .hero-section {
+    padding: 64px 32px;
+  }
+  .hero-title {
+    font-size: 3.5rem;
+  }
+  .doodle-leaf {
+    width: 100px;
+    height: 100px;
+    top: -45px;
+    left: -20px;
+  }
+  .doodle-arrow {
+    display: none;
+  }
+  .timezone-section {
+    padding: 48px 32px;
+  }
+  .tz-buttons {
+    grid-template-columns: 1fr;
+  }
+  .mentors-grid {
+    grid-template-columns: 1fr;
+  }
+  .faq-section {
+    padding: 64px 32px;
+  }
+  .faq-header {
+    padding: 20px 24px;
+    font-size: 1rem;
+  }
+  .faq-content {
+    padding: 0 24px 20px;
+  }
+  .form-panel {
+    width: 100%;
+  }
+  .flash-card-deck {
+    padding: 24px 20px;
+  }
+  .flash-card {
+    left: 20px;
+    right: 20px;
+    padding: 30px 20px;
+  }
+  .footer {
+    padding: 48px 32px;
+  }
+  .footer-container {
+    flex-direction: column;
+    gap: 24px;
+    text-align: center;
+  }
+}
