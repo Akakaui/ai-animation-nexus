@@ -277,6 +277,7 @@ p, label, input, textarea, select {
 .hero-section {
   padding: 96px 80px;
   border-bottom: 2px solid var(--color-ink);
+  overflow-x: hidden;
 }
 
 .hero-container {
@@ -1471,6 +1472,14 @@ p, label, input, textarea, select {
   }
   .hero-title {
     font-size: 3.5rem;
+  }
+  .countdown-timer {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .time-block {
+    padding: 6px 12px;
+    font-size: 1.4rem;
   }
   .doodle-leaf {
     width: 100px;

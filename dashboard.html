@@ -163,47 +163,10 @@
       background-color: #2a2a2a;
     }
 
-    /* Dev Panel Dropdown */
-    .dev-state-panel {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      background-color: var(--color-ink);
-      color: var(--bg-cream);
-      padding: 12px 18px;
-      border-radius: var(--radius-sharp);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 0.8rem;
-    }
-    .dev-state-panel select {
-      background-color: var(--bg-white);
-      color: var(--color-ink);
-      border: none;
-      padding: 6px 10px;
-      border-radius: 2px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
   <div class="paper-texture"></div>
-
-  <!-- State Simulator (Visible for review/demo purposes) -->
-  <div class="dev-state-panel">
-    <span>🛠️ Simulator:</span>
-    <select id="stateSelector">
-      <option value="pre-course">Pre-Course (Orientation)</option>
-      <option value="class-day">Class Day (Verify Code)</option>
-      <option value="verified">Verified (Zoom Access)</option>
-      <option value="post-course">Post-Course (Attendance Summary)</option>
-    </select>
-  </div>
 
   <div class="dash-layout">
     <header class="dash-header">

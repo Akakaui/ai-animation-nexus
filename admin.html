@@ -152,6 +152,9 @@
     }
 
     /* Attendance Matrix — Mobile Responsive */
+    /* Mobile Cards */
+    .mobile-cards { display: none; }
+
     .attendance-matrix {
       width: 100%;
       min-width: 500px;
@@ -243,18 +246,19 @@
 
     @media (max-width: 540px) {
       .session-table thead { display: none; }
-      .session-card {
-        display: block;
-        background: var(--bg-cream);
-        border: 1.5px solid var(--color-divider);
-        border-radius: var(--radius-sharp);
-        padding: 14px;
-        margin-bottom: 16px;
-      }
-      .session-card-row { display: none; }
-      .session-table tbody tr { display: block; }
       .session-table tbody tr td { display: none; }
       .session-table tbody tr td:first-child { display: block; }
+      .attendance-matrix { display: none; }
+      .mobile-cards { display: flex; flex-direction: column; gap: 12px; }
+      .mobile-card {
+        background: var(--bg-cream);
+        border: 1.5px solid var(--color-ink);
+        border-radius: var(--radius-sharp);
+        padding: 14px;
+      }
+      .mobile-card-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 0.8rem; }
+      .mobile-card-row + .mobile-card-row { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--color-divider); }
+      .mobile-card-label { font-weight: 700; font-size: 0.7rem; text-transform: uppercase; opacity: 0.6; }
     }
   </style>
 </head>
@@ -326,6 +330,7 @@
         <tbody id="sessionsBody">
         </tbody>
       </table>
+      <div id="sessionMobileCards" class="mobile-cards"></div>
       <p style="font-size: 0.75rem; opacity: 0.6; margin-top: 12px;">
         Students see the Zoom link only when the session is unlocked. Paste a Zoom URL and optionally set a custom unlock time.
       </p>
@@ -348,6 +353,7 @@
           <tr><td colspan="9" style="text-align: center; opacity: 0.5; padding: 20px;">Loading...</td></tr>
         </tbody>
       </table>
+      <div id="attendanceMobileCards" class="mobile-cards"></div>
     </div>
 
     <!-- Section 3: Student Registry -->
@@ -355,7 +361,9 @@
       <h2 class="admin-section-title">
         Student Registry
         <span class="count-badge" id="studentCount">— paid</span>
+        <button class="btn-table-action" id="exportCsvBtn" onclick="exportCSV()" style="margin-left:auto;">Export CSV</button>
       </h2>
+      <div id="studentMobileCards" class="mobile-cards"></div>
       <table class="session-table">
         <thead>
           <tr>
@@ -473,6 +481,27 @@
       });
       tbody.innerHTML = html || '<tr><td colspan="7" style="text-align:center;padding:20px;opacity:0.5;">No sessions found</td></tr>';
       document.getElementById('zoomSetCount').textContent = `${zoomSet} / 8 links set`;
+
+      // Mobile cards
+      const cardsContainer = document.getElementById('sessionMobileCards');
+      let cardsHtml = '';
+      sessions.forEach(s => {
+        const isUnlocked = isSessionUnlocked(s);
+        const statusText = isUnlocked ? 'Unlocked' : 'Locked';
+        const displayUnlock = s.unlocks_at ? formatUnlockDisplay(s.unlocks_at) : '9 PM WAT';
+        cardsHtml += `<div class="mobile-card">
+          <div class="mobile-card-row"><strong>${s.title}</strong> <span class="lock-status ${isUnlocked ? 'unlocked' : 'locked'}">${statusText}</span></div>
+          <div class="mobile-card-row"><span class="mobile-card-label">Host</span> <span>${hostMap[s.session_number] || s.host || '—'}</span></div>
+          <div class="mobile-card-row"><span class="mobile-card-label">Date</span> <span>${dateMap[s.session_number] || s.date || '—'}</span></div>
+          <div class="mobile-card-row"><span class="mobile-card-label">Unlock</span> <span>${displayUnlock}</span></div>
+          <div class="mobile-card-row" style="flex-direction:column;align-items:stretch;">
+            <input type="text" id="zoom-${s.id}" value="${s.zoom_url || ''}" placeholder="Zoom URL" style="padding:8px;border:1.5px solid var(--color-ink);border-radius:var(--radius-sharp);font-size:0.8rem;width:100%;box-sizing:border-box;">
+            <input type="datetime-local" id="unlock-${s.id}" value="${s.unlocks_at ? toDatetimeLocal(s.unlocks_at) : ''}" style="padding:6px 8px;border:1.5px solid var(--color-divider);border-radius:var(--radius-sharp);font-size:0.75rem;margin-top:6px;width:100%;box-sizing:border-box;">
+            <button class="btn-table-action" onclick="saveSession(${s.id})" style="margin-top:8px;width:100%;">Save</button>
+          </div>
+        </div>`;
+      });
+      cardsContainer.innerHTML = cardsHtml;
     }
 
     async function saveSession(id) {
@@ -534,6 +563,23 @@
         html += '</tr>';
       });
       tbody.innerHTML = html;
+
+      // Mobile cards for attendance
+      const attCards = document.getElementById('attendanceMobileCards');
+      let attCardsHtml = '';
+      matrix.forEach(row => {
+        let present = '', absent = '';
+        for (let i = 1; i <= 8; i++) {
+          if (row['s' + i]) present += 'S' + i + ' ';
+          else absent += 'S' + i + ' ';
+        }
+        attCardsHtml += `<div class="mobile-card">
+          <div class="mobile-card-row"><strong>${row.student.name}</strong></div>
+          <div class="mobile-card-row"><span class="mobile-card-label">Present</span> <span style="color:#070;">${present || 'None'}</span></div>
+          <div class="mobile-card-row"><span class="mobile-card-label">Absent</span> <span style="color:#c00;">${absent || 'None'}</span></div>
+        </div>`;
+      });
+      attCards.innerHTML = attCardsHtml || '<p style="text-align:center;opacity:0.5;">No attendance data</p>';
     }
 
     async function loadStudents() {
@@ -560,6 +606,21 @@
         </tr>`;
       });
       tbody.innerHTML = html;
+
+      // Mobile cards for students
+      const studCards = document.getElementById('studentMobileCards');
+      let studCardsHtml = '';
+      students.forEach(s => {
+        const date = s.created_at ? new Date(s.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+        studCardsHtml += `<div class="mobile-card">
+          <div class="mobile-card-row"><strong>${s.full_name}</strong></div>
+          <div class="mobile-card-row"><span class="mobile-card-label">Email</span> <span>${s.email}</span></div>
+          <div class="mobile-card-row"><span class="mobile-card-label">WhatsApp</span> <span>${s.whatsapp || '—'}</span></div>
+          <div class="mobile-card-row"><span class="mobile-card-label">Code</span> <span><code style="font-size:0.75rem;">${s.access_code || '—'}</code></span></div>
+          <div class="mobile-card-row"><span class="mobile-card-label">Joined</span> <span style="font-size:0.75rem;opacity:0.7;">${date}</span></div>
+        </div>`;
+      });
+      studCards.innerHTML = studCardsHtml || '<p style="text-align:center;opacity:0.5;">No paid students</p>';
     }
 
     function isSessionUnlocked(s) {
@@ -597,12 +658,33 @@
     function fromDatetimeLocal(val) {
       if (!val) return null;
       const [date, time] = val.split('T');
-      const [y, mo, d] = date.split('-');
-      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-      return `${y}-${months[parseInt(mo)-1].padStart ? months[parseInt(mo)-1] : mo}-${d}T${time}:00.000WAT`;
+      return `${date}T${time}:00.000WAT`;
     }
 
     window.saveSession = saveSession;
+
+    function exportCSV() {
+      const rows = document.querySelectorAll('#studentsBody tr');
+      if (!rows.length || rows[0].cells.length < 2) return;
+      let csv = 'Name,Email,WhatsApp,Access Code,Joined\n';
+      rows.forEach(tr => {
+        const cells = tr.querySelectorAll('td');
+        if (cells.length < 5) return;
+        const name = cells[0].textContent.trim();
+        const email = cells[1].textContent.trim();
+        const whatsapp = cells[2].textContent.trim();
+        const code = cells[3].textContent.trim();
+        const joined = cells[4].textContent.trim();
+        csv += `"${name}","${email}","${whatsapp}","${code}","${joined}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.setAttribute('download', 'AI_Animation_Nexus_Students.csv');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   </script>
 </body>
 </html>

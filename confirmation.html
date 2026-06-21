@@ -233,18 +233,10 @@
           throw new Error('Server error');
         }
       } catch (err) {
-        // Fallback to client-side code if server fails
-        console.log('Using client-side code (server unavailable):', err);
-        let uniqueCode = localStorage.getItem('nexus_access_code');
-        if (!uniqueCode) {
-          const randNum = Math.floor(1000 + Math.random() * 9000);
-          const randChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-          const c1 = randChars[Math.floor(Math.random() * 26)];
-          const c2 = randChars[Math.floor(Math.random() * 26)];
-          uniqueCode = `AN-${randNum}-${c1}${c2}`;
-          localStorage.setItem('nexus_access_code', uniqueCode);
-        }
-        document.getElementById('accessCode').textContent = uniqueCode;
+        console.error('Failed to fetch access code from server:', err);
+        document.getElementById('accessCode').textContent = 'Check your email';
+        document.querySelector('.confirm-subtext').textContent =
+          'Your access code has been sent to your email. If you did not receive it, please contact support.';
       }
 
       // 2. Copy Code to Clipboard
@@ -333,18 +325,6 @@
       });
       
       window.open(`https://calendar.google.com/calendar/render?${params.toString()}`, '_blank');
-    });
-        
-        icsContent += 'END:VCALENDAR';
-
-        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8;' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.setAttribute('download', 'Animation_Nexus_Schedule.ics');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      });
     });
   </script>
 </body>
