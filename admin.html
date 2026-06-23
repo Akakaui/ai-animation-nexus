@@ -1,690 +1,165 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="dark" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel — AI Animation Nexus</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=General+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
-  <style>
-    .admin-layout {
-      min-height: 100vh;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 60px 20px;
-    }
-    .admin-header {
-      border-bottom: 2px solid var(--color-ink);
-      padding-bottom: 24px;
-      margin-bottom: 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-    .admin-title {
-      font-size: 2.25rem;
-      text-transform: none;
-    }
-    .admin-badge {
-      background-color: var(--accent-acid);
-      color: var(--color-ink);
-      padding: 6px 14px;
-      border-radius: var(--radius-sharp);
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-    .admin-card {
-      background-color: var(--bg-white);
-      border: 2px solid var(--color-ink);
-      border-radius: var(--radius-sharp);
-      box-shadow: var(--shadow-flat-4);
-      padding: 28px;
-      margin-bottom: 40px;
-      overflow-x: auto;
-    }
-    .admin-section-title {
-      font-size: 1.35rem;
-      margin-bottom: 24px;
-      border-bottom: 1.5px solid var(--color-ink);
-      padding-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .admin-section-title .count-badge {
-      font-size: 0.8rem;
-      background: var(--accent-acid);
-      border: 1.5px solid var(--color-ink);
-      padding: 4px 12px;
-      border-radius: var(--radius-sharp);
-      font-weight: 700;
-    }
-
-    /* Session Table — Mobile Responsive */
-    .session-table {
-      width: 100%;
-      min-width: 640px;
-      border-collapse: collapse;
-    }
-    .session-table th, .session-table td {
-      border: 1px solid var(--color-divider);
-      padding: 12px;
-      text-align: left;
-      font-size: 0.875rem;
-    }
-    .session-table th {
-      background-color: var(--bg-cream);
-      font-weight: 700;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-    .session-card {
-      display: none;
-    }
-    .zoom-input-group {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .zoom-input-group input {
-      flex: 1;
-      min-width: 140px;
-      padding: 8px 10px;
-      border: 1.5px solid var(--color-ink);
-      border-radius: var(--radius-sharp);
-      font-size: 0.8rem;
-      font-family: 'General Sans', sans-serif;
-    }
-    .unlock-input {
-      width: 100%;
-      padding: 6px 8px;
-      border: 1.5px solid var(--color-divider);
-      border-radius: var(--radius-sharp);
-      font-size: 0.75rem;
-      font-family: 'General Sans', sans-serif;
-      margin-top: 6px;
-      color: var(--color-ink);
-    }
-    .unlock-input:focus {
-      outline: none;
-      border-color: var(--accent-acid);
-    }
-    .lock-status {
-      display: inline-block;
-      padding: 3px 8px;
-      border-radius: 3px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      margin-top: 4px;
-    }
-    .lock-status.locked { background: #fee; color: #c00; border: 1px solid #c00; }
-    .lock-status.unlocked { background: #efe; color: #070; border: 1px solid #070; }
-    .btn-table-action {
-      background-color: var(--accent-acid);
-      color: var(--color-ink);
-      border: 1.5px solid var(--color-ink);
-      padding: 7px 14px;
-      font-weight: 700;
-      font-size: 0.75rem;
-      border-radius: var(--radius-sharp);
-      cursor: pointer;
-      box-shadow: var(--shadow-flat-2);
-      white-space: nowrap;
-      transition: transform 0.1s, box-shadow 0.1s;
-    }
-    .btn-table-action:hover {
-      transform: translate(-1px, -1px);
-      box-shadow: 2px 2px 0px var(--color-ink);
-    }
-    .btn-table-action.saved {
-      background-color: #2ecc71;
-      color: #fff;
-      border-color: #2ecc71;
-    }
-
-    /* Attendance Matrix — Mobile Responsive */
-    /* Mobile Cards */
-    .mobile-cards { display: none; }
-
-    .attendance-matrix {
-      width: 100%;
-      min-width: 500px;
-      border-collapse: collapse;
-    }
-    .attendance-matrix th, .attendance-matrix td {
-      border: 1px solid var(--color-divider);
-      padding: 8px 6px;
-      text-align: center;
-      font-size: 0.8rem;
-    }
-    .attendance-matrix th {
-      background-color: var(--bg-cream);
-      font-weight: 700;
-      font-size: 0.7rem;
-      text-transform: uppercase;
-    }
-    .attendance-dot {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      border: 1.5px solid var(--color-ink);
-    }
-    .dot-present { background-color: var(--accent-acid); }
-    .dot-absent { background-color: #f0f0f0; }
-
-    /* Stats row */
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 16px;
-      margin-bottom: 40px;
-    }
-    .stat-card {
-      background: var(--bg-white);
-      border: 2px solid var(--color-ink);
-      border-radius: var(--radius-sharp);
-      padding: 20px;
-      text-align: center;
-      box-shadow: var(--shadow-flat-2);
-    }
-    .stat-value {
-      font-family: 'Bricolage Grotesque', sans-serif;
-      font-size: 2rem;
-      font-weight: 800;
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-    .stat-label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      font-weight: 700;
-      opacity: 0.6;
-    }
-
-    /* Login Box */
-    .login-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background-color: var(--bg-cream);
-      z-index: 10000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-    .login-box {
-      background-color: var(--bg-white);
-      border: 2px solid var(--color-ink);
-      padding: 40px;
-      max-width: 400px;
-      width: 100%;
-      border-radius: var(--radius-sharp);
-      box-shadow: var(--shadow-flat-4);
-      text-align: center;
-    }
-
-    @media (max-width: 768px) {
-      .admin-layout { padding: 40px 16px; }
-      .admin-title { font-size: 1.75rem; }
-      .admin-card { padding: 16px; }
-      .session-table { font-size: 0.8rem; }
-      .session-table th, .session-table td { padding: 10px 8px; }
-      .zoom-input-group input { min-width: 100px; font-size: 0.75rem; }
-      .btn-table-action { padding: 6px 10px; font-size: 0.7rem; }
-    }
-
-    @media (max-width: 540px) {
-      .session-table thead { display: none; }
-      .session-table tbody tr td { display: none; }
-      .session-table tbody tr td:first-child { display: block; }
-      .attendance-matrix { display: none; }
-      .mobile-cards { display: flex; flex-direction: column; gap: 12px; }
-      .mobile-card {
-        background: var(--bg-cream);
-        border: 1.5px solid var(--color-ink);
-        border-radius: var(--radius-sharp);
-        padding: 14px;
-      }
-      .mobile-card-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 0.8rem; }
-      .mobile-card-row + .mobile-card-row { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--color-divider); }
-      .mobile-card-label { font-weight: 700; font-size: 0.7rem; text-transform: uppercase; opacity: 0.6; }
-    }
-  </style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Panel — AI Animation Nexus</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary":"#6dffba","on-surface":"#e5e1e4","on-surface-variant":"#bacbbe","glass-surface":"rgba(255,255,255,0.05)","surface":"#131315","glass-border":"rgba(255,255,255,0.1)","text-muted":"#8C8C94","text-primary":"#F2F2F2"},fontFamily:{"hero-display":["Libre Caslon Text"],"body-md":["Inter"],"metadata-xs":["Space Mono"],"headline-sm":["Libre Caslon Text"],"label-mono":["Space Mono"]},fontSize:{"body-md":["17px",{"lineHeight":"28px","fontWeight":"300"}],"metadata-xs":["12px",{"lineHeight":"16px","letterSpacing":"0.15em","fontWeight":"400"}],"headline-sm":["24px",{"lineHeight":"32px","fontWeight":"400"}],"label-mono":["14px",{"lineHeight":"20px","letterSpacing":"0.1em","fontWeight":"500"}]}}}}
+</script>
+<style>
+  body{background-color:#0A0A0C;color:#F2F2F2;overflow-x:hidden;scroll-behavior:smooth;}
+  .noise-overlay{position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:9999;opacity:0.1;background:url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="n"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23n)"/%3E%3C/svg%3E');}
+  .fluid-bg{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:-1;background:radial-gradient(circle at 20% 30%,rgba(0,229,153,0.07) 0%,transparent 50%),radial-gradient(circle at 80% 70%,rgba(139,92,246,0.07) 0%,transparent 50%);}
+  .glass-panel{background:rgba(255,255,255,0.05);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.1);}
+  .minimal-input{background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.2);color:#F2F2F2;transition:border-color 0.3s ease;width:100%;}
+  .minimal-input:focus{outline:none;border-bottom-color:#00E599;}
+  .btn-cta{background:linear-gradient(135deg,rgba(0,229,153,0.15) 0%,rgba(139,92,246,0.15) 100%);border:1px solid rgba(0,229,153,0.5);color:#6dffba;transition:all 0.4s ease;}
+  .btn-cta:hover{background:#00E599;color:#003822;border-color:#00E599;}
+</style>
 </head>
-<body>
-  <div class="paper-texture"></div>
+<body class="antialiased">
+<div class="noise-overlay"></div>
+<div class="fluid-bg"></div>
 
-  <div class="login-overlay" id="loginOverlay">
-    <div class="login-box">
-      <h2 style="font-family: 'Bricolage Grotesque', serif; font-size: 1.75rem; margin-bottom: 24px;">Admin Lock</h2>
-      <div class="form-group" style="text-align: left; margin-bottom: 20px;">
-        <label for="adminPassword" class="form-label">Admin Password</label>
-        <input type="password" id="adminPassword" class="form-input" placeholder="Enter admin password" required>
-      </div>
-      <button class="btn-primary" style="width: 100%;" id="loginBtn">Unlock Admin Panel</button>
-      <p id="loginError" style="color: #c00; font-size: 0.85rem; margin-top: 12px; display: none;"></p>
+<!-- Nav -->
+<nav class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 py-4 glass-panel">
+  <div class="font-hero-display text-base text-on-surface uppercase tracking-tighter">AI Animation Nexus — Admin</div>
+</nav>
+
+<main class="max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+  <!-- Login Section -->
+  <div id="loginSection" class="max-w-md mx-auto mt-20">
+    <div class="glass-panel rounded-2xl p-8 text-center">
+      <span class="material-symbols-outlined text-4xl text-primary mb-4">admin_panel_settings</span>
+      <h2 class="font-headline-sm text-headline-sm text-text-primary mb-6">Admin Login</h2>
+      <form id="adminForm" onsubmit="handleLogin(event)">
+        <input type="password" id="adminPassword" class="w-full h-12 minimal-input font-body-md text-sm mb-6" placeholder="Enter Admin Password" required />
+        <button type="submit" class="w-full h-12 rounded-xl btn-cta font-label-mono uppercase tracking-widest text-sm">Access Dashboard</button>
+      </form>
+      <p id="loginError" class="text-red-400 font-label-mono text-xs mt-4 hidden">Invalid password.</p>
     </div>
   </div>
 
-  <div class="admin-layout" id="adminContent" style="display: none;">
-    <header class="admin-header">
-      <div>
-        <h1 class="admin-title">Operations Console</h1>
-        <span style="font-size: 0.85rem; opacity: 0.6; font-weight: 600;">AI Animation Nexus</span>
-      </div>
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <span class="admin-badge">Internal Admin</span>
-        <button class="btn-table-action" onclick="location.reload()" style="font-size: 0.75rem;">Refresh</button>
-      </div>
-    </header>
+  <!-- Dashboard Section -->
+  <div id="dashboardSection" class="hidden">
+    <div class="mb-12">
+      <h1 class="font-hero-display text-4xl text-text-primary mb-2">Admin Dashboard</h1>
+      <p class="font-body-md text-sm text-on-surface-variant">Manage cohort, view stats, and export data.</p>
+    </div>
 
-    <!-- Stats Row -->
-    <div class="stats-row" id="statsRow">
-      <div class="stat-card">
-        <div class="stat-value" id="statStudents">—</div>
-        <div class="stat-label">Paid Students</div>
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      <div class="glass-panel rounded-2xl p-6">
+        <p class="font-label-mono text-metadata-xs text-on-surface-variant uppercase mb-2">Paid Students</p>
+        <p class="font-hero-display text-4xl text-primary" id="statStudents">...</p>
       </div>
-      <div class="stat-card">
-        <div class="stat-value" id="statAttendance">—</div>
-        <div class="stat-label">Total Check-ins</div>
+      <div class="glass-panel rounded-2xl p-6">
+        <p class="font-label-mono text-metadata-xs text-on-surface-variant uppercase mb-2">Total Attendance</p>
+        <p class="font-hero-display text-4xl text-primary" id="statAttendance">...</p>
       </div>
-      <div class="stat-card">
-        <div class="stat-value" id="statSessions">8</div>
-        <div class="stat-label">Sessions</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" id="statFillRate">—</div>
-        <div class="stat-label">% Fill Rate</div>
+      <div class="glass-panel rounded-2xl p-6">
+        <p class="font-label-mono text-metadata-xs text-on-surface-variant uppercase mb-2">Fill Rate</p>
+        <p class="font-hero-display text-4xl text-primary" id="statFillRate">...%</p>
       </div>
     </div>
 
-    <!-- Section 1: Class Zoom Session Map -->
-    <div class="admin-card">
-      <h2 class="admin-section-title">
-        Class Zoom Session Map
-        <span class="count-badge" id="zoomSetCount">0 / 8 links set</span>
-      </h2>
-      <table class="session-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Topic</th>
-            <th>Host</th>
-            <th>Date</th>
-            <th>Unlock Time (WAT)</th>
-            <th>Status</th>
-            <th>Zoom URL + Unlock</th>
-          </tr>
-        </thead>
-        <tbody id="sessionsBody">
-        </tbody>
-      </table>
-      <div id="sessionMobileCards" class="mobile-cards"></div>
-      <p style="font-size: 0.75rem; opacity: 0.6; margin-top: 12px;">
-        Students see the Zoom link only when the session is unlocked. Paste a Zoom URL and optionally set a custom unlock time.
-      </p>
+    <!-- Actions -->
+    <div class="glass-panel rounded-2xl p-8 mb-12 border-l-2 border-primary">
+      <h2 class="font-headline-sm text-2xl text-text-primary mb-2">Student Data Export</h2>
+      <p class="font-body-md text-sm text-on-surface-variant mb-6">Download a CSV of all paid students to import into Mailchimp, Substack, or any newsletter tool.</p>
+      <button onclick="exportCSV()" class="h-12 px-6 rounded-xl btn-cta font-label-mono uppercase tracking-widest text-sm flex items-center gap-2">
+        <span class="material-symbols-outlined text-sm">download</span> Download CSV
+      </button>
     </div>
 
-    <!-- Section 2: Attendance Matrix -->
-    <div class="admin-card">
-      <h2 class="admin-section-title">
-        Attendance Matrix
-        <span class="count-badge" id="attCount">Loading...</span>
-      </h2>
-      <table class="attendance-matrix">
-        <thead>
-          <tr>
-            <th style="text-align: left; min-width: 140px;">Student</th>
-            <th>S1</th><th>S2</th><th>S3</th><th>S4</th><th>S5</th><th>S6</th><th>S7</th><th>S8</th>
-          </tr>
-        </thead>
-        <tbody id="attendanceBody">
-          <tr><td colspan="9" style="text-align: center; opacity: 0.5; padding: 20px;">Loading...</td></tr>
-        </tbody>
-      </table>
-      <div id="attendanceMobileCards" class="mobile-cards"></div>
-    </div>
-
-    <!-- Section 3: Student Registry -->
-    <div class="admin-card">
-      <h2 class="admin-section-title">
-        Student Registry
-        <span class="count-badge" id="studentCount">— paid</span>
-        <button class="btn-table-action" id="exportCsvBtn" onclick="exportCSV()" style="margin-left:auto;">Export CSV</button>
-      </h2>
-      <div id="studentMobileCards" class="mobile-cards"></div>
-      <table class="session-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>WhatsApp</th>
-            <th>Code</th>
-            <th>Joined</th>
-          </tr>
-        </thead>
-        <tbody id="studentsBody">
-          <tr><td colspan="5" style="text-align: center; opacity: 0.5; padding: 20px;">Loading...</td></tr>
-        </tbody>
-      </table>
+    <!-- Log out -->
+    <div class="text-right">
+      <button onclick="logout()" class="font-label-mono text-xs text-text-muted hover:text-white uppercase tracking-widest">Sign Out</button>
     </div>
   </div>
 
-  <script>
-    const ADMIN_API = '/api/admin';
-    let adminPassword = '';
+</main>
 
-    document.getElementById('loginBtn').addEventListener('click', async function() {
-      const pass = document.getElementById('adminPassword').value;
-      if (!pass) {
-        document.getElementById('loginError').textContent = 'Please enter a password';
-        document.getElementById('loginError').style.display = 'block';
+<script>
+  let adminToken = localStorage.getItem('nexus_admin_pw');
+
+  if (adminToken) {
+    loadDashboard();
+  }
+
+  async function handleLogin(e) {
+    e.preventDefault();
+    const pw = document.getElementById('adminPassword').value;
+    adminToken = pw;
+    const success = await loadDashboard();
+    if (success) {
+      localStorage.setItem('nexus_admin_pw', pw);
+      document.getElementById('loginSection').classList.add('hidden');
+      document.getElementById('loginError').classList.add('hidden');
+    } else {
+      adminToken = null;
+      document.getElementById('loginError').classList.remove('hidden');
+    }
+  }
+
+  async function loadDashboard() {
+    try {
+      const res = await fetch('/api/admin/stats', {
+        headers: { 'x-admin-password': adminToken }
+      });
+      if (!res.ok) throw new Error('Unauthorized');
+      
+      const data = await res.json();
+      
+      document.getElementById('statStudents').textContent = data.totalStudents;
+      document.getElementById('statAttendance').textContent = data.totalAttendance;
+      document.getElementById('statFillRate').textContent = data.fillRate + '%';
+
+      document.getElementById('loginSection').classList.add('hidden');
+      document.getElementById('dashboardSection').classList.remove('hidden');
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  }
+
+  async function exportCSV() {
+    try {
+      const res = await fetch('/api/admin/export', {
+        headers: { 'x-admin-password': adminToken }
+      });
+      if (!res.ok) {
+        alert('Unauthorized or error fetching CSV');
         return;
       }
-      adminPassword = pass;
-      document.getElementById('loginError').style.display = 'none';
-      this.textContent = 'Verifying...';
-      this.disabled = true;
-
-      try {
-        const res = await fetch(`${ADMIN_API}/sessions`, {
-          headers: { 'x-admin-password': adminPassword }
-        });
-        if (res.ok) {
-          document.getElementById('loginOverlay').style.display = 'none';
-          document.getElementById('adminContent').style.display = 'block';
-          await loadAdminData();
-        } else {
-          throw new Error('Invalid password');
-        }
-      } catch (err) {
-        document.getElementById('loginError').textContent = 'Invalid password. Try again.';
-        document.getElementById('loginError').style.display = 'block';
-        this.textContent = 'Unlock Admin Panel';
-        this.disabled = false;
-      }
-    });
-
-    document.getElementById('adminPassword').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') document.getElementById('loginBtn').click();
-    });
-
-    async function loadAdminData() {
-      await Promise.all([
-        loadStats(),
-        loadSessions(),
-        loadAttendance(),
-        loadStudents()
-      ]);
+      
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'students.csv';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      alert('Error downloading CSV');
     }
+  }
 
-    async function loadStats() {
-      try {
-        const res = await fetch(`${ADMIN_API}/stats`, {
-          headers: { 'x-admin-password': adminPassword }
-        });
-        if (!res.ok) return;
-        const data = await res.json();
-        document.getElementById('statStudents').textContent = data.totalStudents;
-        document.getElementById('statAttendance').textContent = data.totalAttendance;
-        document.getElementById('statFillRate').textContent = (data.fillRate || 0) + '%';
-      } catch (e) { console.error(e); }
-    }
-
-    async function loadSessions() {
-      const res = await fetch(`${ADMIN_API}/sessions`, {
-        headers: { 'x-admin-password': adminPassword }
-      });
-      if (!res.ok) return;
-      const { sessions } = await res.json();
-      const tbody = document.getElementById('sessionsBody');
-      const hostMap = { 1:'Bethel', 2:'Bethel', 3:'Della', 4:'Chijioke', 5:'Chijioke', 6:'Chibuike Ifeoma', 7:'Chibuike Ifeoma', 8:'Tochukwu' };
-      const dateMap = { 1:'Jul 24', 2:'Jul 25', 3:'Jul 31', 4:'Aug 1', 5:'Aug 7', 6:'Aug 8', 7:'Aug 14', 8:'Aug 15' };
-
-      let html = '';
-      let zoomSet = 0;
-      sessions.forEach(s => {
-        if (s.zoom_url) zoomSet++;
-        const isUnlocked = isSessionUnlocked(s);
-        const statusClass = isUnlocked ? 'unlocked' : 'locked';
-        const statusText = isUnlocked ? 'Unlocked' : 'Locked';
-        const displayUnlock = s.unlocks_at ? formatUnlockDisplay(s.unlocks_at) : '9 PM WAT on session day';
-
-        html += `<tr>
-          <td><strong>S${s.session_number}</strong></td>
-          <td style="max-width: 180px;">${s.title}</td>
-          <td style="white-space: nowrap;">${hostMap[s.session_number] || s.host || '—'}</td>
-          <td style="white-space: nowrap;">${dateMap[s.session_number] || s.date || '—'}</td>
-          <td style="font-size: 0.75rem; color: #555; white-space: nowrap;">${displayUnlock}</td>
-          <td><span class="lock-status ${statusClass}">${statusText}</span></td>
-          <td>
-            <div class="zoom-input-group">
-              <input type="text" id="zoom-${s.id}" value="${s.zoom_url || ''}" placeholder="Zoom URL">
-              <button class="btn-table-action" id="btn-zoom-${s.id}" onclick="saveSession(${s.id})">Save</button>
-            </div>
-            <input type="datetime-local" class="unlock-input" id="unlock-${s.id}"
-              value="${s.unlocks_at ? toDatetimeLocal(s.unlocks_at) : ''}"
-              placeholder="Unlock time (WAT)">
-          </td>
-        </tr>`;
-      });
-      tbody.innerHTML = html || '<tr><td colspan="7" style="text-align:center;padding:20px;opacity:0.5;">No sessions found</td></tr>';
-      document.getElementById('zoomSetCount').textContent = `${zoomSet} / 8 links set`;
-
-      // Mobile cards
-      const cardsContainer = document.getElementById('sessionMobileCards');
-      let cardsHtml = '';
-      sessions.forEach(s => {
-        const isUnlocked = isSessionUnlocked(s);
-        const statusText = isUnlocked ? 'Unlocked' : 'Locked';
-        const displayUnlock = s.unlocks_at ? formatUnlockDisplay(s.unlocks_at) : '9 PM WAT';
-        cardsHtml += `<div class="mobile-card">
-          <div class="mobile-card-row"><strong>${s.title}</strong> <span class="lock-status ${isUnlocked ? 'unlocked' : 'locked'}">${statusText}</span></div>
-          <div class="mobile-card-row"><span class="mobile-card-label">Host</span> <span>${hostMap[s.session_number] || s.host || '—'}</span></div>
-          <div class="mobile-card-row"><span class="mobile-card-label">Date</span> <span>${dateMap[s.session_number] || s.date || '—'}</span></div>
-          <div class="mobile-card-row"><span class="mobile-card-label">Unlock</span> <span>${displayUnlock}</span></div>
-          <div class="mobile-card-row" style="flex-direction:column;align-items:stretch;">
-            <input type="text" id="zoom-${s.id}" value="${s.zoom_url || ''}" placeholder="Zoom URL" style="padding:8px;border:1.5px solid var(--color-ink);border-radius:var(--radius-sharp);font-size:0.8rem;width:100%;box-sizing:border-box;">
-            <input type="datetime-local" id="unlock-${s.id}" value="${s.unlocks_at ? toDatetimeLocal(s.unlocks_at) : ''}" style="padding:6px 8px;border:1.5px solid var(--color-divider);border-radius:var(--radius-sharp);font-size:0.75rem;margin-top:6px;width:100%;box-sizing:border-box;">
-            <button class="btn-table-action" onclick="saveSession(${s.id})" style="margin-top:8px;width:100%;">Save</button>
-          </div>
-        </div>`;
-      });
-      cardsContainer.innerHTML = cardsHtml;
-    }
-
-    async function saveSession(id) {
-      const zoomVal = document.getElementById('zoom-' + id).value;
-      const unlockVal = document.getElementById('unlock-' + id).value;
-      const btn = document.getElementById('btn-zoom-' + id);
-
-      const body = { zoomUrl: zoomVal };
-      if (unlockVal) body.unlocksAt = fromDatetimeLocal(unlockVal);
-
-      try {
-        const res = await fetch(`${ADMIN_API}/sessions/${id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json', 'x-admin-password': adminPassword },
-          body: JSON.stringify(body)
-        });
-        if (res.ok) {
-          btn.textContent = 'Saved!';
-          btn.classList.add('saved');
-          setTimeout(() => { btn.textContent = 'Save'; btn.classList.remove('saved'); }, 1500);
-        } else {
-          btn.textContent = 'Error';
-          setTimeout(() => { btn.textContent = 'Save'; }, 1500);
-        }
-      } catch (e) {
-        btn.textContent = 'Error';
-        setTimeout(() => { btn.textContent = 'Save'; }, 1500);
-      }
-    }
-
-    async function loadAttendance() {
-      const res = await fetch(`${ADMIN_API}/attendance`, {
-        headers: { 'x-admin-password': adminPassword }
-      });
-      if (!res.ok) return;
-      const { sessions, matrix } = await res.json();
-      const attCount = matrix.filter(r => {
-        let attended = 0;
-        for (let i = 1; i <= 8; i++) if (r['s' + i]) attended++;
-        return attended > 0;
-      }).length;
-      document.getElementById('attCount').textContent = `${attCount} students attended`;
-
-      const tbody = document.getElementById('attendanceBody');
-      if (!matrix.length) {
-        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:20px;opacity:0.5;">No attendance data yet</td></tr>';
-        return;
-      }
-      let html = '';
-      matrix.forEach(row => {
-        html += `<tr>
-          <td style="text-align: left; font-size: 0.8rem; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${row.student.email}">
-            <strong>${row.student.name}</strong>
-          </td>`;
-        for (let i = 1; i <= 8; i++) {
-          const attended = row['s' + i];
-          html += `<td><span class="attendance-dot ${attended ? 'dot-present' : 'dot-absent'}"></span></td>`;
-        }
-        html += '</tr>';
-      });
-      tbody.innerHTML = html;
-
-      // Mobile cards for attendance
-      const attCards = document.getElementById('attendanceMobileCards');
-      let attCardsHtml = '';
-      matrix.forEach(row => {
-        let present = '', absent = '';
-        for (let i = 1; i <= 8; i++) {
-          if (row['s' + i]) present += 'S' + i + ' ';
-          else absent += 'S' + i + ' ';
-        }
-        attCardsHtml += `<div class="mobile-card">
-          <div class="mobile-card-row"><strong>${row.student.name}</strong></div>
-          <div class="mobile-card-row"><span class="mobile-card-label">Present</span> <span style="color:#070;">${present || 'None'}</span></div>
-          <div class="mobile-card-row"><span class="mobile-card-label">Absent</span> <span style="color:#c00;">${absent || 'None'}</span></div>
-        </div>`;
-      });
-      attCards.innerHTML = attCardsHtml || '<p style="text-align:center;opacity:0.5;">No attendance data</p>';
-    }
-
-    async function loadStudents() {
-      const res = await fetch(`${ADMIN_API}/students`, {
-        headers: { 'x-admin-password': adminPassword }
-      });
-      if (!res.ok) return;
-      const { students } = await res.json();
-      document.getElementById('studentCount').textContent = students.length + ' paid';
-      const tbody = document.getElementById('studentsBody');
-      if (!students.length) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;opacity:0.5;">No paid students yet</td></tr>';
-        return;
-      }
-      let html = '';
-      students.forEach(s => {
-        const date = s.created_at ? new Date(s.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
-        html += `<tr>
-          <td style="font-weight: 600;">${s.full_name}</td>
-          <td style="font-size: 0.8rem;">${s.email}</td>
-          <td style="font-size: 0.8rem;">${s.whatsapp || '—'}</td>
-          <td><code style="font-size: 0.75rem;">${s.access_code || '—'}</code></td>
-          <td style="font-size: 0.75rem; opacity: 0.7;">${date}</td>
-        </tr>`;
-      });
-      tbody.innerHTML = html;
-
-      // Mobile cards for students
-      const studCards = document.getElementById('studentMobileCards');
-      let studCardsHtml = '';
-      students.forEach(s => {
-        const date = s.created_at ? new Date(s.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
-        studCardsHtml += `<div class="mobile-card">
-          <div class="mobile-card-row"><strong>${s.full_name}</strong></div>
-          <div class="mobile-card-row"><span class="mobile-card-label">Email</span> <span>${s.email}</span></div>
-          <div class="mobile-card-row"><span class="mobile-card-label">WhatsApp</span> <span>${s.whatsapp || '—'}</span></div>
-          <div class="mobile-card-row"><span class="mobile-card-label">Code</span> <span><code style="font-size:0.75rem;">${s.access_code || '—'}</code></span></div>
-          <div class="mobile-card-row"><span class="mobile-card-label">Joined</span> <span style="font-size:0.75rem;opacity:0.7;">${date}</span></div>
-        </div>`;
-      });
-      studCards.innerHTML = studCardsHtml || '<p style="text-align:center;opacity:0.5;">No paid students</p>';
-    }
-
-    function isSessionUnlocked(s) {
-      if (!s.unlocks_at) return true;
-      try {
-        const clean = s.unlocks_at.replace('.000WAT', '');
-        const [datePart, timePart] = clean.split('T');
-        const [y, mo, d] = datePart.split('-').map(Number);
-        const [h = 20, mi = 0] = (timePart || '20:00').split(':').map(Number);
-        const unlockTime = new Date(Date.UTC(y, mo - 1, d, h, mi, 0));
-        return new Date() >= unlockTime;
-      } catch { return true; }
-    }
-
-    function formatUnlockDisplay(unlocksAt) {
-      try {
-        const clean = unlocksAt.replace('.000WAT', '');
-        const [datePart, timePart] = clean.split('T');
-        const [y, mo, d] = datePart.split('-').map(Number);
-        const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-        return `${months[mo-1]} ${d} @ ${timePart || '20:00'} WAT`;
-      } catch { return unlocksAt; }
-    }
-
-    function toDatetimeLocal(unlocksAt) {
-      try {
-        const clean = unlocksAt.replace('.000WAT', '');
-        const [datePart, timePart] = clean.split('T');
-        const [y, mo, d] = datePart.split('-').map(Number);
-        const [h, mi] = (timePart || '20:00').split(':');
-        return `${y}-${String(mo).padStart(2,'0')}-${String(d).padStart(2,'0')}T${h}:${mi}`;
-      } catch { return ''; }
-    }
-
-    function fromDatetimeLocal(val) {
-      if (!val) return null;
-      const [date, time] = val.split('T');
-      return `${date}T${time}:00.000WAT`;
-    }
-
-    window.saveSession = saveSession;
-
-    function exportCSV() {
-      const rows = document.querySelectorAll('#studentsBody tr');
-      if (!rows.length || rows[0].cells.length < 2) return;
-      let csv = 'Name,Email,WhatsApp,Access Code,Joined\n';
-      rows.forEach(tr => {
-        const cells = tr.querySelectorAll('td');
-        if (cells.length < 5) return;
-        const name = cells[0].textContent.trim();
-        const email = cells[1].textContent.trim();
-        const whatsapp = cells[2].textContent.trim();
-        const code = cells[3].textContent.trim();
-        const joined = cells[4].textContent.trim();
-        csv += `"${name}","${email}","${whatsapp}","${code}","${joined}"\n`;
-      });
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.setAttribute('download', 'AI_Animation_Nexus_Students.csv');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-  </script>
+  function logout() {
+    localStorage.removeItem('nexus_admin_pw');
+    adminToken = null;
+    document.getElementById('adminPassword').value = '';
+    document.getElementById('dashboardSection').classList.add('hidden');
+    document.getElementById('loginSection').classList.remove('hidden');
+  }
+</script>
 </body>
 </html>

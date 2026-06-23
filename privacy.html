@@ -1,140 +1,134 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="dark" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy Policy — AI Animation Nexus</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=General+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
-  <style>
-    .legal-layout {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 80px 40px;
-    }
-    .legal-header {
-      margin-bottom: 48px;
-      padding-bottom: 32px;
-      border-bottom: 2px solid var(--color-ink);
-    }
-    .legal-header h1 {
-      font-size: 2.5rem;
-      text-transform: none;
-      margin-bottom: 12px;
-    }
-    .legal-header p {
-      opacity: 0.7;
-    }
-    .legal-content h2 {
-      font-size: 1.5rem;
-      text-transform: none;
-      margin: 40px 0 16px;
-      padding-top: 24px;
-      border-top: 1px solid var(--color-divider);
-    }
-    .legal-content p {
-      margin-bottom: 16px;
-      line-height: 1.7;
-    }
-    .legal-content ul {
-      margin: 16px 0;
-      padding-left: 24px;
-    }
-    .legal-content li {
-      margin-bottom: 8px;
-      line-height: 1.6;
-    }
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 32px;
-      font-weight: 600;
-      text-transform: uppercase;
-      font-size: 0.85rem;
-    }
-    .back-link:hover {
-      text-decoration: underline;
-    }
-  </style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Privacy Policy — AI Animation Nexus</title>
+<meta name="description" content="Privacy Policy for AI Animation Nexus 2026 intensive course."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary":"#6dffba","on-surface":"#e5e1e4","on-surface-variant":"#bacbbe","glass-surface":"rgba(255,255,255,0.05)","surface":"#131315","glass-border":"rgba(255,255,255,0.1)","text-muted":"#8C8C94","text-primary":"#F2F2F2"},fontFamily:{"hero-display":["Libre Caslon Text"],"body-md":["Inter"],"metadata-xs":["Space Mono"],"headline-sm":["Libre Caslon Text"],"label-mono":["Space Mono"]},fontSize:{"body-md":["17px",{"lineHeight":"28px","fontWeight":"300"}],"metadata-xs":["12px",{"lineHeight":"16px","letterSpacing":"0.15em","fontWeight":"400"}],"headline-sm":["24px",{"lineHeight":"32px","fontWeight":"400"}],"label-mono":["14px",{"lineHeight":"20px","letterSpacing":"0.1em","fontWeight":"500"}]}}}}
+</script>
+<style>
+  body{background-color:#0A0A0C;color:#F2F2F2;overflow-x:hidden;scroll-behavior:smooth;}
+  .noise-overlay{position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:9999;opacity:0.1;background:url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="n"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23n)"/%3E%3C/svg%3E');}
+  .fluid-bg{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:-1;background:radial-gradient(circle at 20% 30%,rgba(0,229,153,0.07) 0%,transparent 50%),radial-gradient(circle at 80% 70%,rgba(139,92,246,0.07) 0%,transparent 50%);}
+  .glass-panel{background:rgba(255,255,255,0.05);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.1);}
+  ::-webkit-scrollbar{width:4px;} ::-webkit-scrollbar-track{background:#0A0A0C;} ::-webkit-scrollbar-thumb{background:rgba(0,229,153,0.3);border-radius:2px;}
+  .legal-section{border-top:1px solid rgba(255,255,255,0.08);padding-top:2rem;margin-top:2rem;}
+  .legal-section:first-child{border-top:none;padding-top:0;margin-top:0;}
+</style>
 </head>
-<body>
-  <div class="paper-texture"></div>
+<body class="antialiased">
+<div class="noise-overlay"></div>
+<div class="fluid-bg"></div>
 
-  <nav class="navbar">
-    <div class="nav-logo">AI Animation Nexus</div>
-    <a href="index.html" class="back-link">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <path d="M19 12H5M5 12L12 19M5 12L12 5"/>
-      </svg>
-      Back to Home
-    </a>
-  </nav>
+<!-- Nav -->
+<nav class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 py-4 glass-panel">
+  <a href="index.html" class="font-hero-display text-base text-on-surface uppercase tracking-tighter hover:text-primary transition-colors">AI Animation Nexus</a>
+  <a href="index.html" class="flex items-center gap-2 font-label-mono text-metadata-xs text-on-surface-variant hover:text-primary transition-colors uppercase">
+    <span class="material-symbols-outlined text-sm">arrow_back</span> Back to Home
+  </a>
+</nav>
 
-  <div class="legal-layout">
-    <div class="legal-header">
-      <h1>Privacy Policy</h1>
-      <p>Last updated: June 20, 2026</p>
-    </div>
+<main class="max-w-3xl mx-auto px-6 pt-32 pb-24">
 
-    <div class="legal-content">
-      <h2>Information We Collect</h2>
-      <p>When you apply for AI Animation Nexus, we collect information you provide directly, including:</p>
-      <ul>
-        <li>Full name</li>
-        <li>Email address</li>
-        <li>WhatsApp number (optional)</li>
-        <li>Portfolio or social media links (optional)</li>
-        <li>Your goals and expectations for the course</li>
-        <li>How you heard about us</li>
-      </ul>
-      
-      <h2>How We Use Your Information</h2>
-      <p>We use the information we collect to:</p>
-      <ul>
-        <li>Process your application and confirm your seat</li>
-        <li>Send you login credentials and course access codes</li>
-        <li>Communicate with you about sessions, reminders, and updates</li>
-        <li>Improve our services and course content</li>
-      </ul>
-
-      <h2>Payment Information</h2>
-      <p>All payment processing is handled securely by Paystack. We do not store your credit card or payment details. Your payment information is processed directly by Paystack's secure infrastructure.</p>
-
-      <h2>WhatsApp Communications</h2>
-      <p>If you join our WhatsApp channel, you consent to receiving messages related to the course. You can leave the channel at any time.</p>
-
-      <h2>Data Retention</h2>
-      <p>We retain your information for as long as your account is active or as needed to provide you services. You may request deletion of your data at any time by contacting us.</p>
-
-      <h2>Your Rights</h2>
-      <p>You have the right to:</p>
-      <ul>
-        <li>Access your personal data</li>
-        <li>Correct inaccurate data</li>
-        <li>Delete your data</li>
-        <li>Opt out of marketing communications</li>
-      </ul>
-
-      <h2>Contact Us</h2>
-      <p>If you have questions about this Privacy Policy, please contact us at support@aianimationnexus.com</p>
-    </div>
+  <!-- Header -->
+  <div class="mb-16">
+    <p class="font-metadata-xs text-metadata-xs text-primary uppercase tracking-widest mb-4">Legal</p>
+    <h1 class="font-hero-display text-5xl md:text-6xl text-text-primary mb-4 leading-tight">Privacy<br/>Policy</h1>
+    <p class="font-metadata-xs text-metadata-xs text-on-surface-variant uppercase">Last updated: June 20, 2026</p>
   </div>
 
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-left">
-        <span class="footer-logo">AI Animation Nexus</span>
-        <p>© 2026 AI Animation Nexus. All rights reserved.</p>
-      </div>
-      <div class="footer-right">
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="terms.html">Terms of Service</a>
-        <a href="contact.html">Contact Support</a>
-      </div>
+  <!-- Intro glass card -->
+  <div class="glass-panel rounded-2xl p-6 mb-12 border-l-2 border-primary">
+    <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+      We take your privacy seriously. This policy explains exactly what data we collect, why we collect it, and how we protect it. We never sell your data.
+    </p>
+  </div>
+
+  <!-- Content -->
+  <div class="space-y-0 font-body-md text-body-md text-on-surface-variant leading-relaxed">
+
+    <div class="legal-section">
+      <h2 class="font-headline-sm text-headline-sm text-text-primary mb-3">Information We Collect</h2>
+      <p class="mb-3">When you apply for AI Animation Nexus, we collect information you provide directly, including:</p>
+      <ul class="space-y-2 pl-4">
+        <li class="flex items-start gap-2"><span class="text-primary mt-1">—</span> Full name</li>
+        <li class="flex items-start gap-2"><span class="text-primary mt-1">—</span> Email address</li>
+        <li class="flex items-start gap-2"><span class="text-primary mt-1">—</span> WhatsApp number (optional)</li>
+        <li class="flex items-start gap-2"><span class="text-primary mt-1">—</span> Portfolio or social media links (optional)</li>
+        <li class="flex items-start gap-2"><span class="text-primary mt-1">—</span> Your goals and expectations for the course</li>
+        <li class="flex items-start gap-2"><span class="text-primary mt-1">—</span> How you heard about us</li>
+      </ul>
     </div>
-  </footer>
+
+    <div class="legal-section">
+      <h2 class="font-headline-sm text-headline-sm text-text-primary mb-3">How We Use Your Information</h2>
+      <p class="mb-3">We use the information we collect to:</p>
+      <ul class="space-y-2 pl-4">
+        <li class="flex items-start gap-2"><span class="text-primary mt-1">—</span> Process your application and confirm your seat</li>
+        <li class="flex items-start gap-2"><span class="text-primary mt-1">—</span> Send you your unique access code and session reminders</li>
+        <li class="flex items-start gap-2"><span class="text-primary mt-1">—</span> Communicate with you about sessions, updates, and course logistics</li>
+        <li class="flex items-start gap-2"><span class="text-primary mt-1">—</span> Track session attendance for the satisfaction guarantee</li>
+        <li class="flex items-start gap-2"><span class="text-primary mt-1">—</span> Improve our services and future course content</li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h2 class="font-headline-sm text-headline-sm text-text-primary mb-3">Payment Information</h2>
+      <p>All payment processing is handled securely by <strong class="text-text-primary font-medium">Paystack</strong>. We do not store, see, or have access to your credit card or payment details. Your payment information is processed directly by Paystack's PCI-DSS compliant infrastructure.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2 class="font-headline-sm text-headline-sm text-text-primary mb-3">WhatsApp Communications</h2>
+      <p>If you join our WhatsApp channel, you consent to receiving messages related to the course including session reminders, announcements, and community updates. You can leave the channel at any time without affecting your course access.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2 class="font-headline-sm text-headline-sm text-text-primary mb-3">Data Storage &amp; Security</h2>
+      <p>Your data is stored securely on Vercel's infrastructure. We implement appropriate technical and organisational measures to protect your personal information against unauthorised access, alteration, disclosure, or destruction.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2 class="font-headline-sm text-headline-sm text-text-primary mb-3">Data Retention</h2>
+      <p>We retain your information for as long as your account is active or as needed to provide you services and fulfil our legal obligations. You may request deletion of your data at any time by contacting us.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2 class="font-headline-sm text-headline-sm text-text-primary mb-3">Your Rights</h2>
+      <p class="mb-3">You have the right to:</p>
+      <ul class="space-y-2 pl-4">
+        <li class="flex items-start gap-2"><span class="text-primary mt-1">—</span> Access a copy of your personal data</li>
+        <li class="flex items-start gap-2"><span class="text-primary mt-1">—</span> Correct any inaccurate information we hold about you</li>
+        <li class="flex items-start gap-2"><span class="text-primary mt-1">—</span> Request deletion of your data</li>
+        <li class="flex items-start gap-2"><span class="text-primary mt-1">—</span> Opt out of non-essential marketing communications</li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h2 class="font-headline-sm text-headline-sm text-text-primary mb-3">Third-Party Services</h2>
+      <p>We use the following third-party services: <strong class="text-text-primary font-medium">Paystack</strong> (payment processing), <strong class="text-text-primary font-medium">Resend / Nodemailer</strong> (transactional email), and <strong class="text-text-primary font-medium">Vercel</strong> (hosting and infrastructure). Each service operates under their own privacy policies.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2 class="font-headline-sm text-headline-sm text-text-primary mb-3">Contact Us</h2>
+      <p>If you have questions about this Privacy Policy or want to exercise your rights, please contact us at <a href="mailto:support@aianimationnexus.com" class="text-primary hover:underline">support@aianimationnexus.com</a> or visit our <a href="contact.html" class="text-primary hover:underline">Contact page</a>.</p>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="w-full py-8 px-6 border-t border-glass-border flex flex-col md:flex-row justify-between items-center gap-4 z-10 relative">
+  <div class="font-hero-display text-sm text-text-primary uppercase tracking-tighter">AI Animation Nexus</div>
+  <div class="flex gap-6">
+    <a class="font-label-mono text-metadata-xs uppercase text-text-muted hover:text-on-surface" href="privacy.html">Privacy</a>
+    <a class="font-label-mono text-metadata-xs uppercase text-text-muted hover:text-on-surface" href="terms.html">Terms</a>
+    <a class="font-label-mono text-metadata-xs uppercase text-text-muted hover:text-on-surface" href="contact.html">Contact</a>
+  </div>
+  <div class="font-label-mono text-metadata-xs uppercase text-text-muted">© 2026 AI Animation Nexus</div>
+</footer>
 </body>
 </html>

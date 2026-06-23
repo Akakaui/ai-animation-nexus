@@ -1,135 +1,119 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="dark" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Terms of Service — AI Animation Nexus</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=General+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
-  <style>
-    .legal-layout {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 80px 40px;
-    }
-    .legal-header {
-      margin-bottom: 48px;
-      padding-bottom: 32px;
-      border-bottom: 2px solid var(--color-ink);
-    }
-    .legal-header h1 {
-      font-size: 2.5rem;
-      text-transform: none;
-      margin-bottom: 12px;
-    }
-    .legal-header p {
-      opacity: 0.7;
-    }
-    .legal-content h2 {
-      font-size: 1.5rem;
-      text-transform: none;
-      margin: 40px 0 16px;
-      padding-top: 24px;
-      border-top: 1px solid var(--color-divider);
-    }
-    .legal-content p {
-      margin-bottom: 16px;
-      line-height: 1.7;
-    }
-    .legal-content ul {
-      margin: 16px 0;
-      padding-left: 24px;
-    }
-    .legal-content li {
-      margin-bottom: 8px;
-      line-height: 1.6;
-    }
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 32px;
-      font-weight: 600;
-      text-transform: uppercase;
-      font-size: 0.85rem;
-    }
-    .back-link:hover {
-      text-decoration: underline;
-    }
-  </style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Terms of Service — AI Animation Nexus</title>
+<meta name="description" content="Terms of Service for AI Animation Nexus 2026 intensive course."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary":"#6dffba","on-surface":"#e5e1e4","on-surface-variant":"#bacbbe","glass-surface":"rgba(255,255,255,0.05)","surface":"#131315","glass-border":"rgba(255,255,255,0.1)","text-muted":"#8C8C94","text-primary":"#F2F2F2"},fontFamily:{"hero-display":["Libre Caslon Text"],"body-md":["Inter"],"metadata-xs":["Space Mono"],"headline-sm":["Libre Caslon Text"],"label-mono":["Space Mono"]},fontSize:{"body-md":["17px",{"lineHeight":"28px","fontWeight":"300"}],"metadata-xs":["12px",{"lineHeight":"16px","letterSpacing":"0.15em","fontWeight":"400"}],"headline-sm":["24px",{"lineHeight":"32px","fontWeight":"400"}],"label-mono":["14px",{"lineHeight":"20px","letterSpacing":"0.1em","fontWeight":"500"}]}}}}
+</script>
+<style>
+  body{background-color:#0A0A0C;color:#F2F2F2;overflow-x:hidden;scroll-behavior:smooth;}
+  .noise-overlay{position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:9999;opacity:0.1;background:url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="n"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23n)"/%3E%3C/svg%3E');}
+  .fluid-bg{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:-1;background:radial-gradient(circle at 20% 30%,rgba(0,229,153,0.07) 0%,transparent 50%),radial-gradient(circle at 80% 70%,rgba(139,92,246,0.07) 0%,transparent 50%);}
+  .glass-panel{background:rgba(255,255,255,0.05);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.1);}
+  ::-webkit-scrollbar{width:4px;} ::-webkit-scrollbar-track{background:#0A0A0C;} ::-webkit-scrollbar-thumb{background:rgba(0,229,153,0.3);border-radius:2px;}
+  .legal-section{border-top:1px solid rgba(255,255,255,0.08);padding-top:2rem;margin-top:2rem;}
+  .legal-section:first-child{border-top:none;padding-top:0;margin-top:0;}
+</style>
 </head>
-<body>
-  <div class="paper-texture"></div>
+<body class="antialiased">
+<div class="noise-overlay"></div>
+<div class="fluid-bg"></div>
 
-  <nav class="navbar">
-    <div class="nav-logo">AI Animation Nexus</div>
-    <a href="index.html" class="back-link">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <path d="M19 12H5M5 12L12 19M5 12L12 5"/>
-      </svg>
-      Back to Home
-    </a>
-  </nav>
+<!-- Nav -->
+<nav class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 py-4 glass-panel">
+  <a href="index.html" class="font-hero-display text-base text-on-surface uppercase tracking-tighter hover:text-primary transition-colors">AI Animation Nexus</a>
+  <a href="index.html" class="flex items-center gap-2 font-label-mono text-metadata-xs text-on-surface-variant hover:text-primary transition-colors uppercase">
+    <span class="material-symbols-outlined text-sm">arrow_back</span> Back to Home
+  </a>
+</nav>
 
-  <div class="legal-layout">
-    <div class="legal-header">
-      <h1>Terms of Service</h1>
-      <p>Last updated: June 20, 2026</p>
-    </div>
+<main class="max-w-3xl mx-auto px-6 pt-32 pb-24">
 
-    <div class="legal-content">
-      <h2>1. Acceptance of Terms</h2>
-      <p>By enrolling in AI Animation Nexus, you agree to these Terms of Service. If you do not agree to these terms, please do not enroll in the course.</p>
-
-      <h2>2. Course Description</h2>
-      <p>AI Animation Nexus is a 4-week live online course consisting of 8 sessions, held Fridays and Saturdays at 9-10 PM WAT (UTC+1). The course covers photo-to-video transformation, AI character consistency, content strategy, automation, and building an online presence with AI tools.</p>
-
-      <h2>3. Commitment Fee</h2>
-      <p>The $2.99 commitment fee confirms your seat in the course. This fee is non-refundable unless you complete the entire course and genuinely feel you learned nothing new, in which case we will issue a full refund upon request.</p>
-
-      <h2>4. Session Recordings</h2>
-      <p>All sessions are recorded and made available to enrolled students. By enrolling, you consent to being visible in session recordings.</p>
-
-      <h2>5. Code of Conduct</h2>
-      <p>Participants are expected to:</p>
-      <ul>
-        <li>Respect mentors and fellow students</li>
-        <li>Not share course content, recordings, or materials publicly</li>
-        <li>Not distribute Zoom links or access codes to others</li>
-        <li>Participate in good faith</li>
-      </ul>
-
-      <h2>6. Intellectual Property</h2>
-      <p>All course content, including recordings, slides, and materials, are the property of AI Animation Nexus and its mentors. Participants may not redistribute, resell, or share access to these materials.</p>
-
-      <h2>7. Limitation of Liability</h2>
-      <p>AI Animation Nexus is not responsible for any technical difficulties, internet connectivity issues, or other circumstances that prevent you from attending live sessions. All sessions are recorded and available for later viewing.</p>
-
-      <h2>8. Refund Policy</h2>
-      <p>If you complete all 8 sessions of the course and feel you didn't learn anything valuable, contact us for a full refund. No questions asked. This offer is only available to those who attended all sessions.</p>
-
-      <h2>9. Changes to Terms</h2>
-      <p>We reserve the right to modify these terms at any time. Changes will be communicated via email to enrolled students.</p>
-
-      <h2>10. Contact</h2>
-      <p>For questions about these Terms of Service, please contact us at support@aianimationnexus.com</p>
-    </div>
+  <!-- Header -->
+  <div class="mb-16">
+    <p class="font-metadata-xs text-metadata-xs text-primary uppercase tracking-widest mb-4">Legal</p>
+    <h1 class="font-hero-display text-5xl md:text-6xl text-text-primary mb-4 leading-tight">Terms of<br/>Service</h1>
+    <p class="font-metadata-xs text-metadata-xs text-on-surface-variant uppercase">Last updated: June 20, 2026</p>
   </div>
 
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-left">
-        <span class="footer-logo">AI Animation Nexus</span>
-        <p>© 2026 AI Animation Nexus. All rights reserved.</p>
-      </div>
-      <div class="footer-right">
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="terms.html">Terms of Service</a>
-        <a href="contact.html">Contact Support</a>
-      </div>
+  <!-- Content -->
+  <div class="space-y-0 font-body-md text-body-md text-on-surface-variant leading-relaxed">
+
+    <div class="legal-section">
+      <h2 class="font-headline-sm text-headline-sm text-text-primary mb-3">1. Acceptance of Terms</h2>
+      <p>By enrolling in AI Animation Nexus, you agree to these Terms of Service. If you do not agree to these terms, please do not enroll in the course.</p>
     </div>
-  </footer>
+
+    <div class="legal-section">
+      <h2 class="font-headline-sm text-headline-sm text-text-primary mb-3">2. Course Description</h2>
+      <p>AI Animation Nexus is a 4-week live online course consisting of 8 sessions, held Thursdays and Fridays at 9–10 PM WAT (UTC+1). The course covers photo-to-video transformation, AI character consistency, content strategy, automation workflows, creative direction, and building an online presence with AI tools.</p>
+      <p class="mt-3">Sessions run: July 24–25, July 31–Aug 1, August 7–8, and August 14–15, 2026.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2 class="font-headline-sm text-headline-sm text-text-primary mb-3">3. Commitment Fee</h2>
+      <p>The $2.99 commitment fee confirms your seat in the course. This fee is non-refundable unless you complete the entire course and genuinely feel you learned nothing new, in which case we will issue a full refund upon request within 7 days of the final session.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2 class="font-headline-sm text-headline-sm text-text-primary mb-3">4. Live Sessions &amp; Attendance</h2>
+      <p>All sessions are live on Zoom. Session recordings are <strong class="text-text-primary font-medium">not</strong> shared — attendance at each session is required to access the Zoom link. A reminder email is sent 1 hour before each session. Your access code unlocks the Zoom link on the student dashboard on session day.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2 class="font-headline-sm text-headline-sm text-text-primary mb-3">5. Code of Conduct</h2>
+      <p class="mb-3">Participants are expected to:</p>
+      <ul class="space-y-2 pl-4">
+        <li class="flex items-start gap-2"><span class="text-primary mt-1">—</span> Respect mentors and fellow students</li>
+        <li class="flex items-start gap-2"><span class="text-primary mt-1">—</span> Not share course content, session links, or materials publicly</li>
+        <li class="flex items-start gap-2"><span class="text-primary mt-1">—</span> Not distribute Zoom links or access codes to third parties</li>
+        <li class="flex items-start gap-2"><span class="text-primary mt-1">—</span> Participate in good faith and with genuine intent to learn</li>
+      </ul>
+      <p class="mt-3">Violation of the code of conduct may result in removal from the course without a refund.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2 class="font-headline-sm text-headline-sm text-text-primary mb-3">6. Intellectual Property</h2>
+      <p>All course content, including session materials, methodologies, and supporting resources, are the intellectual property of AI Animation Nexus and its mentors. Participants may not redistribute, resell, or publicly share access to these materials in any form.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2 class="font-headline-sm text-headline-sm text-text-primary mb-3">7. Limitation of Liability</h2>
+      <p>AI Animation Nexus is not responsible for technical difficulties, internet connectivity issues, power outages, or other circumstances beyond our control that prevent you from attending live sessions. We will make every effort to communicate any schedule changes via email in advance.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2 class="font-headline-sm text-headline-sm text-text-primary mb-3">8. Refund Policy</h2>
+      <p>If you attend all 8 sessions of the course and genuinely feel you did not learn anything of value, contact us within 7 days of the final session for a full refund. No questions asked. This offer is only available to participants who attended all sessions as verified by our attendance records.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2 class="font-headline-sm text-headline-sm text-text-primary mb-3">9. Changes to Terms</h2>
+      <p>We reserve the right to modify these terms at any time. Material changes will be communicated via email to all enrolled students with at least 7 days notice.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2 class="font-headline-sm text-headline-sm text-text-primary mb-3">10. Contact</h2>
+      <p>For questions about these Terms of Service, please contact us at <a href="mailto:support@aianimationnexus.com" class="text-primary hover:underline">support@aianimationnexus.com</a> or visit our <a href="contact.html" class="text-primary hover:underline">Contact page</a>.</p>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="w-full py-8 px-6 border-t border-glass-border flex flex-col md:flex-row justify-between items-center gap-4 z-10 relative">
+  <div class="font-hero-display text-sm text-text-primary uppercase tracking-tighter">AI Animation Nexus</div>
+  <div class="flex gap-6">
+    <a class="font-label-mono text-metadata-xs uppercase text-text-muted hover:text-on-surface" href="privacy.html">Privacy</a>
+    <a class="font-label-mono text-metadata-xs uppercase text-text-muted hover:text-on-surface" href="terms.html">Terms</a>
+    <a class="font-label-mono text-metadata-xs uppercase text-text-muted hover:text-on-surface" href="contact.html">Contact</a>
+  </div>
+  <div class="font-label-mono text-metadata-xs uppercase text-text-muted">© 2026 AI Animation Nexus</div>
+</footer>
 </body>
 </html>

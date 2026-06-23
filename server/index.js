@@ -7,6 +7,7 @@ const applyRoutes = require('./routes/apply');
 const paystackRoutes = require('./routes/paystack');
 const verifyRoutes = require('./routes/verify');
 const adminRoutes = require('./routes/admin');
+const contactRoutes = require('./routes/contact');
 const { startScheduler } = require('./services/scheduler');
 
 const app = express();
@@ -20,6 +21,7 @@ app.use('/api/apply', applyRoutes);
 app.use('/api/paystack', paystackRoutes);
 app.use('/api/verify', verifyRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/contact', contactRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });

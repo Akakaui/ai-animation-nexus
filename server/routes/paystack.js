@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const crypto = require('crypto');
-const { getStudentByEmail, updateStudentByEmail } = require('../db');
+const { getStudentByEmail, updateStudentByEmail } = require('../../lib/db');
 const { sendConfirmationEmail } = require('../services/email');
 
 function generateAccessCode() {
@@ -15,7 +15,7 @@ function generateAccessCode() {
 router.post('/webhook', async (req, res) => {
   const signature = req.headers['x-paystack-signature'];
   const hash = crypto
-    .createHmac('sha512', process.env.PAYSTACK_SECRET_KEY)
+    .createHmac('sha512', process.env.PAYSTACK_SECRET_KEY || '')
     .update(JSON.stringify(req.body))
     .digest('hex');
 
@@ -28,11 +28,11 @@ router.post('/webhook', async (req, res) => {
 
   if (event === 'charge.success') {
     const customerEmail = data.customer.email;
-    const student = getStudentByEmail(customerEmail);
+    const student = await getStudentByEmail(customerEmail);
 
     if (student && !student.paid) {
       const accessCode = generateAccessCode();
-      updateStudentByEmail(customerEmail, {
+      await updateStudentByEmail(customerEmail, {
         paystack_ref: data.reference,
         access_code: accessCode,
         paid: true
@@ -51,16 +51,24 @@ router.post('/webhook', async (req, res) => {
   res.json({ received: true });
 });
 
-router.get('/initialize', (req, res) => {
+router.get('/initialize', async (req, res) => {
   const { email } = req.query;
   
   if (!email) {
     return res.status(400).json({ error: 'Email required' });
   }
 
-  const student = getStudentByEmail(email);
+  const student = await getStudentByEmail(email);
   if (!student) {
-    return res.status(404).json({ error: 'Application not found or already paid' });
+    // If we want to allow unpaid students to initialize
+    const { getStudentByEmailAny } = require('../../lib/db');
+    const unpaidStudent = await getStudentByEmailAny(email);
+    if (!unpaidStudent) {
+      return res.status(404).json({ error: 'Application not found' });
+    }
+    if (unpaidStudent.paid) {
+      return res.status(400).json({ error: 'Already paid' });
+    }
   }
 
   const paystackRef = `ANX_${Date.now()}`;

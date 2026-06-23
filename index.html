@@ -1,719 +1,763 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="dark" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Animation Nexus</title>
-  <meta name="description" content="A 4-week intensive where five mentors teach you to turn a still image into motion — and turn raw ideas into a real body of work.">
-  
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=General+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- CSS Styles -->
-  <link rel="stylesheet" href="css/styles.css">
-  
-  <!-- GSAP Core -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <!-- GSAP ScrollTrigger -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Animation Nexus — 2026 Intensive</title>
+<meta name="description" content="An 8-session live intensive where five expert mentors teach you to turn a still image into motion — and raw ideas into a real body of work. July 24 – Aug 15, 2026."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "primary": "#6dffba",
+          "on-surface": "#e5e1e4",
+          "on-secondary": "#3c0091",
+          "secondary": "#d0bcff",
+          "primary-fixed-dim": "#00e297",
+          "on-tertiary": "#452b00",
+          "tertiary-fixed-dim": "#fcba5b",
+          "on-surface-variant": "#bacbbe",
+          "secondary-container": "#571bc1",
+          "primary-container": "#00e599",
+          "tertiary": "#ffe0bc",
+          "surface-container-high": "#2a2a2c",
+          "on-primary": "#003822",
+          "surface-container-highest": "#353437",
+          "surface-container-low": "#1c1b1d",
+          "surface-container": "#201f21",
+          "inverse-primary": "#006c46",
+          "glass-surface": "rgba(255, 255, 255, 0.05)",
+          "primary-fixed": "#4dffb2",
+          "surface": "#131315",
+          "glass-border": "rgba(255, 255, 255, 0.1)",
+          "outline-variant": "#3b4a41",
+          "surface-bright": "#39393b",
+          "background": "#131315",
+          "surface-container-lowest": "#0e0e10",
+          "text-muted": "#8C8C94",
+          "input-border": "rgba(255, 255, 255, 0.2)",
+          "surface-dim": "#131315",
+          "text-primary": "#F2F2F2",
+          "surface-variant": "#353437",
+          "inverse-surface": "#e5e1e4",
+          "error": "#ffb4ab",
+          "error-container": "#93000a",
+          "outline": "#849589",
+          "on-secondary-container": "#c4abff"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.25rem",
+          "lg": "0.5rem",
+          "xl": "0.75rem",
+          "full": "9999px"
+        },
+        "spacing": {
+          "margin-hero": "120px",
+          "input-height": "56px",
+          "container-padding": "32px",
+          "gutter": "24px",
+          "base": "8px",
+          "cta-height": "64px"
+        },
+        "fontFamily": {
+          "hero-display": ["Libre Caslon Text"],
+          "body-md": ["Inter"],
+          "metadata-xs": ["Space Mono"],
+          "headline-sm": ["Libre Caslon Text"],
+          "headline-lg": ["Libre Caslon Text"],
+          "label-mono": ["Space Mono"],
+          "timer-display": ["Space Mono"],
+          "hero-display-mobile": ["Libre Caslon Text"]
+        },
+        "fontSize": {
+          "hero-display": ["110px", { "lineHeight": "100px", "letterSpacing": "-0.04em", "fontWeight": "400" }],
+          "body-md": ["18px", { "lineHeight": "28px", "fontWeight": "300" }],
+          "metadata-xs": ["12px", { "lineHeight": "16px", "letterSpacing": "0.15em", "fontWeight": "400" }],
+          "headline-sm": ["24px", { "lineHeight": "32px", "fontWeight": "400" }],
+          "headline-lg": ["64px", { "lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "400" }],
+          "label-mono": ["14px", { "lineHeight": "20px", "letterSpacing": "0.1em", "fontWeight": "500" }],
+          "timer-display": ["64px", { "lineHeight": "64px", "fontWeight": "400" }],
+          "hero-display-mobile": ["56px", { "lineHeight": "54px", "letterSpacing": "-0.02em", "fontWeight": "400" }]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body {
+    background-color: #0A0A0C;
+    color: #F2F2F2;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+
+  /* Global Noise Texture */
+  .noise-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.12;
+    background: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+  }
+
+  /* Fluid Gradient Background */
+  .fluid-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(0, 229, 153, 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 50% 100%, rgba(0, 229, 153, 0.06) 0%, transparent 60%);
+    animation: pulseBg 12s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulseBg {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.06); }
+  }
+
+  /* Glassmorphism */
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Scroll Reveal */
+  .reveal-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  .reveal-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Editorial Image Hover */
+  .editorial-img {
+    filter: grayscale(60%) contrast(1.15);
+    transition: all 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  .editorial-img:hover {
+    filter: grayscale(0%) contrast(1);
+    transform: scale(1.04);
+  }
+
+  /* Minimal Form Input */
+  .minimal-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    color: #F2F2F2;
+    transition: border-color 0.3s ease;
+    width: 100%;
+  }
+  .minimal-input:focus {
+    outline: none;
+    border-bottom-color: #00E599;
+  }
+  .minimal-input option {
+    background: #131315;
+  }
+
+  /* Glow Pulse on Primary Dot */
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 8px rgba(0, 229, 153, 0.5); }
+    50% { box-shadow: 0 0 20px rgba(0, 229, 153, 0.9); }
+  }
+  .glow-dot { animation: glowPulse 2s ease-in-out infinite; }
+
+  /* Mobile Nav */
+  .mobile-menu { display: none; }
+  .mobile-menu.open { display: flex; }
+
+  /* Countdown blocks */
+  .countdown-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Speaker card hover */
+  .speaker-card { transition: transform 0.4s ease; }
+  .speaker-card:hover { transform: translateY(-6px); }
+
+  /* CTA gradient btn */
+  .btn-cta-grad {
+    background: linear-gradient(135deg, rgba(0,229,153,0.15) 0%, rgba(139,92,246,0.15) 100%);
+    border: 1px solid rgba(0,229,153,0.5);
+    color: #6dffba;
+    transition: all 0.4s ease;
+  }
+  .btn-cta-grad:hover {
+    background: #00E599;
+    color: #003822;
+    border-color: #00E599;
+    box-shadow: 0 0 30px rgba(0,229,153,0.4);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: #0A0A0C; }
+  ::-webkit-scrollbar-thumb { background: rgba(0,229,153,0.3); border-radius: 2px; }
+</style>
 </head>
-<body>
+<body class="antialiased selection:bg-primary selection:text-on-primary">
 
-  <!-- Paper Grain Overlay for Texture -->
-  <div class="paper-texture"></div>
+<div class="noise-overlay"></div>
+<div class="fluid-bg" id="fluidBackground"></div>
 
-  <!-- 2026 Dangling Tag -->
-  <div class="year-tag" id="yearTag">
-    <div class="tag-string">
-      <svg viewBox="0 0 30 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 0 C15 0 12 20 15 35 C18 50 15 60 15 60" stroke="#1A1712" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 3"/>
-      </svg>
+<!-- ===================== NAV ===================== -->
+<nav class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-8 py-4 glass-panel border-b-0 shadow-2xl rounded-full mt-6 mx-4 md:mx-auto max-w-7xl hidden md:flex">
+  <div class="font-hero-display text-headline-sm text-on-surface uppercase tracking-tighter">
+    AI Animation Nexus
+  </div>
+  <ul class="flex gap-8 items-center">
+    <li><a class="text-on-surface-variant font-label-mono hover:text-primary transition-all duration-700 ease-out uppercase text-sm" href="#schedule">Schedule</a></li>
+    <li><a class="text-on-surface-variant font-label-mono hover:text-primary transition-all duration-700 ease-out uppercase text-sm" href="#mentors">Mentors</a></li>
+    <li><a class="text-on-surface-variant font-label-mono hover:text-primary transition-all duration-700 ease-out uppercase text-sm" href="#curriculum">Curriculum</a></li>
+    <li><a class="text-on-surface-variant font-label-mono hover:text-primary transition-all duration-700 ease-out uppercase text-sm" href="#faq">FAQ</a></li>
+  </ul>
+  <div class="flex items-center gap-4">
+    <button id="navApplyBtn" class="h-12 px-6 rounded-full border border-primary text-primary font-label-mono uppercase tracking-widest hover:bg-primary/10 transition-all duration-300 backdrop-blur-xl scale-95 active:scale-90 text-sm" onclick="document.getElementById('registration').scrollIntoView({behavior:'smooth'})">
+      Apply for a Seat
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Nav -->
+<nav class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-5 py-4 glass-panel border-b border-glass-border md:hidden">
+  <div class="font-hero-display text-sm text-on-surface uppercase tracking-tighter">AI Animation Nexus</div>
+  <button id="mobileMenuToggle" class="text-on-surface-variant" aria-label="Open menu">
+    <span class="material-symbols-outlined">menu</span>
+  </button>
+</nav>
+<div id="mobileMenu" class="mobile-menu fixed top-16 left-0 right-0 z-40 glass-panel border-b border-glass-border flex-col px-5 py-6 gap-4 md:hidden">
+  <a class="font-label-mono text-sm uppercase text-on-surface-variant hover:text-primary" href="#schedule" onclick="closeMobileMenu()">Schedule</a>
+  <a class="font-label-mono text-sm uppercase text-on-surface-variant hover:text-primary" href="#mentors" onclick="closeMobileMenu()">Mentors</a>
+  <a class="font-label-mono text-sm uppercase text-on-surface-variant hover:text-primary" href="#curriculum" onclick="closeMobileMenu()">Curriculum</a>
+  <a class="font-label-mono text-sm uppercase text-on-surface-variant hover:text-primary" href="#faq" onclick="closeMobileMenu()">FAQ</a>
+  <button class="h-12 rounded-full border border-primary text-primary font-label-mono uppercase text-xs tracking-widest mt-2" onclick="document.getElementById('registration').scrollIntoView({behavior:'smooth'}); closeMobileMenu()">Apply for a Seat</button>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<section class="min-h-screen relative flex items-center pt-36 pb-24 px-6 md:px-margin-hero overflow-hidden" id="hero">
+  <div class="max-w-7xl mx-auto w-full relative z-10 grid md:grid-cols-12 gap-8 items-center">
+    <!-- Left: Copy -->
+    <div class="md:col-span-7 reveal-up visible">
+      <!-- Badge -->
+      <div class="flex items-center gap-3 mb-8">
+        <div class="w-2 h-2 rounded-full bg-primary glow-dot"></div>
+        <span class="font-label-mono text-metadata-xs text-primary uppercase tracking-widest">Applications Open · July 24 – Aug 15, 2026</span>
+      </div>
+
+      <h1 class="font-hero-display-mobile md:font-hero-display text-hero-display-mobile md:text-hero-display text-text-primary mb-6 leading-none">
+        AI<br/>ANIMATION<br/>NEXUS
+      </h1>
+
+      <p class="font-body-md text-body-md text-on-surface-variant max-w-lg mb-10 leading-relaxed">
+        An 8-session live intensive where five expert mentors teach you to turn a still image into motion — and raw ideas into a real body of work.
+      </p>
+
+      <!-- Countdown -->
+      <div class="mb-10">
+        <p class="font-metadata-xs text-metadata-xs text-on-surface-variant uppercase tracking-widest mb-4">Applications close in</p>
+        <div class="flex gap-6">
+          <div class="countdown-block">
+            <span class="font-timer-display text-4xl md:text-5xl text-primary" id="days">00</span>
+            <span class="font-metadata-xs text-metadata-xs text-on-surface-variant uppercase mt-1">Days</span>
+          </div>
+          <span class="font-timer-display text-4xl md:text-5xl text-primary self-start mt-0">:</span>
+          <div class="countdown-block">
+            <span class="font-timer-display text-4xl md:text-5xl text-primary" id="hours">00</span>
+            <span class="font-metadata-xs text-metadata-xs text-on-surface-variant uppercase mt-1">Hours</span>
+          </div>
+          <span class="font-timer-display text-4xl md:text-5xl text-primary self-start mt-0">:</span>
+          <div class="countdown-block">
+            <span class="font-timer-display text-4xl md:text-5xl text-primary" id="minutes">00</span>
+            <span class="font-metadata-xs text-metadata-xs text-on-surface-variant uppercase mt-1">Min</span>
+          </div>
+          <span class="font-timer-display text-4xl md:text-5xl text-primary self-start mt-0">:</span>
+          <div class="countdown-block">
+            <span class="font-timer-display text-4xl md:text-5xl text-primary" id="seconds">00</span>
+            <span class="font-metadata-xs text-metadata-xs text-on-surface-variant uppercase mt-1">Sec</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="h-cta-height px-10 rounded-xl btn-cta-grad font-label-mono uppercase tracking-widest hover:scale-105 active:scale-95 transition-all duration-300 glass-panel"
+              onclick="document.getElementById('registration').scrollIntoView({behavior:'smooth'})">
+        Apply for a Seat →
+      </button>
     </div>
-    <div class="tag-body">
-      <span class="tag-text">2026</span>
+
+    <!-- Right: Visual -->
+    <div class="md:col-span-5 relative h-[520px] hidden md:block reveal-up visible" style="transition-delay:0.2s">
+      <div class="w-full h-full rounded-3xl overflow-hidden relative">
+        <img
+          alt="Abstract AI-driven motion design visual with glowing green and purple fluid forms"
+          class="w-full h-full object-cover editorial-img shadow-2xl"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5pb80szLveYzhsq2s2tn0SMQmuEM6Rh31uplf83y7hQjqVHtVdt1rVZ9gWSaowlpBtAAZUd_G1tbfL1a0ucp47WsM6W3PFxIws5k_RIEAGvxSZZotQpZA44sQPvggSAkcdG0nxjVyWzhxEG8DmjaalO1sKhwJogaNudBfh4xACCRKBXpUxalIn86CNpPD5S3KlCJhiyLvFf7-sZOhU8Vb4i_sCfunSQnRvWCBZuYkm9bJRRcRa1E4vFF-0E20LhKDkyN1dY-qG4w"
+        />
+        <!-- Gradient overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0C] via-transparent to-transparent opacity-60"></div>
+      </div>
+      <!-- Floating Glass Badge -->
+      <div class="absolute -bottom-6 -left-8 glass-panel p-5 rounded-2xl w-56 shadow-2xl">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings: 'FILL' 1;">motion_photos_on</span>
+          <span class="font-metadata-xs text-metadata-xs text-on-surface-variant uppercase">Live Sessions</span>
+        </div>
+        <div class="font-label-mono text-text-primary text-sm">8 Sessions · 4 Weeks</div>
+        <div class="font-metadata-xs text-metadata-xs text-primary mt-1">Jul 24 – Aug 15, 2026</div>
+      </div>
     </div>
   </div>
 
-  <!-- Navigation -->
-  <nav class="navbar">
-    <div class="nav-logo">AI Animation Nexus</div>
-    <ul class="nav-links">
-      <li><a href="#schedule">Schedule</a></li>
-      <li><a href="#mentors">Mentors</a></li>
-      <li><a href="#faq">FAQ</a></li>
-    </ul>
-    <button class="btn-primary trigger-form-btn">Apply for a Seat</button>
-  </nav>
+  <!-- SVG Divider -->
+  <div class="absolute bottom-0 left-0 w-full overflow-hidden opacity-20">
+    <svg class="w-full h-12" preserveAspectRatio="none" viewBox="0 0 1200 120">
+      <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="none" stroke="#00E599" stroke-width="1"></path>
+    </svg>
+  </div>
+</section>
 
-  <!-- Hero Section -->
-  <section class="hero-section">
-    <div class="hero-container">
-      
-      <!-- Left Column: Copy & Doodles -->
-      <div class="hero-content">
-        <div class="badge-wrapper">
-          <span class="status-badge">Applications Open</span>
-        </div>
-        
-        <div class="heading-wrapper">
-          <!-- Hand-drawn leaf doodle -->
-          <svg class="doodle doodle-leaf" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50 85 C52 70 58 40 75 25 C60 35 48 45 42 60 C38 45 28 35 15 30 C32 40 45 60 50 85 Z" stroke="#1A1712" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="#D4FF3D" fill-opacity="0.25"/>
-            <path d="M50 85 C49 60 42 45 35 38" stroke="#1A1712" stroke-width="2" stroke-linecap="round"/>
-            <path d="M50 65 C58 55 68 48 72 45" stroke="#1A1712" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-
-          <!-- Hand-drawn arrow loop doodle pointing to heading -->
-          <svg class="doodle doodle-arrow" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 20 C10 40 12 70 30 75 C45 80 60 55 45 40 C35 30 20 45 32 60 C35 64 45 68 52 68" stroke="#1A1712" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M44 60 L54 69 L48 78" stroke="#1A1712" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-
-          <h1 class="hero-title animate-weight">
-            AI<br>Animation<br>Nexus
-          </h1>
-        </div>
-
-        <!-- Timer / Countdown -->
-        <div class="countdown-container">
-          <p class="countdown-label">Applications close in</p>
-          <div class="countdown-timer" id="countdownTimer">
-            <div class="time-block"><span id="days">00</span><span class="time-unit">d</span></div>
-            <div class="time-block"><span id="hours">00</span><span class="time-unit">h</span></div>
-            <div class="time-block"><span id="minutes">00</span><span class="time-unit">m</span></div>
-            <div class="time-block"><span id="seconds">00</span><span class="time-unit">s</span></div>
-          </div>
-        </div>
-
-        <div class="cta-wrapper">
-          <button class="btn-cta trigger-form-btn">
-            Apply for a Seat
-            <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-          
-          <!-- Hand-drawn underline under CTA -->
-          <svg class="doodle doodle-underline" viewBox="0 0 200 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 12 C40 5 95 15 195 8 C140 12 70 8 10 15" stroke="#1A1712" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </div>
-
-        <p class="commitment-tag">A small commitment fee applies to confirm your seat</p>
-      </div>
-
-      <!-- Right Column: Interactive Shape Grid -->
-      <div class="hero-visual">
-        <div class="shape-grid">
-          
-          <!-- Row 1 -->
-          <div class="grid-cell cell-sketch">
-            <svg class="sketch-svg morph-target-src-1" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path class="morph-path" d="M15 18 C30 11 50 18 68 14 C64 35 69 55 65 70 C45 66 25 72 10 68 C15 50 11 30 15 18" stroke="#1A1712" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="grid-cell cell-arrow">
-            <svg class="arrow-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 20 H34 M26 12 L34 20 L26 28" stroke="#1A1712" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="grid-cell cell-neon">
-            <div class="neon-shape neon-square"></div>
-          </div>
-
-          <!-- Row 2 -->
-          <div class="grid-cell cell-sketch">
-            <svg class="sketch-svg morph-target-src-2" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path class="morph-path" d="M40 12 L72 66 L8 66 Z" stroke="#1A1712" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="grid-cell cell-arrow">
-            <svg class="arrow-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 20 H34 M26 12 L34 20 L26 28" stroke="#1A1712" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="grid-cell cell-neon">
-            <div class="neon-shape neon-triangle"></div>
-          </div>
-
-          <!-- Row 3 -->
-          <div class="grid-cell cell-sketch">
-            <svg class="sketch-svg morph-target-src-3" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path class="morph-path" d="M40 12 C58 11 68 22 68 40 C68 58 58 68 40 68 C22 68 12 58 12 40 C12 22 22 12 40 12 Z" stroke="#1A1712" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <div class="grid-cell cell-arrow">
-            <svg class="arrow-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 20 H34 M26 12 L34 20 L26 28" stroke="#1A1712" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="grid-cell cell-neon">
-            <div class="neon-shape neon-circle"></div>
-          </div>
-
-          <!-- Row 4 -->
-          <div class="grid-cell cell-sketch">
-            <svg class="sketch-svg morph-target-src-4" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path class="morph-path" d="M40 10 L48 30 L68 30 L52 42 L58 65 L40 50 L22 65 L28 42 L12 30 L32 30 Z" stroke="#1A1712" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="grid-cell cell-arrow">
-            <svg class="arrow-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 20 H34 M26 12 L34 20 L26 28" stroke="#1A1712" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="grid-cell cell-neon">
-            <div class="neon-shape neon-lime-circle"></div>
-          </div>
-
-          <!-- Row 5 -->
-          <div class="grid-cell cell-sketch">
-            <svg class="sketch-svg morph-target-src-5" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path class="morph-path" d="M40 10 V70 M10 40 H70 M19 19 L61 61 M61 19 L19 61" stroke="#1A1712" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <div class="grid-cell cell-arrow">
-            <svg class="arrow-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 20 H34 M26 12 L34 20 L26 28" stroke="#1A1712" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="grid-cell cell-neon">
-            <div class="neon-shape neon-asterisk">
-              <div class="line"></div>
-              <div class="line"></div>
-              <div class="line"></div>
-              <div class="line"></div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
+<!-- ===================== STATS STRIP ===================== -->
+<section class="py-16 px-6 md:px-margin-hero border-y border-glass-border relative z-10">
+  <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+    <div class="reveal-up text-center">
+      <div class="font-hero-display-mobile text-4xl md:text-5xl text-primary mb-2">8</div>
+      <div class="font-metadata-xs text-metadata-xs text-on-surface-variant uppercase">Live Sessions</div>
     </div>
-  </section>
+    <div class="reveal-up text-center" style="transition-delay:0.1s">
+      <div class="font-hero-display-mobile text-4xl md:text-5xl text-primary mb-2">5</div>
+      <div class="font-metadata-xs text-metadata-xs text-on-surface-variant uppercase">Expert Mentors</div>
+    </div>
+    <div class="reveal-up text-center" style="transition-delay:0.2s">
+      <div class="font-hero-display-mobile text-4xl md:text-5xl text-primary mb-2">4</div>
+      <div class="font-metadata-xs text-metadata-xs text-on-surface-variant uppercase">Weeks Intensive</div>
+    </div>
+    <div class="reveal-up text-center" style="transition-delay:0.3s">
+      <div class="font-hero-display-mobile text-4xl md:text-5xl text-primary mb-2">∞</div>
+      <div class="font-metadata-xs text-metadata-xs text-on-surface-variant uppercase">Creative Potential</div>
+    </div>
+  </div>
+</section>
 
-  <!-- Timezone Selector Component -->
-  <section class="timezone-section">
-    <div class="timezone-container">
-      <h2 class="tz-title">Global Live Schedule</h2>
-      <p class="tz-subtitle">9:00–10:00 PM WAT every Friday &amp; Saturday. Pick your region.</p>
-      
-      <div class="tz-selector-component">
-        <div class="tz-buttons">
-          <button class="tz-btn active" data-time="9:00 PM" data-tz="WAT">Nigeria (WAT)</button>
-          <button class="tz-btn" data-time="9:00 PM" data-tz="BST">United Kingdom (BST)</button>
-          <button class="tz-btn" data-time="10:00 PM" data-tz="CEST">West Europe (CEST)</button>
-          <button class="tz-btn" data-time="4:00 PM" data-tz="EDT">US East (EDT)</button>
-          <button class="tz-btn" data-time="1:00 PM" data-tz="PDT">US West (PDT)</button>
-          <button class="tz-btn" data-time="5:00 PM" data-tz="BRT">Brazil (BRT)</button>
+<!-- ===================== MENTORS / SPEAKERS ===================== -->
+<section class="py-32 px-6 md:px-margin-hero relative z-10" id="mentors">
+  <div class="max-w-7xl mx-auto">
+    <div class="mb-20 reveal-up">
+      <p class="font-metadata-xs text-metadata-xs text-primary uppercase tracking-widest mb-4">Meet Your Mentors</p>
+      <h2 class="font-headline-lg text-5xl md:text-headline-lg mb-4">Industry<br/>Leaders</h2>
+      <p class="font-metadata-xs text-metadata-xs text-on-surface-variant uppercase">Creators at the nexus of AI &amp; Motion Design</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8 lg:gap-16 items-start">
+      <!-- Mentor 1 -->
+      <div class="relative group speaker-card reveal-up" style="transition-delay:0.1s">
+        <div class="aspect-[3/4] overflow-hidden rounded-2xl">
+          <img alt="Portrait of Bethel — AI Animation Mentor" class="w-full h-full object-cover editorial-img"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4B4Sb1j8EKodIlSD5eGjDV3qgngscR1I-qGU3vqHHEaloYzHuln2EWxV2HobGvgDTPs-R4IqVUbm9sWRULZOdslyJS96Rk8JUfVsUU2Bv2p6y2yYKlIairg5GHaUhRnpc13Jxv1gVUyUBDwFkUKur6c8jqUfIzKJkGcLLwoXAx2pijrMC9-JS3r28w10dMzw6w9RvvbOVuBm-edqsWkXU40IqKW1ksCrhl72ZHnt4IaznAbAVRt83cnZBHMRIFO_RU97QRSdzuI8"/>
         </div>
-        
-        <div class="tz-display-panel">
-          <span class="tz-clock">🕒</span>
-          <div class="tz-time-group">
-            <span class="tz-time-val" id="localTimeVal">9:00 PM</span>
-            <span class="tz-label-val" id="localTzVal">WAT</span>
-          </div>
-          <p class="tz-status-text">Every Fri &amp; Sat · 1 hour live</p>
+        <div class="absolute -bottom-6 -left-4 glass-panel p-6 rounded-xl w-[90%] shadow-2xl transition-transform duration-500 group-hover:-translate-y-2">
+          <h3 class="font-headline-sm text-headline-sm text-text-primary mb-1">Bethel</h3>
+          <p class="font-metadata-xs text-metadata-xs text-primary uppercase tracking-widest">Photo-to-Video · Motion Syncing</p>
+        </div>
+      </div>
+
+      <!-- Mentor 2 (staggered) -->
+      <div class="relative group mt-16 speaker-card reveal-up" style="transition-delay:0.3s">
+        <div class="aspect-[3/4] overflow-hidden rounded-2xl">
+          <img alt="Portrait of Della — AI Character Mentor" class="w-full h-full object-cover editorial-img"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpFLPd6o687FBR_aGZPKKl0grCeyiJrOMd8xirvMd4rvvZ5t8zRuaYpuMpAR1jPvP8QBuuQXJtItrdex0iyYSK2j1askex6LvQmSsqYU8_H2Rc9lc64EKnhuA8RzJrXeKogWhwRwSk3XiMvDNZLxcI6NNJbSHvOxTeTkioplRanu7VEFtCopxDj4K9qjp8LCzNzhh9I1kwL88UFutL4suszxW17G8wp4eQFabEtjJFFkAbnzSwGbzPzuyptm4L5B5HkDgJkuXl8LA"/>
+        </div>
+        <div class="absolute -bottom-6 -left-4 glass-panel p-6 rounded-xl w-[90%] shadow-2xl transition-transform duration-500 group-hover:-translate-y-2">
+          <h3 class="font-headline-sm text-headline-sm text-text-primary mb-1">Della</h3>
+          <p class="font-metadata-xs text-metadata-xs text-primary uppercase tracking-widest">Consistent AI Characters</p>
+        </div>
+      </div>
+
+      <!-- Mentor 3 -->
+      <div class="relative group mt-8 md:mt-32 speaker-card reveal-up" style="transition-delay:0.5s">
+        <div class="aspect-[3/4] overflow-hidden rounded-2xl">
+          <img alt="Portrait of Chijioke — AI Strategy Mentor" class="w-full h-full object-cover editorial-img"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuC12CLAYjYtrmK2ovcWtCLx4z3TCaIXhmuB-Zkjqipa6RVSad_fjoTlnWP4kw5yFV2bY_VDkFik2qFGzQsrbVAzmxbVH7VXwAC-zLHH17Kz4JxpX2CB_FfXu-vxAuhHVkfkb5gTU0DmMA1dFrjSDoDB2I5Yn8S25dadFwR4tshfefcwceJapYbc_IOP8CT2JXCthulKn6HHSEBf9OIWftoJGm0YSG6efAuqiZwVKOvhti3E1VZNT05D5rgH4g4wwQcdGOFV19FsYZw"/>
+        </div>
+        <div class="absolute -bottom-6 -left-4 glass-panel p-6 rounded-xl w-[90%] shadow-2xl transition-transform duration-500 group-hover:-translate-y-2">
+          <h3 class="font-headline-sm text-headline-sm text-text-primary mb-1">Chijioke</h3>
+          <p class="font-metadata-xs text-metadata-xs text-primary uppercase tracking-widest">Content Strategy · AI Automation</p>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- Detailed Course Schedule / Curriculum -->
-  <section class="schedule-section" id="schedule">
-    <div class="schedule-container">
-      <h2 class="section-title">The Four-Week Schedule</h2>
-      
-      <div class="curriculum-grid">
-        <!-- Week 1 -->
-        <div class="curriculum-week">
-          <div class="week-header">
-            <span class="week-num-badge">Week 1</span>
-            <h3>Foundations & Motion</h3>
-          </div>
-          <div class="session-card">
-            <div class="session-meta">
-              <span class="session-date">Friday, July 24 • 9-10 PM WAT</span>
-              <span class="session-host">Host: Bethel</span>
-            </div>
-            <h4>Session 1: Photo-to-Video Transformation</h4>
-          </div>
-          <div class="session-card">
-            <div class="session-meta">
-              <span class="session-date">Saturday, July 25 • 9-10 PM WAT</span>
-              <span class="session-host">Host: Bethel</span>
-            </div>
-            <h4>Session 2: Motion-Syncing & Compositing</h4>
-          </div>
+    <!-- More mentors row -->
+    <div class="grid md:grid-cols-2 gap-8 lg:gap-16 mt-24 max-w-2xl">
+      <div class="relative group speaker-card reveal-up" style="transition-delay:0.2s">
+        <div class="aspect-[3/4] overflow-hidden rounded-2xl">
+          <img alt="Portrait of Chibuike Ifeoma — Creative Director Mentor" class="w-full h-full object-cover editorial-img"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYpZvf9PO-YCOmoaiNsYbfyzytyqqgX0q1dpU2eFgXNS-JbXoBP--Pl9gZLxyopzajoaq8t0zmHLatE9Kl9g5x13RpaoPgLA7ryQyPbbMRsDDjkpa5a-NtuGp7sKCsIuwKfloN2vy4uMS-FLmOFt_uKgTCJm5vZZHN346EoK3z9FlHb58h1t6KsjwfRkuB0Wnca_PSgfI7WtetsAK3hayQ2SmVat_95OAWXq_4XuLVdQtw4tlLWQ7O5ixYz9-TNowaJzFuDu7vtbo"/>
         </div>
-
-        <!-- Week 2 -->
-        <div class="curriculum-week">
-          <div class="week-header">
-            <span class="week-num-badge">Week 2</span>
-            <h3>Consistency & Story</h3>
-          </div>
-          <div class="session-card">
-            <div class="session-meta">
-              <span class="session-date">Friday, July 31 • 9-10 PM WAT</span>
-              <span class="session-host">Host: Della</span>
-            </div>
-            <h4>Session 3: Maintaining Consistent AI Characters</h4>
-          </div>
-          <div class="session-card">
-            <div class="session-meta">
-              <span class="session-date">Saturday, August 1 • 9-10 PM WAT</span>
-              <span class="session-host">Host: Chijioke</span>
-            </div>
-            <h4>Session 4: Advanced Content Creation Strategy</h4>
-          </div>
+        <div class="absolute -bottom-6 -left-4 glass-panel p-6 rounded-xl w-[90%] shadow-2xl transition-transform duration-500 group-hover:-translate-y-2">
+          <h3 class="font-headline-sm text-headline-sm text-text-primary mb-1">Chibuike Ifeoma</h3>
+          <p class="font-metadata-xs text-metadata-xs text-primary uppercase tracking-widest">Creative Director · Online Presence</p>
         </div>
-
-        <!-- Week 3 -->
-        <div class="curriculum-week">
-          <div class="week-header">
-            <span class="week-num-badge">Week 3</span>
-            <h3>Automation & Web Build</h3>
-          </div>
-          <div class="session-card">
-            <div class="session-meta">
-              <span class="session-date">Friday, August 7 • 9-10 PM WAT</span>
-              <span class="session-host">Host: Chijioke</span>
-            </div>
-            <h4>Session 5: AI Automation & Workflow Efficiency</h4>
-          </div>
-          <div class="session-card">
-            <div class="session-meta">
-              <span class="session-date">Saturday, August 8 • 9-10 PM WAT</span>
-              <span class="session-host">Host: Chibuike Ifeoma</span>
-            </div>
-            <h4>Session 6: Think Like a Creative Director</h4>
-          </div>
+      </div>
+      <div class="relative group mt-16 speaker-card reveal-up" style="transition-delay:0.4s">
+        <div class="aspect-[3/4] overflow-hidden rounded-2xl">
+          <img alt="Portrait of Tochukwu — Grand Finale Mentor" class="w-full h-full object-cover editorial-img"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4B4Sb1j8EKodIlSD5eGjDV3qgngscR1I-qGU3vqHHEaloYzHuln2EWxV2HobGvgDTPs-R4IqVUbm9sWRULZOdslyJS96Rk8JUfVsUU2Bv2p6y2yYKlIairg5GHaUhRnpc13Jxv1gVUyUBDwFkUKur6c8jqUfIzKJkGcLLwoXAx2pijrMC9-JS3r28w10dMzw6w9RvvbOVuBm-edqsWkXU40IqKW1ksCrhl72ZHnt4IaznAbAVRt83cnZBHMRIFO_RU97QRSdzuI8"/>
         </div>
-
-        <!-- Week 4 -->
-        <div class="curriculum-week">
-          <div class="week-header">
-            <span class="week-num-badge">Week 4</span>
-            <h3>Mastery & Finale</h3>
-          </div>
-          <div class="session-card">
-            <div class="session-meta">
-              <span class="session-date">Friday, August 14 • 9-10 PM WAT</span>
-              <span class="session-host">Host: Chibuike Ifeoma</span>
-            </div>
-            <h4>Session 7: Building Online Presence with AI</h4>
-          </div>
-          <div class="session-card">
-            <div class="session-meta">
-              <span class="session-date">Saturday, August 15 • 9-10 PM WAT</span>
-              <span class="session-host">Host: Tochukwu</span>
-            </div>
-            <h4>Session 8: Grand Finale & Studio Standards</h4>
-          </div>
+        <div class="absolute -bottom-6 -left-4 glass-panel p-6 rounded-xl w-[90%] shadow-2xl transition-transform duration-500 group-hover:-translate-y-2">
+          <h3 class="font-headline-sm text-headline-sm text-text-primary mb-1">Tochukwu</h3>
+          <p class="font-metadata-xs text-metadata-xs text-primary uppercase tracking-widest">Studio Standards · Grand Finale</p>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Mentors Section -->
-  <section class="mentors-section" id="mentors">
-    <div class="mentors-container">
-      <h2 class="section-title">The Five Mentors</h2>
-      
-      <div class="mentors-grid">
-        <!-- Mentor 1 -->
-        <div class="mentor-card">
-          <div class="mentor-graphic">
-            <svg class="blob-clip" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <defs>
-                <clipPath id="blob1" clipPathUnits="userSpaceOnUse">
-                  <path class="blob-path" d="M50,10 C70,10 90,25 95,50 C100,75 80,95 50,90 C20,85 5,60 10,35 C15,15 35,10 50,10 Z"/>
-                </clipPath>
-              </defs>
-            </svg>
-            <div class="mentor-liquid" style="--blob-delay: 0s;">
-              <div class="mentor-photo" style="clip-path: url(#blob1);">
-                <div class="mentor-initial">B</div>
-              </div>
-            </div>
-          </div>
-          <div class="mentor-details">
-            <h3>Bethel</h3>
-            <p class="mentor-role">Photo-to-Video & Motion Sync</p>
-          </div>
-        </div>
+<!-- ===================== CURRICULUM / SCHEDULE ===================== -->
+<section class="py-32 px-6 md:px-margin-hero relative z-10" id="curriculum">
+  <div class="max-w-5xl mx-auto">
+    <div class="mb-20 reveal-up">
+      <p class="font-metadata-xs text-metadata-xs text-primary uppercase tracking-widest mb-4">8-Session Intensive</p>
+      <h2 class="font-headline-lg text-5xl md:text-headline-lg mb-4">The Curriculum</h2>
+      <p class="font-metadata-xs text-metadata-xs text-on-surface-variant uppercase">Structured for creative mastery · July 24 – August 15, 2026</p>
+    </div>
 
-        <!-- Mentor 2 -->
-        <div class="mentor-card">
-          <div class="mentor-graphic">
-            <svg class="blob-clip" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <defs>
-                <clipPath id="blob2" clipPathUnits="userSpaceOnUse">
-                  <path class="blob-path" d="M50,15 C75,5 95,30 90,55 C85,80 60,95 35,85 C10,75 -5,50 15,25 C25,10 40,20 50,15 Z"/>
-                </clipPath>
-              </defs>
-            </svg>
-            <div class="mentor-liquid" style="--blob-delay: 0.5s;">
-              <div class="mentor-photo" style="clip-path: url(#blob2);">
-                <div class="mentor-initial">D</div>
-              </div>
-            </div>
+    <div class="relative border-l border-glass-border pl-8 md:pl-16 space-y-16" id="schedule">
+      <!-- Session 1 -->
+      <div class="relative reveal-up">
+        <div class="absolute -left-[104px] top-8 hidden md:block origin-right -rotate-90 text-right w-24 font-metadata-xs text-metadata-xs text-primary tracking-widest uppercase">Jul 24</div>
+        <div class="absolute -left-10 md:-left-[75px] top-8 w-3 h-3 rounded-full bg-primary glow-dot"></div>
+        <div class="glass-panel p-8 rounded-[24px] hover:shadow-[inset_0_0_30px_rgba(0,229,153,0.04)] transition-all duration-700">
+          <div class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-4">
+            <h3 class="font-headline-sm text-headline-sm text-text-primary">Photo-to-Video Transformation</h3>
+            <span class="font-metadata-xs text-metadata-xs px-3 py-1 rounded-full border border-glass-border text-on-surface-variant uppercase self-start">Session 01</span>
           </div>
-          <div class="mentor-details">
-            <h3>Della</h3>
-            <p class="mentor-role">Character & Voice Continuity</p>
-          </div>
-        </div>
-
-        <!-- Mentor 3 -->
-        <div class="mentor-card">
-          <div class="mentor-graphic">
-            <svg class="blob-clip" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <defs>
-                <clipPath id="blob3" clipPathUnits="userSpaceOnUse">
-                  <path class="blob-path" d="M45,5 C70,0 100,20 95,50 C90,80 65,100 40,90 C15,80 0,55 10,30 C15,10 30,8 45,5 Z"/>
-                </clipPath>
-              </defs>
-            </svg>
-            <div class="mentor-liquid" style="--blob-delay: 1s;">
-              <div class="mentor-photo" style="clip-path: url(#blob3);">
-                <div class="mentor-initial">C</div>
-              </div>
-            </div>
-          </div>
-          <div class="mentor-details">
-            <h3>Chijioke</h3>
-            <p class="mentor-role">Content Strategy & Automation</p>
-          </div>
-        </div>
-
-        <!-- Mentor 4 -->
-        <div class="mentor-card">
-          <div class="mentor-graphic">
-            <svg class="blob-clip" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <defs>
-                <clipPath id="blob4" clipPathUnits="userSpaceOnUse">
-                  <path class="blob-path" d="M55,10 C85,15 95,45 85,70 C75,95 45,95 25,75 C5,55 10,20 35,10 C45,5 50,8 55,10 Z"/>
-                </clipPath>
-              </defs>
-            </svg>
-            <div class="mentor-liquid" style="--blob-delay: 1.5s;">
-              <div class="mentor-photo" style="clip-path: url(#blob4);">
-                <div class="mentor-initial">CI</div>
-              </div>
-            </div>
-          </div>
-          <div class="mentor-details">
-            <h3>Chibuike Ifeoma</h3>
-            <p class="mentor-role">Design & AI No-Code Systems</p>
-          </div>
-        </div>
-
-        <!-- Mentor 5 -->
-        <div class="mentor-card">
-          <div class="mentor-graphic">
-            <svg class="blob-clip" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <defs>
-                <clipPath id="blob5" clipPathUnits="userSpaceOnUse">
-                  <path class="blob-path" d="M50,8 C80,5 98,35 88,60 C78,85 50,98 25,85 C0,72 -5,40 15,20 C30,5 40,10 50,8 Z"/>
-                </clipPath>
-              </defs>
-            </svg>
-            <div class="mentor-liquid" style="--blob-delay: 2s;">
-              <div class="mentor-photo" style="clip-path: url(#blob5);">
-                <div class="mentor-initial">T</div>
-              </div>
-            </div>
-          </div>
-          <div class="mentor-details">
-            <h3>Tochukwu</h3>
-            <p class="mentor-role">Masterclass Synthesis & Brand</p>
+          <p class="font-body-md text-body-md text-on-surface-variant mb-4">Turn any still photograph into fluid, cinematic motion. Master the AI tools that breathe life into static images with professional-grade results.</p>
+          <div class="flex gap-6">
+            <span class="font-label-mono text-label-mono text-primary flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-sm">schedule</span> 9 PM WAT</span>
+            <span class="font-label-mono text-label-mono text-text-muted flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-sm">person</span> Bethel</span>
           </div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- FAQ Section (Animated Accordions with Plus Toggle) -->
-  <section class="faq-section" id="faq">
-    <div class="faq-container">
-      <h2 class="section-title">Frequently Asked Questions</h2>
-      
-      <div class="faq-accordion-list">
-        
-        <div class="faq-accordion-item">
-          <button class="faq-header" aria-expanded="false">
-            <span>Do I need prior animation experience?</span>
-            <span class="faq-icon-wrapper">
-              <span class="faq-icon-line line-h"></span>
-              <span class="faq-icon-line line-v"></span>
-            </span>
-          </button>
-          <div class="faq-body">
-            <div class="faq-content">
-              <p>No prior experience needed. We start from scratch and walk every step live.</p>
-            </div>
+      <!-- Session 2 -->
+      <div class="relative reveal-up" style="transition-delay:0.1s">
+        <div class="absolute -left-[104px] top-8 hidden md:block origin-right -rotate-90 text-right w-24 font-metadata-xs text-metadata-xs text-primary tracking-widest uppercase">Jul 25</div>
+        <div class="absolute -left-10 md:-left-[75px] top-8 w-3 h-3 rounded-full bg-glass-surface border border-primary"></div>
+        <div class="glass-panel p-8 rounded-[24px] hover:shadow-[inset_0_0_30px_rgba(0,229,153,0.04)] transition-all duration-700">
+          <div class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-4">
+            <h3 class="font-headline-sm text-headline-sm text-text-primary">Motion-Syncing &amp; Compositing</h3>
+            <span class="font-metadata-xs text-metadata-xs px-3 py-1 rounded-full border border-glass-border text-on-surface-variant uppercase self-start">Session 02</span>
+          </div>
+          <p class="font-body-md text-body-md text-on-surface-variant mb-4">Layer AI-generated elements seamlessly. Learn to composite, sync motion to audio, and produce polished final renders that stand out.</p>
+          <div class="flex gap-6">
+            <span class="font-label-mono text-label-mono text-primary flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-sm">schedule</span> 9 PM WAT</span>
+            <span class="font-label-mono text-label-mono text-text-muted flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-sm">person</span> Bethel</span>
           </div>
         </div>
-
-        <div class="faq-accordion-item">
-          <button class="faq-header" aria-expanded="false">
-            <span>What if I miss a live session?</span>
-            <span class="faq-icon-wrapper">
-              <span class="faq-icon-line line-h"></span>
-              <span class="faq-icon-line line-v"></span>
-            </span>
-          </button>
-          <div class="faq-body">
-            <div class="faq-content">
-              <p>Every session is recorded. You get lifetime access to all videos and resources.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="faq-accordion-item">
-          <button class="faq-header" aria-expanded="false">
-            <span>Is the fee refundable?</span>
-            <span class="faq-icon-wrapper">
-              <span class="faq-icon-line line-h"></span>
-              <span class="faq-icon-line line-v"></span>
-            </span>
-          </button>
-          <div class="faq-body">
-            <div class="faq-content">
-              <p>Yes. Complete the course, feel it wasn't worth it — reach out and we'll refund. No questions.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="faq-accordion-item">
-          <button class="faq-header" aria-expanded="false">
-            <span>What happens after I apply?</span>
-            <span class="faq-icon-wrapper">
-              <span class="faq-icon-line line-h"></span>
-              <span class="faq-icon-line line-v"></span>
-            </span>
-          </button>
-          <div class="faq-body">
-            <div class="faq-content">
-              <p>You go straight to payment. No screening, no waitlist — just the deadline.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="faq-accordion-item">
-          <button class="faq-header" aria-expanded="false">
-            <span>What timezone are sessions in?</span>
-            <span class="faq-icon-wrapper">
-              <span class="faq-icon-line line-h"></span>
-              <span class="faq-icon-line line-v"></span>
-            </span>
-          </button>
-          <div class="faq-body">
-            <div class="faq-content">
-              <p>9 PM – 10 PM WAT (UTC+1). Use the timezone switcher above to see your local time.</p>
-            </div>
-          </div>
-        </div>
-
       </div>
-    </div>
-  </section>
 
-  <!-- Why Commitment Fee Section -->
-  <section class="fee-section" id="fee">
-    <div class="fee-container">
-      <h2 class="section-title">Why There's a Commitment Fee</h2>
-      <div class="fee-content">
-        <div class="fee-text">
-          <p>We only have five mentors and so many hours. The fee isn't tuition — it's how we know you're serious enough to actually show up.</p>
-          <p>Real sessions, real students, real attention.</p>
+      <!-- Session 3 -->
+      <div class="relative reveal-up" style="transition-delay:0.2s">
+        <div class="absolute -left-[104px] top-8 hidden md:block origin-right -rotate-90 text-right w-24 font-metadata-xs text-metadata-xs text-primary tracking-widest uppercase">Jul 31</div>
+        <div class="absolute -left-10 md:-left-[75px] top-8 w-3 h-3 rounded-full bg-glass-surface border border-primary"></div>
+        <div class="glass-panel p-8 rounded-[24px] hover:shadow-[inset_0_0_30px_rgba(0,229,153,0.04)] transition-all duration-700">
+          <div class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-4">
+            <h3 class="font-headline-sm text-headline-sm text-text-primary">Maintaining Consistent AI Characters</h3>
+            <span class="font-metadata-xs text-metadata-xs px-3 py-1 rounded-full border border-glass-border text-on-surface-variant uppercase self-start">Session 03</span>
+          </div>
+          <p class="font-body-md text-body-md text-on-surface-variant mb-4">The holy grail of AI animation — keeping your characters consistent across scenes. Unlock the prompting and workflow secrets professionals use.</p>
+          <div class="flex gap-6">
+            <span class="font-label-mono text-label-mono text-primary flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-sm">schedule</span> 9 PM WAT</span>
+            <span class="font-label-mono text-label-mono text-text-muted flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-sm">person</span> Della</span>
+          </div>
         </div>
-        <div class="fee-icon">
-          <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="40" cy="40" r="35" stroke="#1A1712" stroke-width="2.5"/>
-            <path d="M40 20 L40 45 L55 55" stroke="#1A1712" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="40" cy="40" r="4" fill="#D4FF3D" stroke="#1A1712" stroke-width="2"/>
-          </svg>
+      </div>
+
+      <!-- Session 4 -->
+      <div class="relative reveal-up" style="transition-delay:0.15s">
+        <div class="absolute -left-[104px] top-8 hidden md:block origin-right -rotate-90 text-right w-24 font-metadata-xs text-metadata-xs text-primary tracking-widest uppercase">Aug 1</div>
+        <div class="absolute -left-10 md:-left-[75px] top-8 w-3 h-3 rounded-full bg-glass-surface border border-primary"></div>
+        <div class="glass-panel p-8 rounded-[24px] hover:shadow-[inset_0_0_30px_rgba(0,229,153,0.04)] transition-all duration-700">
+          <div class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-4">
+            <h3 class="font-headline-sm text-headline-sm text-text-primary">Advanced Content Creation Strategy</h3>
+            <span class="font-metadata-xs text-metadata-xs px-3 py-1 rounded-full border border-glass-border text-on-surface-variant uppercase self-start">Session 04</span>
+          </div>
+          <p class="font-body-md text-body-md text-on-surface-variant mb-4">Build a content system that keeps you producing at scale. From ideation to publishing — create more without burning out.</p>
+          <div class="flex gap-6">
+            <span class="font-label-mono text-label-mono text-primary flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-sm">schedule</span> 9 PM WAT</span>
+            <span class="font-label-mono text-label-mono text-text-muted flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-sm">person</span> Chijioke</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sessions 5-8 abbreviated -->
+      <div class="relative reveal-up" style="transition-delay:0.1s">
+        <div class="absolute -left-10 md:-left-[75px] top-8 w-3 h-3 rounded-full bg-glass-surface border border-primary"></div>
+        <div class="glass-panel p-8 rounded-[24px]">
+          <div class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-2">
+            <h3 class="font-headline-sm text-headline-sm text-text-primary">AI Automation &amp; Workflow Efficiency</h3>
+            <span class="font-metadata-xs text-metadata-xs px-3 py-1 rounded-full border border-glass-border text-on-surface-variant uppercase self-start">Session 05 · Aug 7</span>
+          </div>
+          <p class="font-body-md text-body-md text-on-surface-variant text-sm">Automate repetitive tasks, batch-render, and build workflows that multiply your output. Chijioke reveals his personal studio automation stack.</p>
+        </div>
+      </div>
+      <div class="relative reveal-up" style="transition-delay:0.1s">
+        <div class="absolute -left-10 md:-left-[75px] top-8 w-3 h-3 rounded-full bg-glass-surface border border-primary"></div>
+        <div class="glass-panel p-8 rounded-[24px]">
+          <div class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-2">
+            <h3 class="font-headline-sm text-headline-sm text-text-primary">Think Like a Creative Director</h3>
+            <span class="font-metadata-xs text-metadata-xs px-3 py-1 rounded-full border border-glass-border text-on-surface-variant uppercase self-start">Session 06 · Aug 8</span>
+          </div>
+          <p class="font-body-md text-body-md text-on-surface-variant text-sm">Elevate from creator to director. Learn to brief, art-direct and quality control AI outputs like a seasoned industry professional.</p>
+        </div>
+      </div>
+      <div class="relative reveal-up" style="transition-delay:0.1s">
+        <div class="absolute -left-10 md:-left-[75px] top-8 w-3 h-3 rounded-full bg-glass-surface border border-primary"></div>
+        <div class="glass-panel p-8 rounded-[24px]">
+          <div class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-2">
+            <h3 class="font-headline-sm text-headline-sm text-text-primary">Building Online Presence with AI</h3>
+            <span class="font-metadata-xs text-metadata-xs px-3 py-1 rounded-full border border-glass-border text-on-surface-variant uppercase self-start">Session 07 · Aug 14</span>
+          </div>
+          <p class="font-body-md text-body-md text-on-surface-variant text-sm">Turn your AI animation skills into a recognisable brand. Strategy, portfolio, and growth with Chibuike Ifeoma.</p>
+        </div>
+      </div>
+      <div class="relative reveal-up" style="transition-delay:0.1s">
+        <div class="absolute -left-10 md:-left-[75px] top-8 w-3 h-3 rounded-full bg-primary glow-dot"></div>
+        <div class="glass-panel p-8 rounded-[24px] border border-primary/20">
+          <div class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-2">
+            <h3 class="font-headline-sm text-headline-sm text-primary">Grand Finale &amp; Studio Standards</h3>
+            <span class="font-metadata-xs text-metadata-xs px-3 py-1 rounded-full border border-primary text-primary uppercase self-start">Session 08 · Aug 15</span>
+          </div>
+          <p class="font-body-md text-body-md text-on-surface-variant text-sm">Live critique, portfolio review, and the final push to studio-quality output. End the intensive ready to work at a professional level. — Tochukwu</p>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Final Closing CTA -->
-  <section class="closing-cta-section">
-    <div class="closing-container">
-      <h2 class="closing-title animate-weight">Ready to Build?</h2>
-      <p class="closing-subtitle">Secure your place before the clock runs out. All sessions are recorded.</p>
-      <button class="btn-cta trigger-form-btn">
-        Apply for a Seat
-        <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+<!-- ===================== FAQ ===================== -->
+<section class="py-32 px-6 md:px-margin-hero relative z-10" id="faq">
+  <div class="max-w-3xl mx-auto">
+    <div class="mb-20 reveal-up">
+      <p class="font-metadata-xs text-metadata-xs text-primary uppercase tracking-widest mb-4">Got Questions?</p>
+      <h2 class="font-headline-lg text-5xl md:text-headline-lg">FAQ</h2>
+    </div>
+    <div class="space-y-4" id="faqContainer">
+      <!-- FAQ items injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ===================== REGISTRATION ===================== -->
+<section class="py-32 px-6 relative z-10 min-h-screen flex items-center justify-center" id="registration">
+  <div class="max-w-[520px] w-full glass-panel p-10 md:p-14 rounded-[32px] shadow-2xl reveal-up relative overflow-hidden" id="regFormContainer">
+    <!-- Success Overlay -->
+    <div class="absolute inset-0 bg-primary/20 backdrop-blur-3xl flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-1000 z-20" id="successState">
+      <span class="material-symbols-outlined text-[80px] text-primary mb-6 drop-shadow-[0_0_20px_rgba(0,229,153,0.8)]" style="font-variation-settings:'FILL' 1;">check_circle</span>
+      <h3 class="font-headline-sm text-headline-sm text-white mb-2">Application Received</h3>
+      <p class="font-metadata-xs text-metadata-xs text-white/70 uppercase">Check your email for next steps</p>
+    </div>
+
+    <div class="mb-10">
+      <p class="font-metadata-xs text-metadata-xs text-primary uppercase tracking-widest mb-3">Reserve Your Seat</p>
+      <h2 class="font-headline-sm text-3xl text-text-primary mb-2">Apply for AI Animation Nexus</h2>
+      <p class="font-metadata-xs text-metadata-xs text-on-surface-variant">Seats are limited · Jul 24 – Aug 15, 2026</p>
+    </div>
+
+    <form class="space-y-8 relative z-10" id="regForm" onsubmit="handleRegistration(event)">
+      <div>
+        <input class="w-full h-14 minimal-input font-body-md placeholder-text-muted focus:ring-0 px-2"
+          id="regName" placeholder="Full Name" required type="text" autocomplete="name"/>
+      </div>
+      <div>
+        <input class="w-full h-14 minimal-input font-body-md placeholder-text-muted focus:ring-0 px-2"
+          id="regEmail" placeholder="Email Address" required type="email" autocomplete="email"/>
+      </div>
+      <div>
+        <input class="w-full h-14 minimal-input font-body-md placeholder-text-muted focus:ring-0 px-2"
+          id="regWhatsapp" placeholder="WhatsApp Number (optional)" type="tel"/>
+      </div>
+      <div>
+        <textarea class="w-full minimal-input font-body-md placeholder-text-muted focus:ring-0 px-2 py-3 resize-none"
+          id="regGoals" placeholder="What do you hope to create?" rows="3"></textarea>
+      </div>
+      <div>
+        <select class="w-full h-14 minimal-input font-body-md text-text-muted focus:ring-0 px-2 appearance-none cursor-pointer" id="regReferral">
+          <option disabled selected value="">How did you hear about us?</option>
+          <option value="instagram">Instagram</option>
+          <option value="twitter">Twitter / X</option>
+          <option value="friend">A Friend</option>
+          <option value="youtube">YouTube</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <button class="w-full h-cta-height mt-4 rounded-xl btn-cta-grad font-label-mono uppercase tracking-widest" type="submit" id="submitBtn">
+        Submit Application →
       </button>
-    </div>
-  </section>
+    </form>
+  </div>
+</section>
 
-  <!-- Dark Olive Footer -->
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-left">
-        <span class="footer-logo">AI Animation Nexus</span>
-        <p>© 2026 AI Animation Nexus. All rights reserved.</p>
-      </div>
-      <div class="footer-right">
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="terms.html">Terms of Service</a>
-        <a href="contact.html">Contact Support</a>
-      </div>
-    </div>
-  </footer>
+<!-- ===================== FOOTER ===================== -->
+<footer class="w-full py-12 px-6 md:px-margin-hero bg-transparent border-t border-glass-border flex flex-col md:flex-row justify-between items-center gap-gutter mt-auto z-10 relative">
+  <div class="font-hero-display text-headline-sm text-text-primary uppercase tracking-tighter">
+    AI Animation Nexus
+  </div>
+  <ul class="flex flex-wrap justify-center gap-6 md:gap-8">
+    <li><a class="font-label-mono text-metadata-xs uppercase text-text-muted hover:text-on-surface transition-opacity opacity-80 hover:opacity-100" href="privacy.html">Privacy Policy</a></li>
+    <li><a class="font-label-mono text-metadata-xs uppercase text-text-muted hover:text-on-surface transition-opacity opacity-80 hover:opacity-100" href="terms.html">Terms of Service</a></li>
+    <li><a class="font-label-mono text-metadata-xs uppercase text-text-muted hover:text-on-surface transition-opacity opacity-80 hover:opacity-100" href="contact.html">Contact</a></li>
+  </ul>
+  <div class="font-label-mono text-metadata-xs uppercase text-text-muted">
+    © 2026 AI ANIMATION NEXUS. ALL RIGHTS RESERVED.
+  </div>
+</footer>
 
-  <!-- BACKDROP AND INTERACTIVE FLASH-CARD FORM -->
-  <div class="form-backdrop" id="formBackdrop"></div>
-  <aside class="form-panel" id="formPanel">
-    
-    <!-- Top Bar Navigation inside Form -->
-    <div class="form-top-bar">
-      <button class="form-back-home" id="formBackHomeBtn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M19 12H5M5 12L12 19M5 12L12 5"/>
-        </svg>
-        Back to main page
+<!-- ===================== SCRIPTS ===================== -->
+<script>
+  // ── Countdown Timer ──────────────────────────────────────────
+  const deadline = new Date('July 23, 2026 12:00:00 UTC').getTime();
+  function updateCountdown() {
+    const diff = deadline - Date.now();
+    if (diff <= 0) {
+      document.querySelectorAll('#days,#hours,#minutes,#seconds').forEach(el => el.textContent = '00');
+      return;
+    }
+    document.getElementById('days').textContent    = String(Math.floor(diff / 86400000)).padStart(2,'0');
+    document.getElementById('hours').textContent   = String(Math.floor((diff % 86400000) / 3600000)).padStart(2,'0');
+    document.getElementById('minutes').textContent = String(Math.floor((diff % 3600000) / 60000)).padStart(2,'0');
+    document.getElementById('seconds').textContent = String(Math.floor((diff % 60000) / 1000)).padStart(2,'0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // ── Scroll Reveal ─────────────────────────────────────────────
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); obs.unobserve(entry.target); }
+    });
+  }, { root: null, rootMargin: '0px', threshold: 0.12 });
+  document.querySelectorAll('.reveal-up').forEach(el => observer.observe(el));
+
+  // ── Mobile Nav ────────────────────────────────────────────────
+  const mobileMenu = document.getElementById('mobileMenu');
+  document.getElementById('mobileMenuToggle').addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+  function closeMobileMenu() { mobileMenu.classList.remove('open'); }
+
+  // ── FAQ ───────────────────────────────────────────────────────
+  const faqs = [
+    { q: 'Who is this intensive for?', a: 'Anyone who wants to learn AI-driven motion design — from total beginners to experienced designers looking to add AI to their toolkit. No prior animation experience required.' },
+    { q: 'What tools will we use?', a: 'The mentors will guide you through industry-leading AI animation tools including Runway, Kling AI, Pika, and others, plus compositing in CapCut and Premiere Pro.' },
+    { q: 'Are sessions live or recorded?', a: 'All 8 sessions are live on Zoom. Recordings will NOT be shared, so attendance is essential. A reminder email is sent 1 hour before each session.' },
+    { q: 'How much does it cost?', a: 'The fee is paid via Paystack after your application is approved. You will receive a payment link via email within 24 hours of submitting your application.' },
+    { q: 'What happens after I apply?', a: 'After applying, you will receive an email with your payment link. Once payment is confirmed you receive an access code to use on the student dashboard before each session to get the Zoom link.' },
+    { q: 'What is the class schedule?', a: 'Sessions run Thursdays and Fridays at 9 PM WAT from July 24 to August 15, 2026. Sessions 1–2: Jul 24–25 · Sessions 3–4: Jul 31–Aug 1 · Sessions 5–6: Aug 7–8 · Sessions 7–8: Aug 14–15.' },
+  ];
+  const faqContainer = document.getElementById('faqContainer');
+  faqs.forEach((faq, i) => {
+    const item = document.createElement('div');
+    item.className = 'glass-panel rounded-2xl overflow-hidden reveal-up';
+    item.style.transitionDelay = `${i * 0.07}s`;
+    item.innerHTML = `
+      <button class="w-full flex justify-between items-center p-6 text-left group" aria-expanded="false" onclick="toggleFaq(this)">
+        <span class="font-headline-sm text-sm md:text-base text-text-primary pr-4">${faq.q}</span>
+        <span class="material-symbols-outlined text-primary flex-shrink-0 transition-transform duration-300 faq-icon">add</span>
       </button>
-      
-      <div class="form-progress-indicator">
-        <span id="currentStepNum">1</span> / <span id="totalStepsNum">5</span>
+      <div class="faq-body overflow-hidden" style="height:0; transition: height 0.4s ease;">
+        <p class="font-body-md text-body-md text-on-surface-variant px-6 pb-6 text-sm leading-relaxed">${faq.a}</p>
       </div>
-    </div>
+    `;
+    faqContainer.appendChild(item);
+    observer.observe(item);
+  });
 
-    <!-- ProgressBar Indicator -->
-    <div class="progress-bar-container">
-      <div class="progress-bar-fill" id="progressBarFill" style="width: 20%;"></div>
-    </div>
+  function toggleFaq(btn) {
+    const body = btn.nextElementSibling;
+    const icon = btn.querySelector('.faq-icon');
+    const isOpen = btn.getAttribute('aria-expanded') === 'true';
+    // close all
+    document.querySelectorAll('.faq-body').forEach(b => { b.style.height = '0'; });
+    document.querySelectorAll('[aria-expanded="true"]').forEach(b => { b.setAttribute('aria-expanded','false'); b.querySelector('.faq-icon').textContent = 'add'; });
+    if (!isOpen) {
+      btn.setAttribute('aria-expanded','true');
+      icon.textContent = 'remove';
+      body.style.height = body.scrollHeight + 'px';
+    }
+  }
 
-    <!-- Flash-Card Deck Container -->
-    <div class="flash-card-deck" id="flashCardDeck">
-      
-      <!-- Card 1: Introduction -->
-      <div class="flash-card active" data-step="1">
-        <div class="card-inner">
-          <svg class="doodle doodle-form-star" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50 15 V85 M15 50 H85 M25 25 L75 75 M75 25 L25 75" stroke="#1A1712" stroke-width="2.5" stroke-linecap="round"/>
-          </svg>
-          <h2 class="form-heading">Tell Us About You</h2>
-          <p class="form-subheading">A few quick questions, then straight to confirming your seat.</p>
-          <div class="card-action-block">
-            <button class="btn-submit next-card-btn" type="button">
-              Get Started
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M5 12H19M19 12L13 6M19 12L13 18"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
+  // ── Registration ──────────────────────────────────────────────
+  async function handleRegistration(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = 'Submitting...';
+    btn.disabled = true;
 
-      <!-- Card 2: Full Name & Email -->
-      <div class="flash-card" data-step="2">
-        <div class="card-inner">
-          <h3 class="card-step-label">Step 1 — Basic Details</h3>
-          
-          <div class="form-group">
-            <label for="fullName" class="form-label">Full name</label>
-            <input type="text" id="fullName" class="form-input" placeholder="Your full name" required autocomplete="name">
-          </div>
+    const formData = {
+      fullName: document.getElementById('regName').value,
+      email: document.getElementById('regEmail').value,
+      whatsapp: document.getElementById('regWhatsapp').value,
+      goals: document.getElementById('regGoals').value,
+      referral: document.getElementById('regReferral').value,
+    };
 
-          <div class="form-group">
-            <label for="emailAddress" class="form-label">Email address</label>
-            <input type="email" id="emailAddress" class="form-input" placeholder="you@example.com" required autocomplete="email">
-          </div>
+    try {
+      const res = await fetch('/api/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      const data = await res.json();
+      if (data.success) {
+        localStorage.setItem('nexus_email', formData.email);
+        const container = document.getElementById('regFormContainer');
+        container.style.boxShadow = '0 0 80px rgba(0,229,153,0.7)';
+        const success = document.getElementById('successState');
+        setTimeout(() => {
+          success.style.opacity = '1';
+          success.style.pointerEvents = 'auto';
+          document.getElementById('regForm').style.opacity = '0';
+          container.style.boxShadow = 'none';
+          setTimeout(() => { window.location.href = 'payment.html'; }, 2000);
+        }, 400);
+      } else {
+        alert(data.error || 'Something went wrong. Please try again.');
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+      }
+    } catch (err) {
+      console.error('Submission error:', err);
+      alert('Network error. Please try again.');
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+    }
+  }
 
-          <div class="card-nav-buttons">
-            <button class="btn-card-nav prev-card-btn" type="button">Back</button>
-            <button class="btn-card-nav next-card-btn next-action-btn" type="button" disabled>Next</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 3: WhatsApp Number -->
-      <div class="flash-card" data-step="3">
-        <div class="card-inner">
-          <h3 class="card-step-label">Step 2 — Contact</h3>
-          
-          <div class="form-group">
-            <label for="whatsappNumber" class="form-label">WhatsApp number</label>
-            <input type="tel" id="whatsappNumber" class="form-input" placeholder="+234 801 234 5678" required>
-          </div>
-
-          <div class="card-nav-buttons">
-            <button class="btn-card-nav prev-card-btn" type="button">Back</button>
-            <button class="btn-card-nav next-card-btn next-action-btn" type="button" disabled>Next</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 4: Goals / Objectives -->
-      <div class="flash-card" data-step="4">
-        <div class="card-inner">
-          <h3 class="card-step-label">Step 3 — Your Goals</h3>
-          
-          <div class="form-group">
-            <label for="goals" class="form-label">What do you want to be able to make by the end of this?</label>
-            <textarea id="goals" class="form-input form-textarea" rows="4" placeholder="Tell us your goals..." required></textarea>
-          </div>
-
-          <div class="card-nav-buttons">
-            <button class="btn-card-nav prev-card-btn" type="button">Back</button>
-            <button class="btn-card-nav next-card-btn next-action-btn" type="button" disabled>Next</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 5: Portfolio & Referral -->
-      <div class="flash-card" data-step="5">
-        <div class="card-inner">
-          <h3 class="card-step-label">Step 4 — Final Details</h3>
-          
-          <div class="form-group">
-            <label for="portfolio" class="form-label">Portfolio or social link <span class="label-optional">(optional)</span></label>
-            <input type="url" id="portfolio" class="form-input" placeholder="https://example.com or @username">
-          </div>
-
-          <div class="form-group">
-            <label for="referral" class="form-label">How did you hear about AI Animation Nexus?</label>
-            <div class="select-wrapper">
-              <select id="referral" class="form-input form-select" required>
-                <option value="" disabled selected>Select an option</option>
-                <option value="twitter">Twitter / X</option>
-                <option value="linkedin">LinkedIn</option>
-                <option value="youtube">YouTube</option>
-                <option value="friend">From a friend</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="card-nav-buttons">
-            <button class="btn-card-nav prev-card-btn" type="button">Back</button>
-            <button class="btn-submit" id="submitFormBtn" type="submit">
-              Continue to Confirm My Seat
-              <svg class="submit-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M5 12H19M19 12L13 6M19 12L13 18"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </aside>
-
-  <!-- Script Logic -->
-  <script src="js/main.js"></script>
+  // ── Cinematic BG Focus Mode ───────────────────────────────────
+  const fluidBg = document.getElementById('fluidBackground');
+  document.querySelectorAll('.minimal-input').forEach(el => {
+    el.addEventListener('focus', () => { fluidBg.style.opacity = '0.4'; fluidBg.style.transition = 'opacity 0.8s ease'; });
+    el.addEventListener('blur', () => { fluidBg.style.opacity = '1'; });
+  });
+</script>
 </body>
 </html>

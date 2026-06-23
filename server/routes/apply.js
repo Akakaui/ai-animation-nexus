@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { saveStudent } = require('../db');
+const { saveStudent } = require('../../lib/db');
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const { fullName, email, whatsapp, goals, portfolio, referral } = req.body;
 
   if (!fullName || !email) {
@@ -10,7 +10,7 @@ router.post('/', (req, res) => {
   }
 
   try {
-    const student = saveStudent({
+    const student = await saveStudent({
       full_name: fullName,
       email,
       whatsapp: whatsapp || null,

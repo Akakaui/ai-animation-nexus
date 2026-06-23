@@ -1,182 +1,204 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="dark" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact Support — AI Animation Nexus</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=General+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
-  <style>
-    .contact-layout {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 80px 40px;
-    }
-    .contact-header {
-      margin-bottom: 48px;
-      text-align: center;
-    }
-    .contact-header h1 {
-      font-size: 2.5rem;
-      text-transform: none;
-      margin-bottom: 12px;
-    }
-    .contact-header p {
-      opacity: 0.8;
-    }
-    .contact-card {
-      background: var(--bg-white);
-      border: 2px solid var(--color-ink);
-      border-radius: var(--radius-sharp);
-      box-shadow: var(--shadow-flat-4);
-      padding: 48px;
-    }
-    .contact-info {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      margin-bottom: 32px;
-    }
-    .contact-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-    }
-    .contact-icon {
-      width: 48px;
-      height: 48px;
-      background: var(--accent-acid);
-      border: 2px solid var(--color-ink);
-      border-radius: var(--radius-sharp);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .contact-details h3 {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-    .contact-details p, .contact-details a {
-      font-size: 1rem;
-      color: var(--color-ink);
-    }
-    .contact-details a:hover {
-      text-decoration: underline;
-    }
-    .response-time {
-      background: var(--green-muted);
-      border: 2px solid var(--color-ink);
-      border-radius: var(--radius-sharp);
-      padding: 20px;
-      text-align: center;
-      margin-top: 24px;
-    }
-    .response-time h3 {
-      font-size: 1rem;
-      margin-bottom: 4px;
-    }
-    .response-time p {
-      font-size: 0.9rem;
-      opacity: 0.8;
-    }
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 32px;
-      font-weight: 600;
-      text-transform: uppercase;
-      font-size: 0.85rem;
-    }
-    .back-link:hover {
-      text-decoration: underline;
-    }
-  </style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Contact Support — AI Animation Nexus</title>
+<meta name="description" content="Get in touch with the AI Animation Nexus team. We're here to help."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary":"#6dffba","on-surface":"#e5e1e4","on-surface-variant":"#bacbbe","glass-surface":"rgba(255,255,255,0.05)","glass-border":"rgba(255,255,255,0.1)","text-muted":"#8C8C94","text-primary":"#F2F2F2","error":"#ffb4ab"},fontFamily:{"hero-display":["Libre Caslon Text"],"body-md":["Inter"],"metadata-xs":["Space Mono"],"headline-sm":["Libre Caslon Text"],"label-mono":["Space Mono"]},fontSize:{"body-md":["17px",{"lineHeight":"28px","fontWeight":"300"}],"metadata-xs":["12px",{"lineHeight":"16px","letterSpacing":"0.15em","fontWeight":"400"}],"headline-sm":["24px",{"lineHeight":"32px","fontWeight":"400"}],"label-mono":["14px",{"lineHeight":"20px","letterSpacing":"0.1em","fontWeight":"500"}]},spacing:{"cta-height":"64px"}}}}
+</script>
+<style>
+  body{background-color:#0A0A0C;color:#F2F2F2;overflow-x:hidden;scroll-behavior:smooth;}
+  .noise-overlay{position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:9999;opacity:0.1;background:url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="n"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23n)"/%3E%3C/svg%3E');}
+  .fluid-bg{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:-1;background:radial-gradient(circle at 30% 40%,rgba(0,229,153,0.08) 0%,transparent 50%),radial-gradient(circle at 70% 70%,rgba(139,92,246,0.08) 0%,transparent 50%);animation:pulseBg 12s ease-in-out infinite alternate;}
+  @keyframes pulseBg{0%{transform:scale(1);}100%{transform:scale(1.05);}}
+  .glass-panel{background:rgba(255,255,255,0.05);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.1);}
+  .minimal-input{background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.2);color:#F2F2F2;transition:border-color 0.3s ease;width:100%;}
+  .minimal-input:focus{outline:none;border-bottom-color:#00E599;}
+  .minimal-input::placeholder{color:#8C8C94;}
+  textarea.minimal-input{resize:none;}
+  .btn-cta{background:linear-gradient(135deg,rgba(0,229,153,0.15) 0%,rgba(139,92,246,0.15) 100%);border:1px solid rgba(0,229,153,0.5);color:#6dffba;transition:all 0.4s ease;}
+  .btn-cta:hover{background:#00E599;color:#003822;border-color:#00E599;box-shadow:0 0 30px rgba(0,229,153,0.4);}
+  .btn-cta:disabled{opacity:0.5;cursor:not-allowed;}
+  @keyframes glowPulse{0%,100%{box-shadow:0 0 8px rgba(0,229,153,0.5);}50%{box-shadow:0 0 20px rgba(0,229,153,0.9);}}
+  .glow-dot{animation:glowPulse 2s ease-in-out infinite;}
+  ::-webkit-scrollbar{width:4px;} ::-webkit-scrollbar-track{background:#0A0A0C;} ::-webkit-scrollbar-thumb{background:rgba(0,229,153,0.3);border-radius:2px;}
+  .contact-channel{display:flex;align-items:flex-start;gap:1rem;padding:1.5rem;border-radius:1rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);transition:all 0.3s ease;}
+  .contact-channel:hover{background:rgba(0,229,153,0.04);border-color:rgba(0,229,153,0.2);}
+</style>
 </head>
-<body>
-  <div class="paper-texture"></div>
+<body class="antialiased">
+<div class="noise-overlay"></div>
+<div class="fluid-bg"></div>
 
-  <nav class="navbar">
-    <div class="nav-logo">AI Animation Nexus</div>
-    <a href="index.html" class="back-link">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <path d="M19 12H5M5 12L12 19M5 12L12 5"/>
-      </svg>
-      Back to Home
-    </a>
-  </nav>
+<!-- Nav -->
+<nav class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 py-4 glass-panel">
+  <a href="index.html" class="font-hero-display text-base text-on-surface uppercase tracking-tighter hover:text-primary transition-colors">AI Animation Nexus</a>
+  <a href="index.html" class="flex items-center gap-2 font-label-mono text-metadata-xs text-on-surface-variant hover:text-primary transition-colors uppercase">
+    <span class="material-symbols-outlined text-sm">arrow_back</span> Back to Home
+  </a>
+</nav>
 
-  <div class="contact-layout">
-    <div class="contact-header">
-      <h1>Contact Support</h1>
-      <p>Have a question? We're here to help.</p>
-    </div>
+<main class="max-w-4xl mx-auto px-6 pt-32 pb-24">
 
-    <div class="contact-card">
-      <div class="contact-info">
-        <div class="contact-item">
-          <div class="contact-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-              <polyline points="22,6 12,13 2,6"/>
-            </svg>
-          </div>
-          <div class="contact-details">
-            <h3>Email</h3>
-            <a href="mailto:support@aianimationnexus.com">support@aianimationnexus.com</a>
-          </div>
-        </div>
-
-        <div class="contact-item">
-          <div class="contact-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-            </svg>
-          </div>
-          <div class="contact-details">
-            <h3>WhatsApp</h3>
-            <p>Join our channel for real-time updates</p>
-          </div>
-        </div>
-
-        <div class="contact-item">
-          <div class="contact-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <circle cx="12" cy="12" r="10"/>
-              <polyline points="12 6 12 12 16 14"/>
-            </svg>
-          </div>
-          <div class="contact-details">
-            <h3>Response Time</h3>
-            <p>We typically respond within 24-48 hours</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="response-time">
-        <h3>Need immediate help?</h3>
-        <p>Check the FAQ section on the homepage — your question might already be answered there.</p>
-      </div>
-    </div>
+  <!-- Header -->
+  <div class="mb-16 text-center">
+    <p class="font-metadata-xs text-metadata-xs text-primary uppercase tracking-widest mb-4">Get in Touch</p>
+    <h1 class="font-hero-display text-5xl md:text-6xl text-text-primary mb-4 leading-tight">Contact<br/>Support</h1>
+    <p class="font-body-md text-body-md text-on-surface-variant max-w-md mx-auto">Have a question? We're here to help. Reach out and we'll get back to you as soon as we can.</p>
   </div>
 
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-left">
-        <span class="footer-logo">AI Animation Nexus</span>
-        <p>© 2026 AI Animation Nexus. All rights reserved.</p>
+  <div class="grid md:grid-cols-2 gap-8 mb-16">
+    <!-- Left: Contact channels -->
+    <div class="space-y-4">
+      <h2 class="font-headline-sm text-headline-sm text-text-primary mb-6">Reach Us Directly</h2>
+
+      <!-- Email -->
+      <a href="mailto:support@aianimationnexus.com" class="contact-channel group block">
+        <div class="w-10 h-10 rounded-xl glass-panel flex items-center justify-center flex-shrink-0">
+          <span class="material-symbols-outlined text-primary text-xl">mail</span>
+        </div>
+        <div>
+          <p class="font-label-mono text-metadata-xs text-on-surface-variant uppercase mb-1">Email</p>
+          <p class="font-headline-sm text-base text-text-primary group-hover:text-primary transition-colors">support@aianimationnexus.com</p>
+          <p class="font-body-md text-sm text-on-surface-variant mt-1">We reply within 24–48 hours</p>
+        </div>
+      </a>
+
+      <!-- WhatsApp -->
+      <div class="contact-channel">
+        <div class="w-10 h-10 rounded-xl glass-panel flex items-center justify-center flex-shrink-0">
+          <span class="material-symbols-outlined text-primary text-xl">forum</span>
+        </div>
+        <div>
+          <p class="font-label-mono text-metadata-xs text-on-surface-variant uppercase mb-1">WhatsApp Community</p>
+          <p class="font-headline-sm text-base text-text-primary">Join our channel</p>
+          <p class="font-body-md text-sm text-on-surface-variant mt-1">Real-time updates, session reminders &amp; community</p>
+        </div>
       </div>
-      <div class="footer-right">
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="terms.html">Terms of Service</a>
-        <a href="contact.html">Contact Support</a>
+
+      <!-- Response time -->
+      <div class="contact-channel">
+        <div class="w-10 h-10 rounded-xl glass-panel flex items-center justify-center flex-shrink-0">
+          <span class="material-symbols-outlined text-primary text-xl">schedule</span>
+        </div>
+        <div>
+          <p class="font-label-mono text-metadata-xs text-on-surface-variant uppercase mb-1">Support Hours</p>
+          <p class="font-headline-sm text-base text-text-primary">Mon – Fri, 9 AM – 6 PM WAT</p>
+          <p class="font-body-md text-sm text-on-surface-variant mt-1">We do our best to respond on weekends too</p>
+        </div>
+      </div>
+
+      <!-- FAQ tip -->
+      <div class="glass-panel rounded-2xl p-5 border-l-2 border-primary mt-4">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings:'FILL' 1;">tips_and_updates</span>
+          <span class="font-label-mono text-metadata-xs text-primary uppercase">Quick Tip</span>
+        </div>
+        <p class="font-body-md text-sm text-on-surface-variant">Check the <a href="index.html#faq" class="text-primary hover:underline">FAQ section on the homepage</a> — most common questions are already answered there.</p>
       </div>
     </div>
-  </footer>
+
+    <!-- Right: Contact form -->
+    <div class="glass-panel rounded-[28px] p-8 relative overflow-hidden" id="contactFormWrap">
+
+      <!-- Success overlay -->
+      <div class="absolute inset-0 bg-primary/20 backdrop-blur-3xl flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-700 z-20 rounded-[28px]" id="contactSuccess">
+        <span class="material-symbols-outlined text-[64px] text-primary mb-4" style="font-variation-settings:'FILL' 1;">mark_email_read</span>
+        <h3 class="font-headline-sm text-headline-sm text-white mb-2">Message Sent</h3>
+        <p class="font-metadata-xs text-metadata-xs text-white/70 uppercase">We'll reply within 24–48 hours</p>
+      </div>
+
+      <h2 class="font-headline-sm text-headline-sm text-text-primary mb-8">Send a Message</h2>
+
+      <form id="contactForm" class="space-y-8" onsubmit="handleContact(event)">
+        <div>
+          <input class="w-full h-14 minimal-input font-body-md text-sm px-2 placeholder-text-muted" id="cName" placeholder="Your Name" required type="text" autocomplete="name"/>
+        </div>
+        <div>
+          <input class="w-full h-14 minimal-input font-body-md text-sm px-2 placeholder-text-muted" id="cEmail" placeholder="Email Address" required type="email" autocomplete="email"/>
+        </div>
+        <div>
+          <select class="w-full h-14 minimal-input font-body-md text-sm px-2 appearance-none cursor-pointer" id="cSubject" style="color:#8C8C94;">
+            <option value="" disabled selected style="background:#131315;">What's this about?</option>
+            <option value="payment" style="background:#131315;">Payment Issue</option>
+            <option value="access" style="background:#131315;">Course Access / Login</option>
+            <option value="schedule" style="background:#131315;">Schedule Question</option>
+            <option value="refund" style="background:#131315;">Refund Request</option>
+            <option value="general" style="background:#131315;">General Question</option>
+            <option value="other" style="background:#131315;">Other</option>
+          </select>
+        </div>
+        <div>
+          <textarea class="w-full minimal-input font-body-md text-sm px-2 py-3 placeholder-text-muted" id="cMessage" placeholder="Your message..." required rows="4"></textarea>
+        </div>
+        <p class="text-error font-label-mono text-sm hidden" id="contactError"></p>
+        <button class="w-full h-cta-height rounded-xl btn-cta font-label-mono uppercase tracking-widest flex items-center justify-center gap-2" type="submit" id="contactBtn">
+          <span class="material-symbols-outlined text-lg">send</span> Send Message
+        </button>
+      </form>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="w-full py-8 px-6 border-t border-glass-border flex flex-col md:flex-row justify-between items-center gap-4 z-10 relative">
+  <div class="font-hero-display text-sm text-text-primary uppercase tracking-tighter">AI Animation Nexus</div>
+  <div class="flex gap-6">
+    <a class="font-label-mono text-metadata-xs uppercase text-text-muted hover:text-on-surface" href="privacy.html">Privacy</a>
+    <a class="font-label-mono text-metadata-xs uppercase text-text-muted hover:text-on-surface" href="terms.html">Terms</a>
+    <a class="font-label-mono text-metadata-xs uppercase text-text-muted hover:text-on-surface" href="contact.html">Contact</a>
+  </div>
+  <div class="font-label-mono text-metadata-xs uppercase text-text-muted">© 2026 AI Animation Nexus</div>
+</footer>
+
+<script>
+async function handleContact(e) {
+  e.preventDefault();
+  const btn = document.getElementById('contactBtn');
+  const errEl = document.getElementById('contactError');
+  errEl.classList.add('hidden');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined text-lg">hourglass_top</span> Sending...';
+
+  const payload = {
+    name: document.getElementById('cName').value,
+    email: document.getElementById('cEmail').value,
+    subject: document.getElementById('cSubject').value || 'General Question',
+    message: document.getElementById('cMessage').value
+  };
+
+  try {
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (data.success) {
+      const wrap = document.getElementById('contactFormWrap');
+      const successEl = document.getElementById('contactSuccess');
+      wrap.style.boxShadow = '0 0 60px rgba(0,229,153,0.5)';
+      successEl.style.opacity = '1';
+      successEl.style.pointerEvents = 'auto';
+      setTimeout(() => { wrap.style.boxShadow = 'none'; }, 1000);
+    } else {
+      errEl.textContent = data.error || 'Something went wrong. Please try again.';
+      errEl.classList.remove('hidden');
+      btn.disabled = false;
+      btn.innerHTML = '<span class="material-symbols-outlined text-lg">send</span> Send Message';
+    }
+  } catch (err) {
+    errEl.textContent = 'Network error. Please email us directly.';
+    errEl.classList.remove('hidden');
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-outlined text-lg">send</span> Send Message';
+  }
+}
+</script>
 </body>
 </html>

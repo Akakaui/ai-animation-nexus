@@ -1,226 +1,204 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="dark" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>One Last Step — AI Animation Nexus</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=General+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
-  <style>
-    .payment-layout {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 20px;
-    }
-    .payment-card {
-      background-color: var(--bg-white);
-      border: 2px solid var(--color-ink);
-      padding: 48px;
-      max-width: 520px;
-      width: 100%;
-      border-radius: var(--radius-sharp);
-      box-shadow: var(--shadow-flat-4);
-      text-align: center;
-    }
-    .payment-title {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      text-transform: none;
-    }
-    .payment-body {
-      font-size: 1rem;
-      line-height: 1.55;
-      margin-bottom: 24px;
-      opacity: 0.9;
-    }
-    .payment-price-tag {
-      font-family: 'Bricolage Grotesque', serif;
-      font-size: 4rem;
-      font-weight: 800;
-      color: var(--color-ink);
-      margin-bottom: 16px;
-      line-height: 1;
-    }
-    .payment-price-subtext {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      font-weight: 700;
-      opacity: 0.6;
-      margin-bottom: 32px;
-      display: block;
-      letter-spacing: 0.05em;
-    }
-    .payment-refund-note {
-      font-size: 0.8rem;
-      opacity: 0.7;
-      margin-top: 32px;
-      border-top: 1.5px dashed var(--color-divider);
-      padding-top: 24px;
-      line-height: 1.5;
-    }
-    .payment-trust-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 24px;
-      opacity: 0.9;
-    }
-    .btn-paystack {
-      width: 100%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      background-color: var(--accent-acid);
-      color: var(--color-ink);
-      border: 2px solid var(--color-ink);
-      padding: 16px;
-      font-size: 1.1rem;
-      font-weight: 700;
-      border-radius: var(--radius-sharp);
-      cursor: pointer;
-      box-shadow: var(--shadow-flat-2);
-      transition: var(--transition-fast);
-    }
-    .btn-paystack:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 4px 4px 0px var(--color-ink);
-    }
-    .btn-paystack:active {
-      transform: translate(1px, 1px);
-      box-shadow: 1px 1px 0px var(--color-ink);
-    }
-    .btn-paystack:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-    .payment-error {
-      color: #e74c3c;
-      font-size: 0.9rem;
-      margin-top: 16px;
-      display: none;
-    }
-    .payment-error.show {
-      display: block;
-    }
-    .test-mode-badge {
-      background: #f39c12;
-      color: #fff;
-      padding: 4px 12px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      border-radius: 4px;
-      margin-bottom: 16px;
-      display: inline-block;
-    }
-  </style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Complete Your Seat — AI Animation Nexus</title>
+<meta name="description" content="Secure your seat in the AI Animation Nexus 2026 intensive. A small commitment fee reserves your place."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://js.paystack.co/v2/inline.js"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode:"class",
+    theme:{extend:{
+      colors:{
+        "primary":"#6dffba","on-surface":"#e5e1e4","on-secondary":"#3c0091","secondary":"#d0bcff",
+        "primary-fixed-dim":"#00e297","on-surface-variant":"#bacbbe","surface-container-high":"#2a2a2c",
+        "on-primary":"#003822","surface-container-highest":"#353437","surface-container-low":"#1c1b1d",
+        "surface-container":"#201f21","glass-surface":"rgba(255,255,255,0.05)","primary-fixed":"#4dffb2",
+        "surface":"#131315","glass-border":"rgba(255,255,255,0.1)","outline-variant":"#3b4a41",
+        "surface-bright":"#39393b","background":"#131315","surface-container-lowest":"#0e0e10",
+        "text-muted":"#8C8C94","text-primary":"#F2F2F2","surface-variant":"#353437","error":"#ffb4ab","outline":"#849589"
+      },
+      fontFamily:{
+        "hero-display":["Libre Caslon Text"],"body-md":["Inter"],"metadata-xs":["Space Mono"],
+        "headline-sm":["Libre Caslon Text"],"headline-lg":["Libre Caslon Text"],"label-mono":["Space Mono"],"timer-display":["Space Mono"]
+      },
+      fontSize:{
+        "body-md":["18px",{"lineHeight":"28px","fontWeight":"300"}],
+        "metadata-xs":["12px",{"lineHeight":"16px","letterSpacing":"0.15em","fontWeight":"400"}],
+        "headline-sm":["24px",{"lineHeight":"32px","fontWeight":"400"}],
+        "headline-lg":["48px",{"lineHeight":"56px","letterSpacing":"-0.02em","fontWeight":"400"}],
+        "label-mono":["14px",{"lineHeight":"20px","letterSpacing":"0.1em","fontWeight":"500"}],
+        "timer-display":["56px",{"lineHeight":"56px","fontWeight":"400"}]
+      },
+      spacing:{"margin-hero":"120px","input-height":"56px","container-padding":"32px","gutter":"24px","base":"8px","cta-height":"64px"}
+    }}
+  }
+</script>
+<style>
+  body { background-color:#0A0A0C; color:#F2F2F2; overflow-x:hidden; scroll-behavior:smooth; }
+  .noise-overlay { position:fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none; z-index:9999; opacity:0.12; background:url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="n"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23n)"/%3E%3C/svg%3E'); }
+  .fluid-bg { position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:-1; background:radial-gradient(circle at 30% 40%,rgba(0,229,153,0.1) 0%,transparent 50%),radial-gradient(circle at 70% 70%,rgba(139,92,246,0.1) 0%,transparent 50%); animation:pulseBg 12s ease-in-out infinite alternate; }
+  @keyframes pulseBg { 0%{transform:scale(1);} 100%{transform:scale(1.06);} }
+  .glass-panel { background:rgba(255,255,255,0.05); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border:1px solid rgba(255,255,255,0.1); }
+  .minimal-input { background:transparent; border:none; border-bottom:1px solid rgba(255,255,255,0.2); color:#F2F2F2; transition:border-color 0.3s ease; width:100%; }
+  .minimal-input:focus { outline:none; border-bottom-color:#00E599; }
+  .btn-cta-grad { background:linear-gradient(135deg,rgba(0,229,153,0.15) 0%,rgba(139,92,246,0.15) 100%); border:1px solid rgba(0,229,153,0.5); color:#6dffba; transition:all 0.4s ease; }
+  .btn-cta-grad:hover { background:#00E599; color:#003822; border-color:#00E599; box-shadow:0 0 30px rgba(0,229,153,0.4); }
+  .btn-cta-grad:disabled { opacity:0.5; cursor:not-allowed; }
+  @keyframes glowPulse { 0%,100%{box-shadow:0 0 8px rgba(0,229,153,0.5);} 50%{box-shadow:0 0 20px rgba(0,229,153,0.9);} }
+  .glow-dot { animation:glowPulse 2s ease-in-out infinite; }
+  ::-webkit-scrollbar { width:4px; } ::-webkit-scrollbar-track { background:#0A0A0C; } ::-webkit-scrollbar-thumb { background:rgba(0,229,153,0.3); border-radius:2px; }
+</style>
 </head>
-<body>
-  <div class="paper-texture"></div>
+<body class="antialiased">
+<div class="noise-overlay"></div>
+<div class="fluid-bg"></div>
 
-  <div class="payment-layout">
-    <div class="payment-card">
-      <span class="test-mode-badge">TEST MODE</span>
-      <h1 class="payment-title">One Last Step.</h1>
-      
-      <p class="payment-body">
-        A small commitment fee confirms your seat. This isn't about the money — it's what tells us, and you, that you're really showing up.
-      </p>
+<!-- Nav -->
+<nav class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 py-4 glass-panel">
+  <a href="index.html" class="font-hero-display text-base text-on-surface uppercase tracking-tighter hover:text-primary transition-colors">AI Animation Nexus</a>
+  <a href="index.html" class="flex items-center gap-2 font-label-mono text-metadata-xs text-on-surface-variant hover:text-primary transition-colors uppercase">
+    <span class="material-symbols-outlined text-sm">arrow_back</span> Back to Home
+  </a>
+</nav>
 
-      <div class="payment-price-tag">$2.99</div>
-      <span class="payment-price-subtext">Visa, Mastercard, Verve accepted globally</span>
+<!-- Main -->
+<main class="min-h-screen flex items-center justify-center px-6 pt-24 pb-16">
+  <div class="w-full max-w-md">
 
-      <div class="payment-trust-badge">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-        </svg>
-        Secured by Paystack
+    <!-- Trust bar -->
+    <div class="flex items-center justify-center gap-3 mb-8">
+      <div class="w-2 h-2 rounded-full bg-primary glow-dot"></div>
+      <span class="font-label-mono text-metadata-xs text-primary uppercase tracking-widest">Seat reservation · Secured by Paystack</span>
+    </div>
+
+    <div class="glass-panel rounded-[32px] p-8 md:p-12 shadow-2xl relative overflow-hidden" id="payCard">
+
+      <!-- Success overlay -->
+      <div class="absolute inset-0 bg-primary/20 backdrop-blur-3xl flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-1000 z-20 rounded-[32px]" id="successOverlay">
+        <span class="material-symbols-outlined text-[72px] text-primary mb-4 drop-shadow-[0_0_20px_rgba(0,229,153,0.8)]" style="font-variation-settings:'FILL' 1;">check_circle</span>
+        <h3 class="font-headline-sm text-headline-sm text-white mb-2">Seat Confirmed</h3>
+        <p class="font-metadata-xs text-metadata-xs text-white/70 uppercase">Redirecting to confirmation...</p>
       </div>
 
-      <button class="btn-paystack" id="payBtn">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-          <line x1="1" y1="10" x2="23" y2="10"/>
-        </svg>
+      <!-- Header -->
+      <div class="text-center mb-10">
+        <p class="font-metadata-xs text-metadata-xs text-primary uppercase tracking-widest mb-3">One Last Step</p>
+        <h1 class="font-headline-sm text-3xl text-text-primary mb-4">Complete Your Reservation</h1>
+        <p class="font-body-md text-body-md text-on-surface-variant text-sm leading-relaxed">
+          A small commitment fee confirms your seat. This isn't about the money — it's what tells us, and you, that you're really showing up.
+        </p>
+      </div>
+
+      <!-- Price display -->
+      <div class="glass-panel rounded-2xl p-6 mb-8 text-center border border-primary/20">
+        <div class="font-timer-display text-timer-display text-primary mb-1">$2.99</div>
+        <p class="font-metadata-xs text-metadata-xs text-on-surface-variant uppercase">Full 8-Session Intensive · Visa, Mastercard, Verve</p>
+      </div>
+
+      <!-- What's included -->
+      <div class="space-y-3 mb-8">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings:'FILL' 1;">check_circle</span>
+          <span class="font-label-mono text-sm text-on-surface-variant">8 live Zoom sessions over 4 weeks</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings:'FILL' 1;">check_circle</span>
+          <span class="font-label-mono text-sm text-on-surface-variant">5 expert mentors · Personal access code</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings:'FILL' 1;">check_circle</span>
+          <span class="font-label-mono text-sm text-on-surface-variant">WhatsApp community + session reminders</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings:'FILL' 1;">check_circle</span>
+          <span class="font-label-mono text-sm text-on-surface-variant">Satisfaction guarantee or full refund</span>
+        </div>
+      </div>
+
+      <!-- Pay button -->
+      <button class="w-full h-cta-height rounded-xl btn-cta-grad font-label-mono uppercase tracking-widest flex items-center justify-center gap-3 mb-4" id="payBtn">
+        <span class="material-symbols-outlined text-lg">credit_card</span>
         Confirm My Seat — $2.99
       </button>
 
-      <p class="payment-error" id="paymentError">Payment failed. Please try again.</p>
+      <!-- Error msg -->
+      <p class="text-error font-label-mono text-sm text-center hidden mt-3" id="paymentError"></p>
 
-      <p class="payment-refund-note">
-        If you complete the course and genuinely feel you didn't learn anything new, reach out — we'll refund you, no questions asked.
+      <!-- Refund note -->
+      <p class="font-metadata-xs text-metadata-xs text-on-surface-variant text-center mt-6 pt-6 border-t border-glass-border leading-relaxed">
+        If you complete all 8 sessions and feel you didn't learn anything new, reach out — we'll refund you, no questions asked.
       </p>
     </div>
-  </div>
 
-  <!-- Paystack Library -->
-  <script src="https://js.paystack.co/v2/inline.js"></script>
-  
-  <script>
-    const userEmail = localStorage.getItem('nexus_email') || '';
-    const paystackPublicKey = 'pk_test_c05986126c31e4eecefcf9f8fd410f210c744336';
-    
-    const paystack = PaystackPop.setup({
-      key: paystackPublicKey,
-      email: userEmail,
-      amount: 29900, // $2.99 in kobo
-      currency: 'USD',
-      ref: 'ANX_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
-      metadata: {
-        custom_fields: [
-          {
-            display_name: "Course",
-            variable_name: "course",
-            value: "AI Animation Nexus 2026"
-          }
-        ]
-      },
-      callback: function(response) {
-        // Payment successful - redirect to confirmation
-        localStorage.setItem('payment_ref', response.reference);
-        window.location.href = 'confirmation.html';
-      },
-      onClose: function() {
-        // User closed payment modal
-        const btn = document.getElementById('payBtn');
-        btn.disabled = false;
-        btn.innerHTML = `
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-            <line x1="1" y1="10" x2="23" y2="10"/>
-          </svg>
-          Confirm My Seat — $2.99
-        `;
-      },
-      onBankTransferConfirmationRequired: function() {
-        // For bank transfer, show pending state
-        const btn = document.getElementById('payBtn');
-        btn.textContent = 'Processing transfer...';
-      }
-    });
-    
-    document.getElementById('payBtn').addEventListener('click', function(e) {
-      e.preventDefault();
-      
-      if (!userEmail) {
-        document.getElementById('paymentError').textContent = 'Email not found. Please go back and fill the form again.';
-        document.getElementById('paymentError').classList.add('show');
-        return;
-      }
-      
-      this.disabled = true;
-      this.innerHTML = 'Opening payment...';
-      
-      paystack.popInSupportedBrowsers();
-    });
-  </script>
+    <!-- Lock badge -->
+    <div class="flex items-center justify-center gap-2 mt-6">
+      <span class="material-symbols-outlined text-sm text-on-surface-variant">lock</span>
+      <span class="font-metadata-xs text-metadata-xs text-on-surface-variant uppercase">256-bit SSL encryption · Powered by Paystack</span>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="w-full py-8 px-6 border-t border-glass-border flex flex-col md:flex-row justify-between items-center gap-4 z-10 relative">
+  <div class="font-hero-display text-sm text-text-primary uppercase tracking-tighter">AI Animation Nexus</div>
+  <div class="flex gap-6">
+    <a class="font-label-mono text-metadata-xs uppercase text-text-muted hover:text-on-surface" href="privacy.html">Privacy</a>
+    <a class="font-label-mono text-metadata-xs uppercase text-text-muted hover:text-on-surface" href="terms.html">Terms</a>
+    <a class="font-label-mono text-metadata-xs uppercase text-text-muted hover:text-on-surface" href="contact.html">Contact</a>
+  </div>
+  <div class="font-label-mono text-metadata-xs uppercase text-text-muted">© 2026 AI Animation Nexus</div>
+</footer>
+
+<script>
+  const userEmail = localStorage.getItem('nexus_email') || '';
+  const paystackPublicKey = 'pk_test_c05986126c31e4eecefcf9f8fd410f210c744336';
+
+  const paystack = PaystackPop.setup({
+    key: paystackPublicKey,
+    email: userEmail,
+    amount: 29900,
+    currency: 'USD',
+    ref: 'ANX_' + Date.now() + '_' + Math.floor(Math.random() * 10000),
+    metadata: {
+      custom_fields: [{ display_name: "Course", variable_name: "course", value: "AI Animation Nexus 2026" }]
+    },
+    callback: function(response) {
+      localStorage.setItem('payment_ref', response.reference);
+      const overlay = document.getElementById('successOverlay');
+      const card = document.getElementById('payCard');
+      card.style.boxShadow = '0 0 80px rgba(0,229,153,0.6)';
+      overlay.style.opacity = '1';
+      overlay.style.pointerEvents = 'auto';
+      setTimeout(() => { window.location.href = 'confirmation.html'; }, 2000);
+    },
+    onClose: function() {
+      const btn = document.getElementById('payBtn');
+      btn.disabled = false;
+      btn.innerHTML = '<span class="material-symbols-outlined text-lg">credit_card</span> Confirm My Seat — $2.99';
+    },
+    onBankTransferConfirmationRequired: function() {
+      document.getElementById('payBtn').textContent = 'Processing transfer...';
+    }
+  });
+
+  document.getElementById('payBtn').addEventListener('click', function() {
+    const errEl = document.getElementById('paymentError');
+    errEl.classList.add('hidden');
+
+    if (!userEmail) {
+      errEl.textContent = 'Email not found. Please go back and fill the application form first.';
+      errEl.classList.remove('hidden');
+      return;
+    }
+    this.disabled = true;
+    this.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">progress_activity</span> Opening payment...';
+    paystack.popInSupportedBrowsers();
+  });
+</script>
 </body>
 </html>

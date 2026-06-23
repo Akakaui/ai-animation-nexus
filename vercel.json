@@ -1,11 +1,19 @@
 {
   "version": 2,
-  "functions": {
-    "api/**/*.js": {
-      "maxDuration": 10
-    }
-  },
   "rewrites": [
-    { "source": "/nexus/api/(.*)", "destination": "/api/$1" }
+    {
+      "source": "/api/cron",
+      "destination": "/api/cron.js"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index.js"
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron",
+      "schedule": "0 * * * *"
+    }
   ]
 }

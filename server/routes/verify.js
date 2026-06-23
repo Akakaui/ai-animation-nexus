@@ -1,22 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const { getStudentByEmail, recordAttendance, getSessionById, isUnlocked, parseUnlockTime } = require('../db');
+const { getStudentByEmail, recordAttendance, getSessionById, isUnlocked, parseUnlockTime, getSessions, getUnlockedSessions } = require('../../lib/db');
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const { email, code } = req.body;
 
   if (!email || !code) {
     return res.status(400).json({ error: 'Email and code required' });
   }
 
-  const student = getStudentByEmail(email);
+  const student = await getStudentByEmail(email);
 
   if (!student || student.access_code !== code) {
     return res.status(401).json({ error: 'Invalid credentials' });
   }
 
-  const db = require('../db');
-  const allSessions = db.getDB().sessions;
+  const allSessions = await getSessions();
 
   const todayStr = new Date().toISOString().split('T')[0];
   const todaySession = allSessions.find(s => s.date === todayStr);
@@ -46,7 +45,7 @@ router.post('/', (req, res) => {
       unlocks_at: currentOrNext.unlocks_at
     };
     if (todaySession) {
-      recordAttendance(student.id, todaySession.id);
+      await recordAttendance(student.id, todaySession.id);
     }
   }
 
@@ -57,28 +56,29 @@ router.post('/', (req, res) => {
   });
 });
 
-router.get('/student/:email', (req, res) => {
+router.get('/student/:email', async (req, res) => {
   const { email } = req.params;
-  const { getDB, getUnlockedSessions } = require('../db');
-  const db = getDB();
+  const { getAttendance } = require('../../lib/db');
 
-  const student = getStudentByEmail(email);
+  const student = await getStudentByEmail(email);
   if (!student) {
     return res.status(404).json({ error: 'Student not found' });
   }
 
-  const attendedSessionIds = db.attendance
+  const attendanceRecords = await getAttendance();
+  const attendedSessionIds = attendanceRecords
     .filter(a => a.student_id === student.id)
     .map(a => a.session_id);
 
-  const sessions = db.sessions.map(s => ({
+  const allSessions = await getSessions();
+  const sessions = allSessions.map(s => ({
     ...s,
     zoom_url: null,
     is_unlocked: isUnlocked(s),
     attended: attendedSessionIds.includes(s.id)
   }));
 
-  const unlockedSessions = getUnlockedSessions();
+  const unlockedSessions = await getUnlockedSessions();
   const currentAndNext = sessions.filter(s => {
     const unl = unlockedSessions.find(u => u.id === s.id);
     return unl && (unl.is_unlocked || unl.zoom_url);
@@ -96,9 +96,8 @@ router.get('/student/:email', (req, res) => {
   });
 });
 
-router.get('/sessions', (req, res) => {
-  const { getUnlockedSessions } = require('../db');
-  const sessions = getUnlockedSessions();
+router.get('/sessions', async (req, res) => {
+  const sessions = await getUnlockedSessions();
   res.json({ sessions });
 });
 
