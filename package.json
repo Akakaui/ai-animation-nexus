@@ -7,15 +7,11 @@
     "start": "node api/index.js"
   },
   "dependencies": {
-    "@vercel/kv": "^3.0.0",
+    "@upstash/redis": "^1.38.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.1",
     "express": "^4.18.2",
     "nodemailer": "^6.9.8",
-    "resend": "^3.5.0",
-    "uuid": "^9.0.0"
-  },
-  "devDependencies": {
-    "node-cron": "^3.0.3"
+    "resend": "^3.5.0"
   }
 }

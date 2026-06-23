@@ -1,7 +1,7 @@
 const { getSessions, getAllStudents, getRemindersSent, markReminderSent } = require('../../lib/db');
 const { sendReminderEmail } = require('../services/email');
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // Optional: secure the cron job so only Vercel can trigger it
   if (req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
     if (process.env.CRON_SECRET) {
