@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: ai-animation-nexus
+    runtime: node
+    buildCommand: npm install
+    startCommand: node api/index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: PAYSTACK_SECRET_KEY
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: EMAIL_FROM
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: WHATSAPP_CHANNEL_LINK
+        sync: false
+      - key: DEFAULT_ZOOM_URL
+        sync: false
+      - key: BASE_URL
+        sync: false
+      - key: UPSTASH_REDIS_REST_URL
+        sync: false
+      - key: UPSTASH_REDIS_REST_TOKEN
+        sync: false
