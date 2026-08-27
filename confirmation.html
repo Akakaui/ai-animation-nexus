@@ -216,27 +216,34 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', async function() {
-      // 1. Fetch Access Code from Server
-      const userEmail = localStorage.getItem('nexus_email');
-      
-      try {
-        const res = await fetch(`/api/verify/student/${encodeURIComponent(userEmail)}`);
-        if (res.ok) {
-          const data = await res.json();
-          if (data.student && data.student.accessCode) {
-            localStorage.setItem('nexus_access_code', data.student.accessCode);
-            document.getElementById('accessCode').textContent = data.student.accessCode;
-          } else {
-            throw new Error('No code found');
-          }
-        } else {
-          throw new Error('Server error');
+      // 1. Use a code issued directly by the application flow, or wait for server-confirmed payment.
+      const userEmail = localStorage.getItem('nexus_email') || '';
+      const localCode = localStorage.getItem('nexus_access_code');
+      const paymentRef = localStorage.getItem('payment_ref');
+      const codeEl = document.getElementById('accessCode');
+      const subtextEl = document.querySelector('.confirm-subtext');
+      if (localCode) {
+        codeEl.textContent = localCode;
+      } else if (userEmail && paymentRef) {
+        let confirmed = false;
+        for (let attempt = 0; attempt < 15; attempt += 1) {
+          try {
+            const res = await fetch(`/api/paystack/status?email=${encodeURIComponent(userEmail)}&reference=${encodeURIComponent(paymentRef)}`);
+            const data = await res.json();
+            if (res.ok && data.paid) { confirmed = true; break; }
+          } catch (error) { console.warn('Payment status check failed', error); }
+          await new Promise(resolve => setTimeout(resolve, 2000));
         }
-      } catch (err) {
-        console.error('Failed to fetch access code from server:', err);
-        document.getElementById('accessCode').textContent = 'Check your email';
-        document.querySelector('.confirm-subtext').textContent =
-          'Your access code has been sent to your email. If you did not receive it, please contact support.';
+        if (!confirmed) {
+          codeEl.textContent = 'Pending confirmation';
+          subtextEl.textContent = 'Your payment is being confirmed. Check your email for the access code, or contact support if it does not arrive.';
+        } else {
+          codeEl.textContent = 'Check your email';
+          subtextEl.textContent = 'Payment confirmed. Your access code has been sent to your email.';
+        }
+      } else {
+        codeEl.textContent = 'Check your email';
+        subtextEl.textContent = 'Your access code has been sent to your email. If you did not receive it, please contact support.';
       }
 
       // 2. Copy Code to Clipboard
@@ -281,9 +288,9 @@
         ics += `DTSTART:${formatICSDate(s.date)}\n`;
         ics += `DTEND:${formatICSDate(s.date, 21)}\n`;
         ics += `SUMMARY:AI Animation Nexus S${s.number}: ${s.title}\n`;
-        ics += `DESCRIPTION:Host: ${s.host}\\nAccess your dashboard to verify and get the Zoom link: https://favourakaka.duckdns.org/nexus/dashboard.html\n`;
+        ics += `DESCRIPTION:Host: ${s.host}\\nAccess your dashboard to verify and get the Zoom link: ${window.location.origin}/dashboard.html\n`;
         ics += 'LOCATION:Zoom Online Video\n';
-        ics += `UID:ai-anim-nexus-s${s.number}@favourakaka.duckdns.org\n`;
+        ics += `UID:ai-anim-nexus-s${s.number}@${window.location.host}\n`;
         ics += 'STATUS:CONFIRMED\n';
         ics += 'SEQUENCE:0\n';
         ics += 'END:VEVENT\n';
@@ -320,7 +327,7 @@
         action: 'TEMPLATE',
         text: 'AI Animation Nexus - All 8 Sessions',
         dates: `${startDate}/${endDate}`,
-        details: `Your AI Animation Nexus course runs July 24 - August 15, 2026.\n\nAccess your personalized dashboard for session links and details:\nhttps://favourakaka.duckdns.org/nexus/dashboard.html\n\nSessions:\n1. ${sessions[0].title} - ${sessions[0].host}\n2. ${sessions[1].title} - ${sessions[1].host}\n3. ${sessions[2].title} - ${sessions[2].host}\n4. ${sessions[3].title} - ${sessions[3].host}\n5. ${sessions[4].title} - ${sessions[4].host}\n6. ${sessions[5].title} - ${sessions[5].host}\n7. ${sessions[6].title} - ${sessions[6].host}\n8. ${sessions[7].title} - ${sessions[7].host}`,
+        details: `Your AI Animation Nexus course runs July 24 - August 15, 2026.\n\nAccess your personalized dashboard for session links and details:\n${window.location.origin}/dashboard.html\n\nSessions:\n1. ${sessions[0].title} - ${sessions[0].host}\n2. ${sessions[1].title} - ${sessions[1].host}\n3. ${sessions[2].title} - ${sessions[2].host}\n4. ${sessions[3].title} - ${sessions[3].host}\n5. ${sessions[4].title} - ${sessions[4].host}\n6. ${sessions[5].title} - ${sessions[5].host}\n7. ${sessions[6].title} - ${sessions[6].host}\n8. ${sessions[7].title} - ${sessions[7].host}`,
         location: 'Zoom Online Video'
       });
       

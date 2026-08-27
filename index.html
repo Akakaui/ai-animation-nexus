@@ -260,7 +260,7 @@
       <!-- Badge -->
       <div class="flex items-center gap-3 mb-8">
         <div class="w-2 h-2 rounded-full bg-primary glow-dot"></div>
-        <span class="font-label-mono text-metadata-xs text-primary uppercase tracking-widest">Applications Open · July 24 – Aug 15, 2026</span>
+        <span id="applicationStatus" class="font-label-mono text-metadata-xs text-primary uppercase tracking-widest">Applications Open · Enrolment window</span>
       </div>
 
       <h1 class="font-hero-display-mobile md:font-hero-display text-hero-display-mobile md:text-hero-display text-text-primary mb-6 leading-none">
@@ -273,7 +273,7 @@
 
       <!-- Countdown -->
       <div class="mb-10">
-        <p class="font-metadata-xs text-metadata-xs text-on-surface-variant uppercase tracking-widest mb-4">Applications close in</p>
+        <p id="countdownLabel" class="font-metadata-xs text-metadata-xs text-on-surface-variant uppercase tracking-widest mb-4">Enrollment window</p>
         <div class="flex gap-6">
           <div class="countdown-block">
             <span class="font-timer-display text-4xl md:text-5xl text-primary" id="days">00</span>
@@ -301,6 +301,7 @@
               onclick="document.getElementById('registration').scrollIntoView({behavior:'smooth'})">
         Apply for a Seat →
       </button>
+      <p id="paymentWindowNote" class="font-metadata-xs text-metadata-xs text-on-surface-variant mt-4 max-w-md">Enrollment is free during the opening window. Payment activates for the final 10 days at $2.99 USD.</p>
     </div>
 
     <!-- Right: Visual -->
@@ -369,11 +370,11 @@
       <!-- Mentor 1 -->
       <div class="relative group speaker-card reveal-up" style="transition-delay:0.1s">
         <div class="aspect-[3/4] overflow-hidden rounded-2xl">
-          <img alt="Portrait of Bethel — AI Animation Mentor" class="w-full h-full object-cover editorial-img"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4B4Sb1j8EKodIlSD5eGjDV3qgngscR1I-qGU3vqHHEaloYzHuln2EWxV2HobGvgDTPs-R4IqVUbm9sWRULZOdslyJS96Rk8JUfVsUU2Bv2p6y2yYKlIairg5GHaUhRnpc13Jxv1gVUyUBDwFkUKur6c8jqUfIzKJkGcLLwoXAx2pijrMC9-JS3r28w10dMzw6w9RvvbOVuBm-edqsWkXU40IqKW1ksCrhl72ZHnt4IaznAbAVRt83cnZBHMRIFO_RU97QRSdzuI8"/>
+          <img alt="Portrait of Augustus Akuwuike — AI Animation Mentor" class="w-full h-full object-cover editorial-img"
+            src="assets/mentors/augustus-akuwuike.jpg"/>
         </div>
         <div class="absolute -bottom-6 -left-4 glass-panel p-6 rounded-xl w-[90%] shadow-2xl transition-transform duration-500 group-hover:-translate-y-2">
-          <h3 class="font-headline-sm text-headline-sm text-text-primary mb-1">Bethel</h3>
+          <h3 class="font-headline-sm text-headline-sm text-text-primary mb-1">Augustus Akuwuike</h3>
           <p class="font-metadata-xs text-metadata-xs text-primary uppercase tracking-widest">Photo-to-Video · Motion Syncing</p>
         </div>
       </div>
@@ -451,7 +452,7 @@
           <p class="font-body-md text-body-md text-on-surface-variant mb-4">Turn any still photograph into fluid, cinematic motion. Master the AI tools that breathe life into static images with professional-grade results.</p>
           <div class="flex gap-6">
             <span class="font-label-mono text-label-mono text-primary flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-sm">schedule</span> 9 PM WAT</span>
-            <span class="font-label-mono text-label-mono text-text-muted flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-sm">person</span> Bethel</span>
+            <span class="font-label-mono text-label-mono text-text-muted flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-sm">person</span> Augustus Akuwuike</span>
           </div>
         </div>
       </div>
@@ -468,7 +469,7 @@
           <p class="font-body-md text-body-md text-on-surface-variant mb-4">Layer AI-generated elements seamlessly. Learn to composite, sync motion to audio, and produce polished final renders that stand out.</p>
           <div class="flex gap-6">
             <span class="font-label-mono text-label-mono text-primary flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-sm">schedule</span> 9 PM WAT</span>
-            <span class="font-label-mono text-label-mono text-text-muted flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-sm">person</span> Bethel</span>
+            <span class="font-label-mono text-label-mono text-text-muted flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-sm">person</span> Augustus Akuwuike</span>
           </div>
         </div>
       </div>
@@ -668,9 +669,9 @@
     { q: 'Who is this intensive for?', a: 'Anyone who wants to learn AI-driven motion design — from total beginners to experienced designers looking to add AI to their toolkit. No prior animation experience required.' },
     { q: 'What tools will we use?', a: 'The mentors will guide you through industry-leading AI animation tools including Runway, Kling AI, Pika, and others, plus compositing in CapCut and Premiere Pro.' },
     { q: 'Are sessions live or recorded?', a: 'All 8 sessions are live on Zoom. Recordings will NOT be shared, so attendance is essential. A reminder email is sent 1 hour before each session.' },
-    { q: 'How much does it cost?', a: 'The fee is paid via Paystack after your application is approved. You will receive a payment link via email within 24 hours of submitting your application.' },
-    { q: 'What happens after I apply?', a: 'After applying, you will receive an email with your payment link. Once payment is confirmed you receive an access code to use on the student dashboard before each session to get the Zoom link.' },
-    { q: 'What is the class schedule?', a: 'Sessions run Thursdays and Fridays at 9 PM WAT from July 24 to August 15, 2026. Sessions 1–2: Jul 24–25 · Sessions 3–4: Jul 31–Aug 1 · Sessions 5–6: Aug 7–8 · Sessions 7–8: Aug 14–15.' },
+    { q: 'How much does it cost?', a: 'Enrollment is free during the first 20 days. Payment opens for the remaining 10 days at $2.99 USD through Paystack.' },
+    { q: 'What happens after I apply?', a: 'During the free window, your access code is issued immediately. During the final 10 days, you complete the $2.99 USD Paystack payment first, then receive your access code by email after server confirmation.' },
+    { q: 'What is the class schedule?', a: 'Sessions run Fridays and Saturdays at 9 PM WAT. The administrator controls the current cohort schedule from the dashboard.' },
   ];
   const faqContainer = document.getElementById('faqContainer');
   faqs.forEach((faq, i) => {
@@ -729,6 +730,7 @@
       const data = await res.json();
       if (data.success) {
         localStorage.setItem('nexus_email', formData.email);
+        if (data.accessCode) localStorage.setItem('nexus_access_code', data.accessCode);
         const container = document.getElementById('regFormContainer');
         container.style.boxShadow = '0 0 80px rgba(0,229,153,0.7)';
         const success = document.getElementById('successState');
@@ -737,7 +739,7 @@
           success.style.pointerEvents = 'auto';
           document.getElementById('regForm').style.opacity = '0';
           container.style.boxShadow = 'none';
-          setTimeout(() => { window.location.href = 'payment.html'; }, 2000);
+          setTimeout(() => { window.location.href = data.paymentRequired ? 'payment.html' : 'confirmation.html'; }, 2000);
         }, 400);
       } else {
         alert(data.error || 'Something went wrong. Please try again.');

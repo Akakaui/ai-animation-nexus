@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "node api/index.js",
-    "start": "node api/index.js"
+    "start": "node api/index.js",
+    "check": "node scripts/check.js",
+    "test": "node scripts/check.js && node scripts/self-test.js"
   },
   "dependencies": {
     "@upstash/redis": "^1.38.0",

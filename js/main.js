@@ -4,33 +4,64 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   
-  // ==========================================================================
-  // 1. Countdown Timer (Time-based application deadline)
-  // ==========================================================================
-  const deadline = new Date('July 23, 2026 12:00:00 UTC').getTime();
-  
-  const updateCountdown = () => {
-    const now = new Date().getTime();
-    const difference = deadline - now;
-    
-    if (difference <= 0) {
-      document.getElementById('countdownTimer').innerHTML = "<div class='time-block'>Closed</div>";
-      return;
-    }
-    
-    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-    
-    document.getElementById('days').textContent = String(days).padStart(2, '0');
-    document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-    document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-    document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+  // ============================================================================
+  // 1. Configured enrollment window and payment state
+  // ============================================================================
+  const formatMoney = (amount, currency) => new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(amount);
+  const updateCountdown = (deadline) => {
+    const difference = deadline - Date.now();
+    if (difference <= 0) return false;
+    document.getElementById('days').textContent = String(Math.floor(difference / 86400000)).padStart(2, '0');
+    document.getElementById('hours').textContent = String(Math.floor((difference % 86400000) / 3600000)).padStart(2, '0');
+    document.getElementById('minutes').textContent = String(Math.floor((difference % 3600000) / 60000)).padStart(2, '0');
+    document.getElementById('seconds').textContent = String(Math.floor((difference % 60000) / 1000)).padStart(2, '0');
+    return true;
   };
-  
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
+  const loadEnrollmentConfig = async () => {
+    const status = document.getElementById('applicationStatus');
+    const label = document.getElementById('countdownLabel');
+    const note = document.getElementById('paymentWindowNote');
+    try {
+      const config = await (await fetch('/api/config')).json();
+      const currency = config.paymentCurrency || 'USD';
+      const price = formatMoney(Number(config.paymentAmountMajor || 2.99), currency);
+      let deadline = null;
+      if (config.paymentWindowStart) {
+        const start = new Date(config.paymentWindowStart);
+        const freeEnd = new Date(start.getTime() + Number(config.paymentFreeDays || 20) * 86400000);
+        const paidEnd = new Date(freeEnd.getTime() + Number(config.paymentPaidDays || 10) * 86400000);
+        if (config.paymentMode === 'free') {
+          status.textContent = 'Applications Open · Free enrollment';
+          label.textContent = 'Free enrollment closes in';
+          note.textContent = `Enroll at no charge during the opening window. Payment activates after that at ${price}.`;
+          deadline = freeEnd.getTime();
+        } else if (config.paymentMode === 'paid') {
+          status.textContent = `Applications Open · ${price}`;
+          label.textContent = 'Paid enrollment closes in';
+          note.textContent = `The opening window has ended. Reserve your seat now for ${price}.`;
+          deadline = paidEnd.getTime();
+        } else {
+          status.textContent = 'Applications Closed';
+          label.textContent = 'Enrollment window closed';
+          note.textContent = 'Applications are currently closed.';
+          document.querySelectorAll('.trigger-form-btn, #navApplyBtn').forEach(button => { button.disabled = true; button.setAttribute('aria-disabled', 'true'); });
+        }
+      } else if (config.paymentMode === 'free') {
+        status.textContent = 'Applications Open · Free enrollment';
+        label.textContent = 'Opening window';
+        note.textContent = `Enrollment is currently free. Payment activates for the final 10 days at ${price}.`;
+      }
+      if (deadline) {
+        const tick = () => { if (!updateCountdown(deadline)) window.location.reload(); };
+        tick(); setInterval(tick, 1000);
+      }
+    } catch (error) {
+      console.warn('Could not load enrollment configuration', error);
+      status.textContent = 'Applications Open';
+      label.textContent = 'Enrollment window';
+    }
+  };
+  loadEnrollmentConfig();
 
   // ==========================================================================
   // 2. Global Timezone Switcher Component
@@ -343,7 +374,8 @@ document.addEventListener('DOMContentLoaded', () => {
       
       if (data.success) {
         localStorage.setItem('nexus_email', formData.email);
-        window.location.href = 'payment.html';
+        if (data.accessCode) localStorage.setItem('nexus_access_code', data.accessCode);
+        window.location.href = data.paymentRequired ? 'payment.html' : 'confirmation.html';
       } else {
         alert(data.error || 'Something went wrong. Please try again.');
         submitFormBtn.disabled = false;
@@ -351,6 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } catch (err) {
       console.error('Form submission error:', err);
+      alert('We could not save your application. Please check your connection and try again.');
       submitFormBtn.disabled = false;
       submitFormBtn.innerHTML = originalText;
     }

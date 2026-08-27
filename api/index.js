@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -9,75 +8,60 @@ const paystackRoutes = require('../server/routes/paystack');
 const verifyRoutes = require('../server/routes/verify');
 const adminRoutes = require('../server/routes/admin');
 const contactRoutes = require('../server/routes/contact');
+const { runReminderJob } = require('../lib/reminders');
+const { getPublicRuntimeConfig, requireProductionConfig } = require('../lib/config');
 
 const app = express();
+try {
+  requireProductionConfig();
+} catch (error) {
+  if (process.env.NODE_ENV === 'production') console.error(`[Config] ${error.message}`);
+}
 
-app.use(cors());
-app.use(express.json());
+app.use(cors({ origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',').map(value => value.trim()) : true }));
+app.use(express.json({ verify: (req, res, buffer) => { req.rawBody = Buffer.from(buffer); } }));
 
-// --- API Routes ---
+app.get('/api/health', (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
+app.get('/api/config', (req, res) => res.json(getPublicRuntimeConfig()));
+
 app.use('/api/apply', applyRoutes);
 app.use('/api/paystack', paystackRoutes);
 app.use('/api/verify', verifyRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/contact', contactRoutes);
 
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
-
-// --- Serve Static Frontend Files ---
-// This makes Express serve all .html, .css, .js files from the project root
-app.use(express.static(path.join(__dirname, '..')));
-
-// Catch-all: serve index.html for any unmatched route
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'index.html'));
-});
-
-// --- Scheduled Reminders (replaces Vercel Cron) ---
-// Runs daily at 7:00 PM UTC (8:00 PM WAT) — 1 hour before class
-cron.schedule('0 19 * * *', async () => {
-  console.log('[Cron] Running daily reminder check...');
+async function runProtectedCron(req, res) {
+  const secret = String(process.env.CRON_SECRET || '');
+  if (secret && req.headers.authorization !== `Bearer ${secret}`) return res.status(401).json({ error: 'Unauthorized' });
+  if (!secret && process.env.NODE_ENV === 'production') return res.status(503).json({ error: 'Cron secret is not configured' });
   try {
-    const { getSessions, getAllStudents, getRemindersSent, markReminderSent } = require('../lib/db');
-    const { sendReminderEmail } = require('./services/email');
-
-    const allSessions = await getSessions();
-    const todayStr = new Date().toISOString().split('T')[0];
-    const session = allSessions.find(s => s.date === todayStr);
-
-    if (!session) {
-      console.log('[Cron] No session today, skipping.');
-      return;
-    }
-
-    const allStudents = await getAllStudents();
-    const paidStudents = allStudents.filter(s => s.paid);
-    const remindersSent = await getRemindersSent();
-
-    let count = 0;
-    for (const student of paidStudents) {
-      const alreadySent = remindersSent.some(
-        r => r.student_id === student.id && r.session_id === session.id
-      );
-      if (alreadySent) continue;
-      try {
-        await sendReminderEmail(student.email, student.full_name, session);
-        await markReminderSent(student.id, session.id);
-        count++;
-      } catch (err) {
-        console.error(`[Cron] Failed reminder for ${student.email}:`, err.message);
-      }
-    }
-    console.log(`[Cron] Done. Sent ${count} reminders.`);
-  } catch (err) {
-    console.error('[Cron] Fatal error:', err.message);
+    const result = await runReminderJob();
+    res.json({ success: true, ...result });
+  } catch (error) {
+    console.error('[Cron] Fatal error:', error);
+    res.status(500).json({ error: 'Cron failed' });
   }
-});
+}
+app.post('/api/cron', runProtectedCron);
+app.get('/api/cron', runProtectedCron);
 
-// --- Start Server ---
+app.use(express.static(path.join(__dirname, '..')));
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, '..', 'index.html')));
+
+if (process.env.NODE_ENV !== 'test') {
+  cron.schedule('0 19 * * *', async () => {
+    try {
+      const result = await runReminderJob();
+      console.log('[Cron] Reminder result:', JSON.stringify(result));
+    } catch (error) {
+      console.error('[Cron] Fatal error:', error);
+    }
+  }, { timezone: 'UTC' });
+}
+
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`AI Animation Nexus running on port ${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => console.log(`AI Animation Nexus running on port ${PORT}`));
+}
+
+module.exports = app;

@@ -1,29 +1,14 @@
 # Deployment Guide & Checklist
 
-This document explains what is left to do, how to configure the environment, and the exact steps to deploy the AI Animation Nexus platform to Vercel.
+This document explains how to configure and deploy the AI Animation Nexus platform to Vercel after the production-repair branch is merged. The deployment uses one Express serverless entry point at `api/index.js` so it remains within the Vercel Hobby function limit. Redis persistence is provided by Upstash REST.
 
 ---
 
-## 🔴 1. Critical Pre-Launch Checklist
+## 1. Critical pre-launch checklist
 
-Before you can officially launch, you **must** complete the following tasks:
+Before accepting real customers, add live Paystack credentials, a verified email sender, and a production admin password in Vercel. The repaired code never embeds the Paystack public key in `payment.html`; it is delivered by `/api/config`, and the backend never marks a student paid until a valid Paystack webhook is received.
 
-### [ ] Switch Paystack to Live Mode
-Currently, the codebase uses your `pk_test` and `sk_test` keys. To accept real money:
-1. Log into your [Paystack Dashboard](https://dashboard.paystack.com/).
-2. Go to **Settings → API Keys & Webhooks**.
-3. Copy your **Live Public Key** and **Live Secret Key**.
-4. In the codebase, open `payment.html` and replace `pk_test_...` with your Live Public Key.
-5. Save your Live Secret Key to add to Vercel in Step 2.
-
-### [ ] Get a Resend API Key (For Emails)
-The app uses Resend to send automated emails.
-1. Create a free account at [Resend.com](https://resend.com) (gives you 3,000 free emails/month).
-2. Go to **API Keys** and generate a new key.
-3. Keep this key safe for Step 2.
-
-### [ ] Choose a Strong Admin Password
-You need a secure password to access `/admin.html`. Think of one now (e.g., `Nexus2026Admin!`).
+The application window is controlled by `PAYMENT_WINDOW_START`, `PAYMENT_FREE_DAYS=20`, and `PAYMENT_PAID_DAYS=10`. Until a start timestamp is configured, the safe default is free enrollment. Set `PAYMENT_MODE=paid` only when intentionally testing the paid flow, and remove that override for the automatic window.
 
 ---
 
@@ -39,25 +24,36 @@ vercel
 ```
 Follow the prompts to link the project. When asked if you want to modify default settings, press `No`.
 
-### Step B: Provision the Vercel KV Database
-Because Vercel is serverless, the app uses **Vercel KV (Redis)** to store students, attendance, and sessions persistently.
-1. Go to your Vercel Dashboard → Select your project.
-2. Click on the **Storage** tab.
-3. Click **Create Database** and select **KV** (Redis).
-4. Accept the defaults and attach it to your project. Vercel will automatically inject the database connection strings into your environment variables.
+### Step B: Connect Upstash Redis
+The app stores students, attendance, sessions, reminder deduplication, and processed webhook references in Upstash Redis.
+1. Open the existing Upstash database for this project.
+2. Copy its REST URL and token without committing them to Git.
+3. In Vercel, add `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` to Production, Preview, and Development as appropriate.
+4. Confirm the deployed `/api/config` and `/api/health` endpoints after redeploying. If Vercel’s Storage connection wizard reports that the resource must be reinstalled, use the direct REST variables instead.
 
 ### Step C: Add Your Environment Variables
 In your Vercel Dashboard, go to **Settings → Environment Variables** and add the following:
 
 | Variable Name | Value |
-|---------------|-------|
-| `PAYSTACK_SECRET_KEY` | Your Paystack Live Secret Key |
-| `RESEND_API_KEY` | Your Resend API Key |
-| `EMAIL_FROM` | e.g., `noreply@aianimationnexus.com` |
-| `ADMIN_PASSWORD` | The secure password you chose |
-| `WHATSAPP_CHANNEL_LINK` | The link to your WhatsApp community |
-| `DEFAULT_ZOOM_URL` | Your recurring Zoom meeting link |
-| `BASE_URL` | Your production URL (e.g., `https://aianimationnexus.com`) |
+|---|---|
+| `UPSTASH_REDIS_REST_URL` | Upstash REST URL |
+| `UPSTASH_REDIS_REST_TOKEN` | Upstash REST token; mark Secret |
+| `PAYSTACK_PUBLIC_KEY` | Paystack Live Public Key |
+| `PAYSTACK_SECRET_KEY` | Paystack Live Secret Key; mark Secret |
+| `RESEND_API_KEY` | Resend API key; mark Secret |
+| `EMAIL_FROM` | Verified sender, for example `AI Animation Nexus <noreply@example.com>` |
+| `ADMIN_PASSWORD` | Strong password of at least 12 characters; mark Secret |
+| `CRON_SECRET` | Long random secret for the reminder endpoint; mark Secret |
+| `PAYMENT_CURRENCY` | `USD` |
+| `PAYMENT_AMOUNT_MAJOR` | `2.99` |
+| `PAYMENT_AMOUNT_MINOR` | `299` |
+| `PAYMENT_FREE_DAYS` | `20` |
+| `PAYMENT_PAID_DAYS` | `10` |
+| `PAYMENT_WINDOW_START` | RFC3339 timestamp for the opening day |
+| `PAYMENT_MODE` | Leave empty for automatic timing; use `free`, `paid`, or `closed` only as an explicit override |
+| `WHATSAPP_CHANNEL_LINK` | WhatsApp community link |
+| `DEFAULT_ZOOM_URL` | Recurring Zoom meeting link |
+| `BASE_URL` | `https://ai-animation-nexus.vercel.app` or the verified custom domain |
 
 *(After adding these, you will need to trigger a new deployment in Vercel so they take effect).*
 
@@ -79,6 +75,6 @@ For the app to know when a student has successfully paid (so it can generate the
 Once deployed and configured, run a test to ensure everything is wired correctly:
 1. Go to your live URL.
 2. Fill out the application form.
-3. Complete a payment (you can temporarily lower the price to ₦100 in `api/paystack.js` and `payment.html` for testing, or use Paystack's test mode if you didn't switch the keys yet).
+3. In Preview, use Paystack test keys and confirm the amount is `$2.99 USD` / 299 minor units. Do not place test keys in Production.
 4. Check your email to see if you received the Welcome Email with the Access Code.
-5. Log into `/admin.html` to confirm you appear as a paid student.
+5. Log into `/admin.html` with the admin password and confirm the student status, attendance, and CSV export. Admin credentials are exchanged for an expiring bearer token; the raw password is never stored in browser storage.
