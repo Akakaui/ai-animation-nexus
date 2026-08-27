@@ -167,11 +167,6 @@
   }
 
   async function setupPayment() {
-    if (!userEmail) {
-      payBtn.disabled = true;
-      showMessage('Email not found. Please go back and fill out the application form first.');
-      return;
-    }
     try {
       const configResponse = await fetch('/api/config');
       paymentConfig = await configResponse.json();
@@ -185,6 +180,11 @@
       if (paymentConfig.paymentMode === 'closed') {
         payBtn.disabled = true;
         showMessage('Applications are currently closed.');
+        return;
+      }
+      if (!userEmail) {
+        payBtn.disabled = true;
+        showMessage('Email not found. Please go back and fill out the application form first.');
         return;
       }
       if (!paymentConfig.paystackPublicKey) throw new Error('Payment provider is not configured');

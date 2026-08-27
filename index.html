@@ -705,6 +705,58 @@
     }
   }
 
+  // ── Enrollment window configuration ───────────────────────────
+  const formatMoney = (amount, currency) => new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(amount);
+  const updateEnrollmentCountdown = (deadline) => {
+    const difference = deadline - Date.now();
+    if (difference <= 0) return false;
+    document.getElementById('days').textContent = String(Math.floor(difference / 86400000)).padStart(2, '0');
+    document.getElementById('hours').textContent = String(Math.floor((difference % 86400000) / 3600000)).padStart(2, '0');
+    document.getElementById('minutes').textContent = String(Math.floor((difference % 3600000) / 60000)).padStart(2, '0');
+    document.getElementById('seconds').textContent = String(Math.floor((difference % 60000) / 1000)).padStart(2, '0');
+    return true;
+  };
+  (async () => {
+    const status = document.getElementById('applicationStatus');
+    const label = document.getElementById('countdownLabel');
+    const note = document.getElementById('paymentWindowNote');
+    try {
+      const config = await (await fetch('/api/config')).json();
+      const price = formatMoney(Number(config.paymentAmountMajor || 2.99), config.paymentCurrency || 'USD');
+      if (config.paymentWindowStart) {
+        const start = new Date(config.paymentWindowStart);
+        const freeEnd = start.getTime() + Number(config.paymentFreeDays || 20) * 86400000;
+        const paidEnd = freeEnd + Number(config.paymentPaidDays || 10) * 86400000;
+        let deadline;
+        if (config.paymentMode === 'free') {
+          status.textContent = 'Applications Open · Free enrollment';
+          label.textContent = 'Free enrollment closes in';
+          note.textContent = `Enroll at no charge during the opening window. Payment activates after that at ${price}.`;
+          deadline = freeEnd;
+        } else if (config.paymentMode === 'paid') {
+          status.textContent = `Applications Open · ${price}`;
+          label.textContent = 'Paid enrollment closes in';
+          note.textContent = `The opening window has ended. Reserve your seat now for ${price}.`;
+          deadline = paidEnd;
+        } else {
+          status.textContent = 'Applications Closed';
+          label.textContent = 'Enrollment window closed';
+          note.textContent = 'Applications are currently closed.';
+        }
+        if (deadline) {
+          const tick = () => { if (!updateEnrollmentCountdown(deadline)) window.location.reload(); };
+          tick(); setInterval(tick, 1000);
+        }
+      } else if (config.paymentMode === 'free') {
+        status.textContent = 'Applications Open · Free enrollment';
+        label.textContent = 'Opening window';
+        note.textContent = `Enrollment is currently free. Payment activates for the final 10 days at ${price}.`;
+      }
+    } catch (error) {
+      console.warn('Could not load enrollment configuration', error);
+    }
+  })();
+
   // ── Registration ──────────────────────────────────────────────
   async function handleRegistration(e) {
     e.preventDefault();
