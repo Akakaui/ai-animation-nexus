@@ -96,7 +96,7 @@
 
       <!-- Price display -->
       <div class="glass-panel rounded-2xl p-6 mb-8 text-center border border-primary/20">
-        <div class="font-timer-display text-timer-display text-primary mb-1">$2.99</div>
+        <div class="font-timer-display text-timer-display text-primary mb-1" id="priceDisplay">$2.99</div>
         <p class="font-metadata-xs text-metadata-xs text-on-surface-variant uppercase">Full 8-Session Intensive · Visa, Mastercard, Verve</p>
       </div>
 
@@ -156,49 +156,72 @@
 
 <script>
   const userEmail = localStorage.getItem('nexus_email') || '';
-  const paystackPublicKey = 'pk_test_c05986126c31e4eecefcf9f8fd410f210c744336';
+  const payBtn = document.getElementById('payBtn');
+  const errorEl = document.getElementById('paymentError');
+  let paystack = null;
+  let paymentConfig = null;
 
-  const paystack = PaystackPop.setup({
-    key: paystackPublicKey,
-    email: userEmail,
-    amount: 29900,
-    currency: 'USD',
-    ref: 'ANX_' + Date.now() + '_' + Math.floor(Math.random() * 10000),
-    metadata: {
-      custom_fields: [{ display_name: "Course", variable_name: "course", value: "AI Animation Nexus 2026" }]
-    },
-    callback: function(response) {
-      localStorage.setItem('payment_ref', response.reference);
-      const overlay = document.getElementById('successOverlay');
-      const card = document.getElementById('payCard');
-      card.style.boxShadow = '0 0 80px rgba(0,229,153,0.6)';
-      overlay.style.opacity = '1';
-      overlay.style.pointerEvents = 'auto';
-      setTimeout(() => { window.location.href = 'confirmation.html'; }, 2000);
-    },
-    onClose: function() {
-      const btn = document.getElementById('payBtn');
-      btn.disabled = false;
-      btn.innerHTML = '<span class="material-symbols-outlined text-lg">credit_card</span> Confirm My Seat — $2.99';
-    },
-    onBankTransferConfirmationRequired: function() {
-      document.getElementById('payBtn').textContent = 'Processing transfer...';
+  function showMessage(message) {
+    errorEl.textContent = message;
+    errorEl.classList.remove('hidden');
+  }
+
+  async function setupPayment() {
+    try {
+      const configResponse = await fetch('/api/config');
+      paymentConfig = await configResponse.json();
+      const amount = Number(paymentConfig.paymentAmountMajor || 2.99);
+      document.getElementById('priceDisplay').textContent = `${paymentConfig.paymentCurrency || 'USD'} ${amount.toFixed(2)}`;
+      if (paymentConfig.paymentMode === 'free') {
+        payBtn.disabled = true;
+        showMessage('Payments are paused during the free enrollment window. Your application does not require a charge.');
+        return;
+      }
+      if (paymentConfig.paymentMode === 'closed') {
+        payBtn.disabled = true;
+        showMessage('Applications are currently closed.');
+        return;
+      }
+      if (!userEmail) {
+        payBtn.disabled = true;
+        showMessage('Email not found. Please go back and fill out the application form first.');
+        return;
+      }
+      if (!paymentConfig.paystackPublicKey) throw new Error('Payment provider is not configured');
+      paystack = PaystackPop.setup({
+        key: paymentConfig.paystackPublicKey,
+        email: userEmail,
+        amount: Number(paymentConfig.paymentAmountMinor),
+        currency: paymentConfig.paymentCurrency,
+        ref: 'ANX_' + Date.now() + '_' + crypto.randomUUID().slice(0, 8),
+        metadata: { custom_fields: [{ display_name: 'Course', variable_name: 'course', value: 'AI Animation Nexus' }] },
+        callback(response) {
+          localStorage.setItem('payment_ref', response.reference);
+          document.getElementById('successOverlay').style.opacity = '1';
+          document.getElementById('successOverlay').style.pointerEvents = 'auto';
+          setTimeout(() => { window.location.href = 'confirmation.html'; }, 1200);
+        },
+        onClose() {
+          payBtn.disabled = false;
+          payBtn.innerHTML = '<span class="material-symbols-outlined text-lg">credit_card</span> Confirm My Seat — $2.99';
+        },
+        onBankTransferConfirmationRequired() { payBtn.textContent = 'Processing transfer...'; }
+      });
+    } catch (error) {
+      console.error(error);
+      payBtn.disabled = true;
+      showMessage('Payment is temporarily unavailable. Please try again later or contact support.');
     }
-  });
+  }
 
-  document.getElementById('payBtn').addEventListener('click', function() {
-    const errEl = document.getElementById('paymentError');
-    errEl.classList.add('hidden');
-
-    if (!userEmail) {
-      errEl.textContent = 'Email not found. Please go back and fill the application form first.';
-      errEl.classList.remove('hidden');
-      return;
-    }
+  payBtn.addEventListener('click', function() {
+    errorEl.classList.add('hidden');
+    if (!paystack) return showMessage('Payment is not currently available.');
     this.disabled = true;
     this.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">progress_activity</span> Opening payment...';
     paystack.popInSupportedBrowsers();
   });
+  setupPayment();
 </script>
 </body>
 </html>

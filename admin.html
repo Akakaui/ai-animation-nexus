@@ -346,16 +346,30 @@
 
 <script>
   const API = '/api/admin';
-  let TOKEN = localStorage.getItem('nexus_admin_pw');
+  let TOKEN = localStorage.getItem('nexus_admin_token');
+
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+  }
 
   // ─── AUTH ────────────────────────────────────────────────────────────────────
   document.getElementById('loginForm').addEventListener('submit', async e => {
     e.preventDefault();
     const pw = document.getElementById('pw').value;
-    TOKEN = pw;
+    try {
+      const loginRes = await fetch(`${API}/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ password: pw }) });
+      const loginData = await loginRes.json();
+      if (!loginRes.ok || !loginData.token) throw new Error(loginData.error || 'Login failed');
+      TOKEN = loginData.token;
+    } catch (error) {
+      TOKEN = null;
+      document.getElementById('loginErr').textContent = error.message || 'Unable to sign in.';
+      document.getElementById('loginErr').style.display = 'block';
+      return;
+    }
     const ok = await loadAll();
     if (ok) {
-      localStorage.setItem('nexus_admin_pw', pw);
+      localStorage.setItem('nexus_admin_token', TOKEN);
       document.getElementById('loginWrap').style.display = 'none';
       document.getElementById('dashboard').style.display = 'block';
       document.getElementById('loginErr').style.display = 'none';
@@ -366,13 +380,13 @@
   });
 
   function logout() {
-    localStorage.removeItem('nexus_admin_pw');
+    localStorage.removeItem('nexus_admin_token');
     TOKEN = null;
     location.reload();
   }
 
   function headers() {
-    return { 'Content-Type': 'application/json', 'x-admin-password': TOKEN };
+    return { 'Content-Type': 'application/json', 'Authorization': `Bearer ${TOKEN}` };
   }
 
   // ─── INIT ─────────────────────────────────────────────────────────────────────
@@ -383,7 +397,7 @@
         document.getElementById('dashboard').style.display = 'block';
       } else {
         TOKEN = null;
-        localStorage.removeItem('nexus_admin_pw');
+        localStorage.removeItem('nexus_admin_token');
       }
     });
   }
@@ -436,14 +450,14 @@
       const dateStr = new Date(s.date + 'T00:00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
       const isUnlocked = s.unlocks_at ? new Date() >= new Date(s.unlocks_at) : true;
       return `
-        <div class="session-row" id="srow-${s.id}">
-          <div class="session-num">S${s.session_number}</div>
+        <div class="session-row" id="srow-${escapeHtml(s.id)}">
+          <div class="session-num">S${escapeHtml(s.session_number)}</div>
           <div class="session-info">
-            <h4>${s.title}</h4>
-            <span>${dateStr} · ${s.host} · <span class="badge ${isUnlocked ? 'badge-green' : 'badge-gray'}">${isUnlocked ? 'Unlocked' : 'Locked'}</span></span>
+            <h4>${escapeHtml(s.title)}</h4>
+            <span>${escapeHtml(dateStr)} · ${escapeHtml(s.host)} · <span class="badge ${isUnlocked ? 'badge-green' : 'badge-gray'}">${isUnlocked ? 'Unlocked' : 'Locked'}</span></span>
           </div>
-          <input class="session-input" id="zoom-${s.id}" type="url" placeholder="Zoom URL" value="${s.zoom_url || ''}" />
-          <input class="session-input" id="unlock-${s.id}" type="datetime-local" value="${s.unlocks_at ? s.unlocks_at.slice(0,16) : ''}" />
+          <input class="session-input" id="zoom-${escapeHtml(s.id)}" type="url" placeholder="Zoom URL" value="${escapeHtml(s.zoom_url || '')}" />
+          <input class="session-input" id="unlock-${escapeHtml(s.id)}" type="datetime-local" value="${escapeHtml(s.unlocks_at ? s.unlocks_at.slice(0,16) : '')}" />
           <button class="btn-save" onclick="saveSession(${s.id})">Save</button>
         </div>
       `;
@@ -477,12 +491,12 @@
     tb.innerHTML = students.map((s, i) => `
       <tr>
         <td style="color:var(--text-muted);font-family:'Space Mono',monospace;font-size:0.75rem;">${i + 1}</td>
-        <td style="font-weight:500;">${s.full_name || '—'}</td>
-        <td style="color:var(--text-muted);font-size:0.82rem;">${s.email}</td>
-        <td style="color:var(--text-muted);font-size:0.82rem;">${s.whatsapp || '—'}</td>
-        <td><span class="badge badge-green" style="font-size:0.65rem;">${s.access_code || '—'}</span></td>
-        <td style="color:var(--text-muted);font-size:0.8rem;">${s.created_at ? s.created_at.split('T')[0] : '—'}</td>
-        <td><span class="badge badge-green">Paid</span></td>
+        <td style="font-weight:500;">${escapeHtml(s.full_name || '—')}</td>
+        <td style="color:var(--text-muted);font-size:0.82rem;">${escapeHtml(s.email)}</td>
+        <td style="color:var(--text-muted);font-size:0.82rem;">${escapeHtml(s.whatsapp || '—')}</td>
+        <td><span class="badge badge-green" style="font-size:0.65rem;">${escapeHtml(s.access_code || '—')}</span></td>
+        <td style="color:var(--text-muted);font-size:0.8rem;">${escapeHtml(s.created_at ? s.created_at.split('T')[0] : '—')}</td>
+        <td><span class="badge ${s.payment_status === 'free' ? 'badge-gray' : 'badge-green'}">${escapeHtml(s.payment_status === 'free' ? 'Free' : 'Paid')}</span></td>
       </tr>
     `).join('');
   }
@@ -501,8 +515,8 @@
     body.innerHTML = matrix.map(row => `
       <tr>
         <td>
-          <div style="font-weight:500;font-size:0.875rem;">${row.student.name}</div>
-          <div style="font-size:0.75rem;color:var(--text-muted);">${row.student.email}</div>
+          <div style="font-weight:500;font-size:0.875rem;">${escapeHtml(row.student.name)}</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);">${escapeHtml(row.student.email)}</div>
         </td>
         ${sessions.map(s => `<td style="text-align:center;"><span class="att-dot ${row['s'+s.session_number] ? 'att-yes' : 'att-no'}" title="${row['s'+s.session_number] ? 'Attended' : 'Absent'}"></span></td>`).join('')}
       </tr>
