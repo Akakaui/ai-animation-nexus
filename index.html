@@ -208,6 +208,41 @@
     box-shadow: 0 0 30px rgba(0,229,153,0.4);
   }
 
+  /* Professional polish */
+  :root { color-scheme: dark; }
+  html { scroll-padding-top: 104px; }
+  body { text-rendering: optimizeLegibility; }
+  a, button, input, textarea, select { -webkit-tap-highlight-color: transparent; }
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+    outline: 2px solid #6dffba;
+    outline-offset: 4px;
+  }
+  .glass-panel {
+    box-shadow: 0 20px 70px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.035);
+  }
+  .speaker-card { isolation: isolate; }
+  .speaker-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 1rem;
+    background: linear-gradient(145deg, rgba(109,255,186,0.12), transparent 42%, rgba(139,92,246,0.08));
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+  .speaker-card:hover::after { opacity: 1; }
+  .minimal-input::placeholder { color: rgba(242,242,242,0.42); }
+  @media (max-width: 640px) {
+    .glass-panel { backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+    .speaker-card:hover { transform: translateY(-3px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+    .reveal-up { opacity: 1; transform: none; }
+  }
+
   /* Scrollbar */
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: #0A0A0C; }
@@ -382,11 +417,11 @@
       <!-- Mentor 2 (staggered) -->
       <div class="relative group mt-16 speaker-card reveal-up" style="transition-delay:0.3s">
         <div class="aspect-[3/4] overflow-hidden rounded-2xl">
-          <img alt="Portrait of Della — AI Character Mentor" class="w-full h-full object-cover editorial-img"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpFLPd6o687FBR_aGZPKKl0grCeyiJrOMd8xirvMd4rvvZ5t8zRuaYpuMpAR1jPvP8QBuuQXJtItrdex0iyYSK2j1askex6LvQmSsqYU8_H2Rc9lc64EKnhuA8RzJrXeKogWhwRwSk3XiMvDNZLxcI6NNJbSHvOxTeTkioplRanu7VEFtCopxDj4K9qjp8LCzNzhh9I1kwL88UFutL4suszxW17G8wp4eQFabEtjJFFkAbnzSwGbzPzuyptm4L5B5HkDgJkuXl8LA"/>
+          <img alt="Portrait of Bethel Okaibedi — AI Character Mentor" class="w-full h-full object-cover editorial-img"
+            src="assets/mentors/bethel-okaibedi.jpg"/>
         </div>
         <div class="absolute -bottom-6 -left-4 glass-panel p-6 rounded-xl w-[90%] shadow-2xl transition-transform duration-500 group-hover:-translate-y-2">
-          <h3 class="font-headline-sm text-headline-sm text-text-primary mb-1">Della</h3>
+          <h3 class="font-headline-sm text-headline-sm text-text-primary mb-1">Bethel Okaibedi</h3>
           <p class="font-metadata-xs text-metadata-xs text-primary uppercase tracking-widest">Consistent AI Characters</p>
         </div>
       </div>
@@ -486,7 +521,7 @@
           <p class="font-body-md text-body-md text-on-surface-variant mb-4">The holy grail of AI animation — keeping your characters consistent across scenes. Unlock the prompting and workflow secrets professionals use.</p>
           <div class="flex gap-6">
             <span class="font-label-mono text-label-mono text-primary flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-sm">schedule</span> 9 PM WAT</span>
-            <span class="font-label-mono text-label-mono text-text-muted flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-sm">person</span> Della</span>
+            <span class="font-label-mono text-label-mono text-text-muted flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-sm">person</span> Bethel Okaibedi</span>
           </div>
         </div>
       </div>
@@ -666,12 +701,12 @@
 
   // ── FAQ ───────────────────────────────────────────────────────
   const faqs = [
-    { q: 'Who is this intensive for?', a: 'Anyone who wants to learn AI-driven motion design — from total beginners to experienced designers looking to add AI to their toolkit. No prior animation experience required.' },
-    { q: 'What tools will we use?', a: 'The mentors will guide you through industry-leading AI animation tools including Runway, Kling AI, Pika, and others, plus compositing in CapCut and Premiere Pro.' },
-    { q: 'Are sessions live or recorded?', a: 'All 8 sessions are live on Zoom. Recordings will NOT be shared, so attendance is essential. A reminder email is sent 1 hour before each session.' },
-    { q: 'How much does it cost?', a: 'Enrollment is free during the first 20 days. Payment opens for the remaining 10 days at $2.99 USD through Paystack.' },
-    { q: 'What happens after I apply?', a: 'During the free window, your access code is issued immediately. During the final 10 days, you complete the $2.99 USD Paystack payment first, then receive your access code by email after server confirmation.' },
-    { q: 'What is the class schedule?', a: 'Sessions run Fridays and Saturdays at 9 PM WAT. The administrator controls the current cohort schedule from the dashboard.' },
+    { q: 'Who is this intensive for?', a: 'This intensive is for beginners, designers, content creators, and working professionals who want to create short AI-assisted motion pieces. You do not need previous animation training.' },
+    { q: 'What tools will we use?', a: 'The published curriculum uses Runway, Kling AI, Pika, CapCut, and Adobe Premiere Pro. You should bring a laptop and create accounts for any tools you plan to use before the relevant session.' },
+    { q: 'Are sessions live or recorded?', a: 'All eight sessions are live on Zoom at 9:00 PM WAT on the dates shown in the curriculum. Recordings are not provided. A reminder email is sent one hour before each session.' },
+    { q: 'How much does it cost?', a: 'Enrollment costs $0 during days 1–20. During days 21–30, the price is exactly $2.99 USD, charged through Paystack. No payment is taken during the free period.' },
+    { q: 'What happens after I apply?', a: 'After you submit the form, you receive an access code immediately when enrollment is free. During the paid period, Paystack confirms the transaction first; the system then sends your access code to the email address used for payment.' },
+    { q: 'What is the class schedule?', a: 'The current cohort has eight sessions on Fridays and Saturdays at 9:00 PM WAT: July 24–25, July 31, August 1, August 7–8, and August 14–15, 2026. The dashboard displays the active dates.' },
   ];
   const faqContainer = document.getElementById('faqContainer');
   faqs.forEach((faq, i) => {
