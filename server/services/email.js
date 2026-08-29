@@ -1,9 +1,25 @@
 require('dotenv').config();
 
-let resendClient = null;
-if (process.env.RESEND_API_KEY) {
-  const { Resend } = require('resend');
-  resendClient = new Resend(process.env.RESEND_API_KEY);
+async function sendViaResend({ to, subject, html }) {
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: process.env.EMAIL_FROM || 'AI Animation Nexus <noreply@example.com>',
+      to: [to],
+      subject,
+      html,
+    }),
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(payload.message || payload.name || `Resend delivery failed (${response.status})`);
+  }
+  console.log('[Email] Sent via Resend:', to, subject);
+  return payload;
 }
 
 function escapeHtml(value) {
@@ -15,16 +31,8 @@ function baseUrl() {
 }
 
 async function sendEmail({ to, subject, html }) {
-  if (resendClient) {
-    const result = await resendClient.emails.send({
-      from: process.env.EMAIL_FROM || 'AI Animation Nexus <noreply@example.com>',
-      to: [to],
-      subject,
-      html,
-    });
-    if (result && result.error) throw new Error(result.error.message || 'Resend delivery failed');
-    console.log('[Email] Sent via Resend:', to, subject);
-    return result;
+  if (process.env.RESEND_API_KEY) {
+    return sendViaResend({ to, subject, html });
   }
 
   if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
