@@ -10,6 +10,7 @@ const adminRoutes = require('../server/routes/admin');
 const contactRoutes = require('../server/routes/contact');
 const { runReminderJob } = require('../lib/reminders');
 const { getPublicRuntimeConfig, requireProductionConfig } = require('../lib/config');
+const { getSessions } = require('../lib/db');
 
 const app = express();
 try {
@@ -23,6 +24,17 @@ app.use(express.json({ verify: (req, res, buffer) => { req.rawBody = Buffer.from
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
 app.get('/api/config', (req, res) => res.json(getPublicRuntimeConfig()));
+app.get('/api/sessions', async (req, res) => {
+  try {
+    const sessions = await getSessions();
+    res.json(sessions.map(({ id, session_number, number, title, host, date, unlocks_at, zoom_url }) => ({
+      id, session_number: session_number || number, title, host, date, unlocks_at, zoom_url: zoom_url || null,
+    })));
+  } catch (error) {
+    console.error('[Sessions] Failed to load schedule:', error);
+    res.status(500).json({ error: 'Unable to load schedule' });
+  }
+});
 
 app.use('/api/apply', applyRoutes);
 app.use('/api/paystack', paystackRoutes);
